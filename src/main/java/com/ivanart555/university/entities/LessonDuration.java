@@ -3,36 +3,36 @@ package com.ivanart555.university.entities;
 import java.time.LocalDateTime;
 
 public class LessonDuration {
-    private LocalDateTime lssonStart;
-    private LocalDateTime lssonEnd;
+    private LocalDateTime lessonStart;
+    private LocalDateTime lessonEnd;
 
-    public LocalDateTime getLssonStart() {
-        return lssonStart;
+    public LocalDateTime getLessonStart() {
+        return lessonStart;
     }
 
-    public void setLssonStart(LocalDateTime lssonStart) {
-        this.lssonStart = lssonStart;
+    public void setLessonStart(LocalDateTime lessonStart) {
+        this.lessonStart = lessonStart;
     }
 
-    public LocalDateTime getLssonEnd() {
-        return lssonEnd;
+    public LocalDateTime getLessonEnd() {
+        return lessonEnd;
     }
 
-    public void setLssonEnd(LocalDateTime lssonEnd) {
-        this.lssonEnd = lssonEnd;
+    public void setLessonEnd(LocalDateTime lessonEnd) {
+        this.lessonEnd = lessonEnd;
     }
 
     @Override
     public String toString() {
-        return "LessonDuration [lssonStart=" + lssonStart + ", lssonEnd=" + lssonEnd + "]";
+        return "LessonDuration [lessonStart=" + lessonStart + ", lessonEnd=" + lessonEnd + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((lssonEnd == null) ? 0 : lssonEnd.hashCode());
-        result = prime * result + ((lssonStart == null) ? 0 : lssonStart.hashCode());
+        result = prime * result + ((lessonEnd == null) ? 0 : lessonEnd.hashCode());
+        result = prime * result + ((lessonStart == null) ? 0 : lessonStart.hashCode());
         return result;
     }
 
@@ -45,15 +45,15 @@ public class LessonDuration {
         if (getClass() != obj.getClass())
             return false;
         LessonDuration other = (LessonDuration) obj;
-        if (lssonEnd == null) {
-            if (other.lssonEnd != null)
+        if (lessonEnd == null) {
+            if (other.lessonEnd != null)
                 return false;
-        } else if (!lssonEnd.equals(other.lssonEnd))
+        } else if (!lessonEnd.equals(other.lessonEnd))
             return false;
-        if (lssonStart == null) {
-            if (other.lssonStart != null)
+        if (lessonStart == null) {
+            if (other.lessonStart != null)
                 return false;
-        } else if (!lssonStart.equals(other.lssonStart))
+        } else if (!lessonStart.equals(other.lessonStart))
             return false;
         return true;
     }
