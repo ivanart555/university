@@ -1,38 +1,36 @@
 package com.ivanart555.university.entities;
 
-import java.util.List;
-
 public class Group {
-    private String name;
-    private List<Student> students;
+    private int groupId;
+    private String groupName;
 
-    public String getName() {
-        return name;
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
+    public String getGroupName() {
+        return groupName;
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
+        this.groupName = name;
     }
 
     @Override
     public String toString() {
-        return "Group [name=" + name + ", students=" + students + "]";
+        return "Group [groupId=" + groupId + ", name=" + groupName + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((students == null) ? 0 : students.hashCode());
+        result = prime * result + groupId;
+        result = prime * result + ((groupName == null) ? 0 : groupName.hashCode());
         return result;
     }
 
@@ -45,15 +43,12 @@ public class Group {
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
+        if (groupId != other.groupId)
             return false;
-        if (students == null) {
-            if (other.students != null)
+        if (groupName == null) {
+            if (other.groupName != null)
                 return false;
-        } else if (!students.equals(other.students))
+        } else if (!groupName.equals(other.groupName))
             return false;
         return true;
     }
