@@ -1,48 +1,60 @@
 package com.ivanart555.university.entities;
 
-import java.util.List;
-
 public class Course {
-    private String name;
-    private String description;
-    private List<Student> students;
+    private int courseId;
+    private String courseName;
+    private String courseDescription;
 
-    public String getName() {
-        return name;
+    public Course() {
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public Course(Integer courseId, String courseName, String courseDescription) {
+        this.courseId = courseId;
+        this.courseName = courseName;
+        this.courseDescription = courseDescription;
     }
 
-    public String getDescription() {
-        return description;
+    public Course(String courseName, String courseDescription) {
+        this.courseName = courseName;
+        this.courseDescription = courseDescription;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public List<Student> getStudents() {
-        return students;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
-    public void setStudents(List<Student> students) {
-        this.students = students;
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String name) {
+        this.courseName = name;
+    }
+
+    public String getCourseDescription() {
+        return courseDescription;
+    }
+
+    public void setCourseDescription(String description) {
+        this.courseDescription = description;
     }
 
     @Override
     public String toString() {
-        return "Course [name=" + name + ", description=" + description + ", students=" + students + "]";
+        return "Course [id = " + courseId + ", name=" + courseName + ", description=" + courseDescription + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((students == null) ? 0 : students.hashCode());
+        result = prime * result + ((courseDescription == null) ? 0 : courseDescription.hashCode());
+        result = prime * result + courseId;
+        result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
         return result;
     }
 
@@ -55,20 +67,17 @@ public class Course {
         if (getClass() != obj.getClass())
             return false;
         Course other = (Course) obj;
-        if (description == null) {
-            if (other.description != null)
+        if (courseDescription == null) {
+            if (other.courseDescription != null)
                 return false;
-        } else if (!description.equals(other.description))
+        } else if (!courseDescription.equals(other.courseDescription))
             return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
+        if (courseId != other.courseId)
             return false;
-        if (students == null) {
-            if (other.students != null)
+        if (courseName == null) {
+            if (other.courseName != null)
                 return false;
-        } else if (!students.equals(other.students))
+        } else if (!courseName.equals(other.courseName))
             return false;
         return true;
     }
