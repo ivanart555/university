@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.ivanart555.university.dao.impl.CourseDAOImpl;
+import com.ivanart555.university.dao.impl.GroupDAOImpl;
 
 @Configuration
 @ComponentScan("com.ivanart555.university")
@@ -32,9 +33,14 @@ public class SpringConfig {
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
     }
-    
+
     @Bean
     public CourseDAOImpl courseDAOImpl(JdbcTemplate jdbcTemplate) {
         return new CourseDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public GroupDAOImpl groupDAOImpl(JdbcTemplate jdbcTemplate) {
+        return new GroupDAOImpl(jdbcTemplate);
     }
 }
