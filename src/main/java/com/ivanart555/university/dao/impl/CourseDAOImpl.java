@@ -3,31 +3,20 @@ package com.ivanart555.university.dao.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
+import com.ivanart555.university.entities.CourseMapper;
 import com.ivanart555.university.exception.DAOException;
 
 @Component
 public class CourseDAOImpl implements CourseDAO {
-    @Value("${getAllCourses}")
-    private String getAllCourses;
 
-    @Value("${getCourseById}")
-    private String getCourseById;
-
-    @Value("${deleteCourse}")
-    private String deleteCourse;
-
-    @Value("${updateCourse}")
-    private String updateCourse;
-
-    @Value("${createCourse}")
-    private String createCourse;
+    @Autowired
+    Environment env;
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -38,27 +27,32 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public List<Course> getAll() {
-        return jdbcTemplate.query(getAllCourses, new BeanPropertyRowMapper<>(Course.class));
+        return jdbcTemplate.query(env.getProperty("sql.courses.get.all"), new CourseMapper());
     }
 
     @Override
     public Course getById(Integer id) {
-        return jdbcTemplate.query(getCourseById, new Object[] { id }, new BeanPropertyRowMapper<>(Course.class))
+        return jdbcTemplate
+                .query(env.getProperty("sql.courses.get.byId"), new Object[] { id },
+                        new CourseMapper())
                 .stream().findAny().orElse(null);
     }
 
     @Override
     public void delete(Integer id) throws DAOException {
-        jdbcTemplate.update(deleteCourse, id);
+        jdbcTemplate.update(env.getProperty("sql.courses.delete"), id);
     }
 
     @Override
     public void update(Course course) throws DAOException {
-        jdbcTemplate.update(updateCourse, course.getCourseName(), course.getCourseDescription(), course.getCourseId());
+        jdbcTemplate.update(env.getProperty("sql.courses.update"), course.getCourseName(),
+                course.getCourseDescription(),
+                course.getCourseId());
     }
 
     @Override
     public void create(Course course) throws DAOException {
-        jdbcTemplate.update(createCourse, course.getCourseName(), course.getCourseDescription());
+        jdbcTemplate.update(env.getProperty("sql.courses.create"), course.getCourseName(),
+                course.getCourseDescription());
     }
 }

@@ -1,24 +1,25 @@
 package com.ivanart555.university.entities;
 
 public class Student {
-    private int studentID;
-    private String name;
+    private int studentId;
+    private String firstName;
     private String lastName;
+    private int groupId;
 
-    public int getStudentID() {
-        return studentID;
+    public int getStudentId() {
+        return studentId;
     }
 
-    public void setStudentID(int studentID) {
-        this.studentID = studentID;
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -29,18 +30,28 @@ public class Student {
         this.lastName = lastName;
     }
 
+    public int getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(int groupId) {
+        this.groupId = groupId;
+    }
+
     @Override
     public String toString() {
-        return "Student [studentID=" + studentID + ", name=" + name + ", lastName=" + lastName + "]";
+        return "Student [studentId=" + studentId + ", firstName=" + firstName + ", lastName=" + lastName + ", groupId="
+                + groupId + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+        result = prime * result + groupId;
         result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + studentID;
+        result = prime * result + studentId;
         return result;
     }
 
@@ -53,17 +64,19 @@ public class Student {
         if (getClass() != obj.getClass())
             return false;
         Student other = (Student) obj;
+        if (firstName == null) {
+            if (other.firstName != null)
+                return false;
+        } else if (!firstName.equals(other.firstName))
+            return false;
+        if (groupId != other.groupId)
+            return false;
         if (lastName == null) {
             if (other.lastName != null)
                 return false;
         } else if (!lastName.equals(other.lastName))
             return false;
-        if (studentID != other.studentID)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
+        if (studentId != other.studentId)
             return false;
         return true;
     }

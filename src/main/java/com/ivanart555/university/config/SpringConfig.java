@@ -11,10 +11,13 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.ivanart555.university.dao.impl.CourseDAOImpl;
 import com.ivanart555.university.dao.impl.GroupDAOImpl;
+import com.ivanart555.university.dao.impl.StudentDAOImpl;
 
 @Configuration
 @ComponentScan("com.ivanart555.university")
 @PropertySource("classpath:application.properties")
+@PropertySource("classpath:sql.properties")
+
 public class SpringConfig {
 
     @Bean
@@ -42,5 +45,10 @@ public class SpringConfig {
     @Bean
     public GroupDAOImpl groupDAOImpl(JdbcTemplate jdbcTemplate) {
         return new GroupDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public StudentDAOImpl studentDAOImpl(JdbcTemplate jdbcTemplate) {
+        return new StudentDAOImpl(jdbcTemplate);
     }
 }
