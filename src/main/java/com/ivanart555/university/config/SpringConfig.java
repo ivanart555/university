@@ -11,6 +11,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import com.ivanart555.university.dao.impl.CourseDAOImpl;
 import com.ivanart555.university.dao.impl.GroupDAOImpl;
+import com.ivanart555.university.dao.impl.LecturerDAOImpl;
 import com.ivanart555.university.dao.impl.StudentDAOImpl;
 
 @Configuration
@@ -50,5 +51,10 @@ public class SpringConfig {
     @Bean
     public StudentDAOImpl studentDAOImpl(JdbcTemplate jdbcTemplate) {
         return new StudentDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public LecturerDAOImpl lecturerDAOImpl(JdbcTemplate jdbcTemplate) {
+        return new LecturerDAOImpl(jdbcTemplate);
     }
 }
