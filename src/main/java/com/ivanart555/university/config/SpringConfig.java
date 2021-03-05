@@ -13,6 +13,7 @@ import com.ivanart555.university.dao.impl.ClassroomDAOImpl;
 import com.ivanart555.university.dao.impl.CourseDAOImpl;
 import com.ivanart555.university.dao.impl.GroupDAOImpl;
 import com.ivanart555.university.dao.impl.LecturerDAOImpl;
+import com.ivanart555.university.dao.impl.LessonDAOImpl;
 import com.ivanart555.university.dao.impl.StudentDAOImpl;
 
 @Configuration
@@ -62,5 +63,10 @@ public class SpringConfig {
     @Bean
     public ClassroomDAOImpl classroomDAOImpl(JdbcTemplate jdbcTemplate) {
         return new ClassroomDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public LessonDAOImpl lessonDAOImpl(JdbcTemplate jdbcTemplate) {
+        return new LessonDAOImpl(jdbcTemplate);
     }
 }

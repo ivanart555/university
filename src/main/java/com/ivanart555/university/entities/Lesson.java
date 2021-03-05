@@ -1,59 +1,69 @@
 package com.ivanart555.university.entities;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 public class Lesson {
-    private int lecturerID;
-    private String name;
-    private String lastName;
-    private List<Course> courses;
+    private int lessonId;
+    private int courseId;
+    private int roomId;
+    private LocalDateTime lessonStart;
+    private LocalDateTime lessonEnd;
 
-    public int getLecturerID() {
-        return lecturerID;
+    public int getLessonId() {
+        return lessonId;
     }
 
-    public void setLecturerID(int lecturerID) {
-        this.lecturerID = lecturerID;
+    public void setLessonId(int lessonId) {
+        this.lessonId = lessonId;
     }
 
-    public String getName() {
-        return name;
+    public int getCourseId() {
+        return courseId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
-    public String getLastName() {
-        return lastName;
+    public int getRoomId() {
+        return roomId;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRoomId(int roomId) {
+        this.roomId = roomId;
     }
 
-    public List<Course> getCourses() {
-        return courses;
+    public LocalDateTime getLessonStart() {
+        return lessonStart;
     }
 
-    public void setCourses(List<Course> courses) {
-        this.courses = courses;
+    public void setLessonStart(LocalDateTime lessonStart) {
+        this.lessonStart = lessonStart;
+    }
+
+    public LocalDateTime getLessonEnd() {
+        return lessonEnd;
+    }
+
+    public void setLessonEnd(LocalDateTime lessonEnd) {
+        this.lessonEnd = lessonEnd;
     }
 
     @Override
     public String toString() {
-        return "Lesson [lecturerID=" + lecturerID + ", name=" + name + ", lastName=" + lastName + ", courses=" + courses
-                + "]";
+        return "Lesson [lessonId=" + lessonId + ", courseId=" + courseId + ", roomId=" + roomId + ", lessonStart="
+                + lessonStart + ", lessonEnd=" + lessonEnd + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((courses == null) ? 0 : courses.hashCode());
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + lecturerID;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
+        result = prime * result + courseId;
+        result = prime * result + ((lessonEnd == null) ? 0 : lessonEnd.hashCode());
+        result = prime * result + lessonId;
+        result = prime * result + ((lessonStart == null) ? 0 : lessonStart.hashCode());
+        result = prime * result + roomId;
         return result;
     }
 
@@ -66,22 +76,21 @@ public class Lesson {
         if (getClass() != obj.getClass())
             return false;
         Lesson other = (Lesson) obj;
-        if (courses == null) {
-            if (other.courses != null)
-                return false;
-        } else if (!courses.equals(other.courses))
+        if (courseId != other.courseId)
             return false;
-        if (lastName == null) {
-            if (other.lastName != null)
+        if (lessonEnd == null) {
+            if (other.lessonEnd != null)
                 return false;
-        } else if (!lastName.equals(other.lastName))
+        } else if (!lessonEnd.equals(other.lessonEnd))
             return false;
-        if (lecturerID != other.lecturerID)
+        if (lessonId != other.lessonId)
             return false;
-        if (name == null) {
-            if (other.name != null)
+        if (lessonStart == null) {
+            if (other.lessonStart != null)
                 return false;
-        } else if (!name.equals(other.name))
+        } else if (!lessonStart.equals(other.lessonStart))
+            return false;
+        if (roomId != other.roomId)
             return false;
         return true;
     }
