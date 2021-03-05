@@ -9,6 +9,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
+import com.ivanart555.university.dao.impl.ClassroomDAOImpl;
 import com.ivanart555.university.dao.impl.CourseDAOImpl;
 import com.ivanart555.university.dao.impl.GroupDAOImpl;
 import com.ivanart555.university.dao.impl.LecturerDAOImpl;
@@ -56,5 +57,10 @@ public class SpringConfig {
     @Bean
     public LecturerDAOImpl lecturerDAOImpl(JdbcTemplate jdbcTemplate) {
         return new LecturerDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public ClassroomDAOImpl classroomDAOImpl(JdbcTemplate jdbcTemplate) {
+        return new ClassroomDAOImpl(jdbcTemplate);
     }
 }
