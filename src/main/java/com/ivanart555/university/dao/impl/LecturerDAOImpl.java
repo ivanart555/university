@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.LecturerDAO;
 import com.ivanart555.university.entities.Lecturer;
-import com.ivanart555.university.entities.LecturerMapper;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.mappers.LecturerMapper;
 
 @Component
 public class LecturerDAOImpl implements LecturerDAO {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     private final JdbcTemplate jdbcTemplate;
 

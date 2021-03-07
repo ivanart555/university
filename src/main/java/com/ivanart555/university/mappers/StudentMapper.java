@@ -1,9 +1,11 @@
-package com.ivanart555.university.entities;
+package com.ivanart555.university.mappers;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
+
+import com.ivanart555.university.entities.Student;
 
 public class StudentMapper implements RowMapper<Student> {
 

@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.entities.GroupMapper;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.mappers.GroupMapper;
 
 @Component
 public class GroupDAOImpl implements GroupDAO {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     private final JdbcTemplate jdbcTemplate;
 

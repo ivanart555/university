@@ -9,14 +9,14 @@ import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.entities.CourseMapper;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.mappers.CourseMapper;
 
 @Component
 public class CourseDAOImpl implements CourseDAO {
 
     @Autowired
-    Environment env;
+    private Environment env;
 
     private final JdbcTemplate jdbcTemplate;
 
