@@ -45,14 +45,14 @@ public class CourseDAOImpl implements CourseDAO {
 
     @Override
     public void update(Course course) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.courses.update"), course.getCourseName(),
-                course.getCourseDescription(),
-                course.getCourseId());
+        jdbcTemplate.update(env.getProperty("sql.courses.update"), course.getName(),
+                course.getDescription(),
+                course.getId());
     }
 
     @Override
     public void create(Course course) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.courses.create"), course.getCourseName(),
-                course.getCourseDescription());
+        jdbcTemplate.update(env.getProperty("sql.courses.create"), course.getName(),
+                course.getDescription());
     }
 }

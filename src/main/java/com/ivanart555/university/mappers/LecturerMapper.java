@@ -13,7 +13,7 @@ public class LecturerMapper implements RowMapper<Lecturer> {
     public Lecturer mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         Lecturer lecturer = new Lecturer();
-        lecturer.setLecturerId(rs.getInt("lecturer_id"));
+        lecturer.setId(rs.getInt("lecturer_id"));
         lecturer.setFirstName(rs.getString("lecturer_name"));
         lecturer.setLastName(rs.getString("lecturer_lastname"));
 

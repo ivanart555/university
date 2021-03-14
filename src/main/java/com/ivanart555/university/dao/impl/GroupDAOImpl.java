@@ -45,11 +45,11 @@ public class GroupDAOImpl implements GroupDAO {
 
     @Override
     public void update(Group group) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.groups.update"), group.getGroupName(), group.getGroupId());
+        jdbcTemplate.update(env.getProperty("sql.groups.update"), group.getName(), group.getId());
     }
 
     @Override
     public void create(Group group) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.groups.create"), group.getGroupName());
+        jdbcTemplate.update(env.getProperty("sql.groups.create"), group.getName());
     }
 }

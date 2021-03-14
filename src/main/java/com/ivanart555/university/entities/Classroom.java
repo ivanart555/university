@@ -1,36 +1,36 @@
 package com.ivanart555.university.entities;
 
 public class Classroom {
-    private int roomId;
-    private String roomName;
+    private int id;
+    private String name;
 
-    public int getRoomId() {
-        return roomId;
+    public int getId() {
+        return id;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getRoomName() {
-        return roomName;
+    public String getName() {
+        return name;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Classroom [roomId=" + roomId + ", roomName=" + roomName + "]";
+        return "Classroom [id=" + id + ", name=" + name + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + roomId;
-        result = prime * result + ((roomName == null) ? 0 : roomName.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 
@@ -43,12 +43,12 @@ public class Classroom {
         if (getClass() != obj.getClass())
             return false;
         Classroom other = (Classroom) obj;
-        if (roomId != other.roomId)
+        if (id != other.id)
             return false;
-        if (roomName == null) {
-            if (other.roomName != null)
+        if (name == null) {
+            if (other.name != null)
                 return false;
-        } else if (!roomName.equals(other.roomName))
+        } else if (!name.equals(other.name))
             return false;
         return true;
     }

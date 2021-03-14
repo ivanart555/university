@@ -1,44 +1,44 @@
 package com.ivanart555.university.entities;
 
 public class Group {
-    private int groupId;
-    private String groupName;
+    private int id;
+    private String name;
 
     public Group() {
     }
 
-    public Group(Integer groupId, String groupName) {
-        this.groupId = groupId;
-        this.groupName = groupName;
+    public Group(Integer id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getId() {
+        return id;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getGroupName() {
-        return groupName;
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
-        this.groupName = name;
+        this.name = name;
     }
 
     @Override
     public String toString() {
-        return "Group [groupId=" + groupId + ", name=" + groupName + "]";
+        return "Group [id=" + id + ", name=" + name + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + groupId;
-        result = prime * result + ((groupName == null) ? 0 : groupName.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 
@@ -51,12 +51,12 @@ public class Group {
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
-        if (groupId != other.groupId)
+        if (id != other.id)
             return false;
-        if (groupName == null) {
-            if (other.groupName != null)
+        if (name == null) {
+            if (other.name != null)
                 return false;
-        } else if (!groupName.equals(other.groupName))
+        } else if (!name.equals(other.name))
             return false;
         return true;
     }

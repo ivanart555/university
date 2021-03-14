@@ -1,60 +1,60 @@
 package com.ivanart555.university.entities;
 
 public class Course {
-    private int courseId;
-    private String courseName;
-    private String courseDescription;
+    private int id;
+    private String name;
+    private String description;
 
     public Course() {
     }
 
-    public Course(Integer courseId, String courseName, String courseDescription) {
-        this.courseId = courseId;
-        this.courseName = courseName;
-        this.courseDescription = courseDescription;
+    public Course(Integer id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
     }
 
-    public Course(String courseName, String courseDescription) {
-        this.courseName = courseName;
-        this.courseDescription = courseDescription;
+    public Course(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public int getId() {
+        return id;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setId(int courseId) {
+        this.id = courseId;
     }
 
-    public String getCourseName() {
-        return courseName;
+    public String getName() {
+        return name;
     }
 
-    public void setCourseName(String name) {
-        this.courseName = name;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getCourseDescription() {
-        return courseDescription;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCourseDescription(String description) {
-        this.courseDescription = description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @Override
     public String toString() {
-        return "Course [id = " + courseId + ", name=" + courseName + ", description=" + courseDescription + "]";
+        return "Course [id = " + id + ", name=" + name + ", description=" + description + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((courseDescription == null) ? 0 : courseDescription.hashCode());
-        result = prime * result + courseId;
-        result = prime * result + ((courseName == null) ? 0 : courseName.hashCode());
+        result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
 
@@ -67,17 +67,17 @@ public class Course {
         if (getClass() != obj.getClass())
             return false;
         Course other = (Course) obj;
-        if (courseDescription == null) {
-            if (other.courseDescription != null)
+        if (description == null) {
+            if (other.description != null)
                 return false;
-        } else if (!courseDescription.equals(other.courseDescription))
+        } else if (!description.equals(other.description))
             return false;
-        if (courseId != other.courseId)
+        if (id != other.id)
             return false;
-        if (courseName == null) {
-            if (other.courseName != null)
+        if (name == null) {
+            if (other.name != null)
                 return false;
-        } else if (!courseName.equals(other.courseName))
+        } else if (!name.equals(other.name))
             return false;
         return true;
     }

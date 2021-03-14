@@ -13,8 +13,8 @@ public class ClassroomMapper implements RowMapper<Classroom> {
     public Classroom mapRow(ResultSet rs, int rowNum) throws SQLException {
 
         Classroom classRoom = new Classroom();
-        classRoom.setRoomId(rs.getInt("room_id"));
-        classRoom.setRoomName(rs.getString("room_name"));
+        classRoom.setId(rs.getInt("room_id"));
+        classRoom.setName(rs.getString("room_name"));
 
         return classRoom;
     }

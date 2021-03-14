@@ -3,18 +3,18 @@ package com.ivanart555.university.entities;
 import java.time.LocalDateTime;
 
 public class Lesson {
-    private int lessonId;
+    private int id;
     private int courseId;
     private int roomId;
     private LocalDateTime lessonStart;
     private LocalDateTime lessonEnd;
 
-    public int getLessonId() {
-        return lessonId;
+    public int getId() {
+        return id;
     }
 
-    public void setLessonId(int lessonId) {
-        this.lessonId = lessonId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getCourseId() {
@@ -51,7 +51,7 @@ public class Lesson {
 
     @Override
     public String toString() {
-        return "Lesson [lessonId=" + lessonId + ", courseId=" + courseId + ", roomId=" + roomId + ", lessonStart="
+        return "Lesson [lessonId=" + id + ", courseId=" + courseId + ", roomId=" + roomId + ", lessonStart="
                 + lessonStart + ", lessonEnd=" + lessonEnd + "]";
     }
 
@@ -61,7 +61,7 @@ public class Lesson {
         int result = 1;
         result = prime * result + courseId;
         result = prime * result + ((lessonEnd == null) ? 0 : lessonEnd.hashCode());
-        result = prime * result + lessonId;
+        result = prime * result + id;
         result = prime * result + ((lessonStart == null) ? 0 : lessonStart.hashCode());
         result = prime * result + roomId;
         return result;
@@ -83,7 +83,7 @@ public class Lesson {
                 return false;
         } else if (!lessonEnd.equals(other.lessonEnd))
             return false;
-        if (lessonId != other.lessonId)
+        if (id != other.id)
             return false;
         if (lessonStart == null) {
             if (other.lessonStart != null)

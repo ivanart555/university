@@ -45,11 +45,11 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
     @Override
     public void update(Classroom classRoom) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.classrooms.update"), classRoom.getRoomName(), classRoom.getRoomId());
+        jdbcTemplate.update(env.getProperty("sql.classrooms.update"), classRoom.getName(), classRoom.getId());
     }
 
     @Override
     public void create(Classroom classRoom) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.classrooms.create"), classRoom.getRoomName());
+        jdbcTemplate.update(env.getProperty("sql.classrooms.create"), classRoom.getName());
     }
 }

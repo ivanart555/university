@@ -1,16 +1,16 @@
 package com.ivanart555.university.entities;
 
 public class Lecturer {
-    private int lecturerId;
+    private int id;
     private String firstName;
     private String lastName;
 
-    public int getLecturerId() {
-        return lecturerId;
+    public int getId() {
+        return id;
     }
 
-    public void setLecturerId(int lecturerID) {
-        this.lecturerId = lecturerID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -31,7 +31,7 @@ public class Lecturer {
 
     @Override
     public String toString() {
-        return "Lecturer [lecturerId=" + lecturerId + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+        return "Lecturer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
     }
 
     @Override
@@ -39,7 +39,7 @@ public class Lecturer {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + lecturerId;
+        result = prime * result + id;
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
         return result;
     }
@@ -58,7 +58,7 @@ public class Lecturer {
                 return false;
         } else if (!lastName.equals(other.lastName))
             return false;
-        if (lecturerId != other.lecturerId)
+        if (id != other.id)
             return false;
         if (firstName == null) {
             if (other.firstName != null)

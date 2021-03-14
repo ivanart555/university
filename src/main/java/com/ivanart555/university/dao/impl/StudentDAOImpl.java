@@ -46,7 +46,7 @@ public class StudentDAOImpl implements StudentDAO {
     @Override
     public void update(Student student) throws DAOException {
         jdbcTemplate.update(env.getProperty("sql.students.update"), student.getFirstName(), student.getLastName(),
-                student.getGroupId(), student.getStudentId());
+                student.getGroupId(), student.getId());
     }
 
     @Override

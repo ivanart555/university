@@ -1,17 +1,17 @@
 package com.ivanart555.university.entities;
 
 public class Student {
-    private int studentId;
+    private int id;
     private String firstName;
     private String lastName;
     private int groupId;
 
-    public int getStudentId() {
-        return studentId;
+    public int getId() {
+        return id;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setId(int studentId) {
+        this.id = studentId;
     }
 
     public String getFirstName() {
@@ -40,7 +40,7 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student [studentId=" + studentId + ", firstName=" + firstName + ", lastName=" + lastName + ", groupId="
+        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", groupId="
                 + groupId + "]";
     }
 
@@ -51,7 +51,7 @@ public class Student {
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
         result = prime * result + groupId;
         result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + studentId;
+        result = prime * result + id;
         return result;
     }
 
@@ -76,7 +76,7 @@ public class Student {
                 return false;
         } else if (!lastName.equals(other.lastName))
             return false;
-        if (studentId != other.studentId)
+        if (id != other.id)
             return false;
         return true;
     }
