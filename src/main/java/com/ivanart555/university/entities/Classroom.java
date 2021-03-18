@@ -4,6 +4,18 @@ public class Classroom {
     private int id;
     private String name;
 
+    public Classroom() {
+    }
+
+    public Classroom(String name) {
+        this.name = name;
+    }
+
+    public Classroom(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }
