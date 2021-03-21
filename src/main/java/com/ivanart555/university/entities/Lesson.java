@@ -9,6 +9,16 @@ public class Lesson {
     private LocalDateTime lessonStart;
     private LocalDateTime lessonEnd;
 
+    public Lesson() {}
+
+    public Lesson(int id, int courseId, int roomId, LocalDateTime lessonStart, LocalDateTime lessonEnd) {
+        this.id = id;
+        this.courseId = courseId;
+        this.roomId = roomId;
+        this.lessonStart = lessonStart;
+        this.lessonEnd = lessonEnd;
+    }
+
     public int getId() {
         return id;
     }

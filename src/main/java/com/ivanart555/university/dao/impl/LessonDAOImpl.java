@@ -46,7 +46,7 @@ public class LessonDAOImpl implements LessonDAO {
     @Override
     public void update(Lesson lesson) throws DAOException {
         jdbcTemplate.update(env.getProperty("sql.lessons.update"), lesson.getCourseId(), lesson.getRoomId(),
-                lesson.getLessonStart(), lesson.getLessonEnd());
+                lesson.getLessonStart(), lesson.getLessonEnd(), lesson.getId());
     }
 
     @Override
