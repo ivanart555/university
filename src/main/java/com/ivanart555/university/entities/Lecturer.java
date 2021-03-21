@@ -5,6 +5,15 @@ public class Lecturer {
     private String firstName;
     private String lastName;
 
+    public Lecturer() {
+    }
+
+    public Lecturer(Integer id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+    
     public int getId() {
         return id;
     }
