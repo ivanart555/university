@@ -22,7 +22,7 @@ class LessonMapperTest {
     private LessonMapper lessonMapper;
 
     @Test
-    void shouldReturnGroup_WhenCalledMapRow() throws SQLException {
+    void shouldReturnLesson_WhenCalledMapRow() throws SQLException {
         LocalDateTime lessonStart = LocalDateTime.now();
         LocalDateTime lessonEnd = LocalDateTime.now().plusHours(1);
 

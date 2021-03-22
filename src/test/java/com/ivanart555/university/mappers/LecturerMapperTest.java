@@ -20,7 +20,7 @@ class LecturerMapperTest {
     private LecturerMapper lecturerMapper;
 
     @Test
-    void shouldReturnGroup_WhenCalledMapRow() throws SQLException {
+    void shouldReturnLecturer_WhenCalledMapRow() throws SQLException {
         Lecturer expectedLecturer = new Lecturer(1, "Alex", "Smith");
 
         ResultSet rsMock = Mockito.mock(ResultSet.class);
