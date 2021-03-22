@@ -15,6 +15,12 @@ import com.ivanart555.university.dao.impl.GroupDAOImpl;
 import com.ivanart555.university.dao.impl.LecturerDAOImpl;
 import com.ivanart555.university.dao.impl.LessonDAOImpl;
 import com.ivanart555.university.dao.impl.StudentDAOImpl;
+import com.ivanart555.university.mappers.ClassroomMapper;
+import com.ivanart555.university.mappers.CourseMapper;
+import com.ivanart555.university.mappers.GroupMapper;
+import com.ivanart555.university.mappers.LecturerMapper;
+import com.ivanart555.university.mappers.LessonMapper;
+import com.ivanart555.university.mappers.StudentMapper;
 
 @Configuration
 @ComponentScan("com.ivanart555.university")
@@ -29,7 +35,6 @@ public class TestSpringConfig {
 
         dataSource.setDriverClassName("org.h2.Driver");
         dataSource.setUrl("jdbc:h2:mem:school;DB_CLOSE_DELAY=-1");
-//        dataSource.setUrl("jdbc:h2:tcp://localhost/~/test2");
         dataSource.setUsername("h2");
         dataSource.setPassword("1234");
 
@@ -69,5 +74,35 @@ public class TestSpringConfig {
     @Bean
     public LessonDAOImpl lessonDAOImpl(JdbcTemplate jdbcTemplate) {
         return new LessonDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public ClassroomMapper classroomMapper() {
+        return new ClassroomMapper();
+    }
+
+    @Bean
+    public CourseMapper courseMapper() {
+        return new CourseMapper();
+    }
+
+    @Bean
+    public GroupMapper groupMapper() {
+        return new GroupMapper();
+    }
+
+    @Bean
+    public LecturerMapper lecturerMapper() {
+        return new LecturerMapper();
+    }
+
+    @Bean
+    public LessonMapper lessonMapper() {
+        return new LessonMapper();
+    }
+
+    @Bean
+    public StudentMapper studentMapper() {
+        return new StudentMapper();
     }
 }
