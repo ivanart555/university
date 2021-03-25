@@ -1,10 +1,24 @@
 package com.ivanart555.university.entities;
 
-import java.util.List;
-
 public class Group {
+    private int id;
     private String name;
-    private List<Student> students;
+
+    public Group() {
+    }
+
+    public Group(Integer id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -14,25 +28,17 @@ public class Group {
         this.name = name;
     }
 
-    public List<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
-
     @Override
     public String toString() {
-        return "Group [name=" + name + ", students=" + students + "]";
+        return "Group [id=" + id + ", name=" + name + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
-        result = prime * result + ((students == null) ? 0 : students.hashCode());
         return result;
     }
 
@@ -45,15 +51,12 @@ public class Group {
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
+        if (id != other.id)
+            return false;
         if (name == null) {
             if (other.name != null)
                 return false;
         } else if (!name.equals(other.name))
-            return false;
-        if (students == null) {
-            if (other.students != null)
-                return false;
-        } else if (!students.equals(other.students))
             return false;
         return true;
     }

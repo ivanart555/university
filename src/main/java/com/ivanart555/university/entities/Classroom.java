@@ -1,30 +1,27 @@
 package com.ivanart555.university.entities;
 
-public class Course {
+public class Classroom {
     private int id;
     private String name;
-    private String description;
 
-    public Course() {
+    public Classroom() {
     }
 
-    public Course(Integer id, String name, String description) {
+    public Classroom(String name) {
+        this.name = name;
+    }
+
+    public Classroom(Integer id, String name) {
         this.id = id;
         this.name = name;
-        this.description = description;
-    }
-
-    public Course(String name, String description) {
-        this.name = name;
-        this.description = description;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int courseId) {
-        this.id = courseId;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -35,24 +32,15 @@ public class Course {
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     @Override
     public String toString() {
-        return "Course [id = " + id + ", name=" + name + ", description=" + description + "]";
+        return "Classroom [id=" + id + ", name=" + name + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
@@ -66,12 +54,7 @@ public class Course {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Course other = (Course) obj;
-        if (description == null) {
-            if (other.description != null)
-                return false;
-        } else if (!description.equals(other.description))
-            return false;
+        Classroom other = (Classroom) obj;
         if (id != other.id)
             return false;
         if (name == null) {
