@@ -1,10 +1,17 @@
 package com.ivanart555.university.dao.impl;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.StudentDAO;
@@ -51,6 +58,20 @@ public class StudentDAOImpl implements StudentDAO {
 
     @Override
     public void create(Student student) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.students.create"), student.getFirstName(), student.getLastName(), student.getGroupId());
+        KeyHolder key = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                final PreparedStatement ps = connection.prepareStatement(env.getProperty("sql.students.create"),
+                        Statement.RETURN_GENERATED_KEYS);
+                ps.setString(1, student.getFirstName());
+                ps.setString(2, student.getLastName());
+                return ps;
+            }
+        }, key);
+
+        student.setId((int) key.getKeys().get("student_id"));
     }
 }

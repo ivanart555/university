@@ -15,6 +15,8 @@ import com.ivanart555.university.dao.impl.GroupDAOImpl;
 import com.ivanart555.university.dao.impl.LecturerDAOImpl;
 import com.ivanart555.university.dao.impl.LessonDAOImpl;
 import com.ivanart555.university.dao.impl.StudentDAOImpl;
+import com.ivanart555.university.services.impl.GroupServiceImpl;
+import com.ivanart555.university.services.impl.StudentServiceImpl;
 
 @Configuration
 @ComponentScan("com.ivanart555.university")
@@ -68,5 +70,15 @@ public class SpringConfig {
     @Bean
     public LessonDAOImpl lessonDAOImpl(JdbcTemplate jdbcTemplate) {
         return new LessonDAOImpl(jdbcTemplate);
+    }
+
+    @Bean
+    public StudentServiceImpl studentServiceImpl() {
+        return new StudentServiceImpl();
+    }
+
+    @Bean
+    public GroupServiceImpl groupServiceImpl() {
+        return new GroupServiceImpl();
     }
 }

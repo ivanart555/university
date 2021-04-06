@@ -28,7 +28,8 @@ CREATE TABLE university.groups
 (
     group_id SERIAL NOT NULL,
     group_name character varying(255) NOT NULL,
-    CONSTRAINT groups_pkey PRIMARY KEY (group_id)
+    CONSTRAINT groups_pkey PRIMARY KEY (group_id),
+    CONSTRAINT groups_group_name_key UNIQUE (group_name)
 );
 
 DROP TABLE IF EXISTS university.lecturers CASCADE;
