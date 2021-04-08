@@ -14,15 +14,13 @@ import com.ivanart555.university.mappers.GroupMapper;
 
 @Component
 public class GroupDAOImpl implements GroupDAO {
-
-    @Autowired
-    private Environment env;
-
+    private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GroupDAOImpl(JdbcTemplate jdbcTemplate) {
+    public GroupDAOImpl(JdbcTemplate jdbcTemplate, Environment env) {
         this.jdbcTemplate = jdbcTemplate;
+        this.env = env;
     }
 
     @Override

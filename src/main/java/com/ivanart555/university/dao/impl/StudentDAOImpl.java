@@ -21,15 +21,13 @@ import com.ivanart555.university.mappers.StudentMapper;
 
 @Component
 public class StudentDAOImpl implements StudentDAO {
-
-    @Autowired
-    private Environment env;
-
+    private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public StudentDAOImpl(JdbcTemplate jdbcTemplate) {
+    public StudentDAOImpl(JdbcTemplate jdbcTemplate, Environment env) {
         this.jdbcTemplate = jdbcTemplate;
+        this.env = env;
     }
 
     @Override

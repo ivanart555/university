@@ -14,15 +14,13 @@ import com.ivanart555.university.mappers.CourseMapper;
 
 @Component
 public class CourseDAOImpl implements CourseDAO {
-
-    @Autowired
-    private Environment env;
-
+    private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public CourseDAOImpl(JdbcTemplate jdbcTemplate) {
+    public CourseDAOImpl(JdbcTemplate jdbcTemplate, Environment env) {
         this.jdbcTemplate = jdbcTemplate;
+        this.env = env;
     }
 
     @Override
