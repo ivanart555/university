@@ -21,6 +21,7 @@ import com.ivanart555.university.mappers.StudentMapper;
 
 @Component
 public class StudentDAOImpl implements StudentDAO {
+    private static final boolean IS_ACTIVE = true;
     private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
@@ -34,6 +35,11 @@ public class StudentDAOImpl implements StudentDAO {
     public List<Student> getAll() {
         return jdbcTemplate.query(env.getProperty("sql.students.get.all"), new StudentMapper());
     }
+    
+    @Override
+    public List<Student> getAllActive() {
+        return jdbcTemplate.query(env.getProperty("sql.students.get.all.active"), new StudentMapper());
+    }
 
     @Override
     public Student getById(Integer id) {
@@ -44,7 +50,7 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public void delete(Integer id) throws DAOException {
+    public void delete(Integer id) {
         jdbcTemplate.update(env.getProperty("sql.students.delete"), id);
     }
 
@@ -66,10 +72,21 @@ public class StudentDAOImpl implements StudentDAO {
                         Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, student.getFirstName());
                 ps.setString(2, student.getLastName());
+                ps.setBoolean(3, IS_ACTIVE);
                 return ps;
             }
         }, key);
 
         student.setId((int) key.getKeys().get("student_id"));
+    }
+
+    @Override
+    public void addStudentToCourse(Integer studentId, Integer courseId) throws DAOException {
+        jdbcTemplate.update(env.getProperty("sql.students.add.studentToCourse"), studentId, courseId);
+    }
+
+    @Override
+    public List<Student> getStudentsByGroupId(Integer groupId) {
+        return jdbcTemplate.query(env.getProperty("sql.students.get.studentsByGroupId"), new Object[] { groupId } , new StudentMapper());
     }
 }

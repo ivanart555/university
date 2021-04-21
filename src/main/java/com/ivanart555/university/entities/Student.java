@@ -5,6 +5,7 @@ public class Student {
     private String firstName;
     private String lastName;
     private int groupId;
+    private boolean active;
 
     public Student() {
     }
@@ -12,13 +13,23 @@ public class Student {
     public Student(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.active = true;
     }
-    
+
     public Student(int id, String firstName, String lastName, int groupId) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.groupId = groupId;
+        this.active = true;
+    }
+
+    public Student(int id, String firstName, String lastName, int groupId, boolean active) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.groupId = groupId;
+        this.active = active;
     }
 
     public int getId() {
@@ -53,10 +64,18 @@ public class Student {
         this.groupId = groupId;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
-        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", groupId="
-                + groupId + "]";
+        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", groupId=" + groupId
+                + ", active=" + active + "]";
     }
 
     @Override
