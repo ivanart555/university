@@ -84,7 +84,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.update(student);
         } catch (DAOException e) {
-            throw new ServiceException("", e);
+            throw new ServiceException("Unable to update Student.", e);
         }
     }
 
@@ -93,7 +93,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.create(student);
         } catch (DAOException e) {
-            throw new ServiceException("", e);
+            throw new ServiceException("Unable to create Student.", e);
         }
     }
 
@@ -113,7 +113,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.update(student);
         } catch (DAOException e) {
-            throw new ServiceException("", e);
+            throw new ServiceException("Failed to assign student to Group.", e);
         }
     }
 
@@ -132,7 +132,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.addStudentToCourse(student.getId(), courseId);
         } catch (DAOException e) {
-            throw new ServiceException("", e);
+            throw new ServiceException("Failed to assign student to Course.", e);
         }
     }
 }
