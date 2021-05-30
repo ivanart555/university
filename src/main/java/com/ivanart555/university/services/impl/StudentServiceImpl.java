@@ -1,5 +1,7 @@
 package com.ivanart555.university.services.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,11 @@ import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.dao.GroupDAO;
+import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.dao.StudentDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.exception.DAOException;
@@ -22,27 +26,15 @@ public class StudentServiceImpl implements StudentService {
     private StudentDAO studentDAO;
     private GroupDAO groupDAO;
     private CourseDAO courseDAO;
+    private LessonDAO lessonDAO;
 
-    private void checkIfStudentIsNotActive(Student student) throws ServiceException {
-        if (!student.isActive()) {
-            throw new ServiceException("Failed to assign student to Group. Student is not active.");
-        }
-    }
-    
-    private void checkGroupSizeLimitation(Integer groupId) throws ServiceException {
-        int expectedGroupSize = studentDAO.getStudentsByGroupId(groupId).size() + 1;
-        int groupMaxSize = Integer.parseInt(env.getProperty("groupMaxSize"));
-        
-        if (expectedGroupSize > groupMaxSize) {
-            throw new ServiceException("Failed to assign student to Group. Group max size("+groupMaxSize+") exceeded.");
-        }
-    }
-    
     @Autowired
-    public StudentServiceImpl(StudentDAO studentDAO, GroupDAO groupDAO, CourseDAO courseDAO, Environment env) {
+    public StudentServiceImpl(StudentDAO studentDAO, GroupDAO groupDAO, CourseDAO courseDAO, LessonDAO lessonDAO,
+            Environment env) {
         this.studentDAO = studentDAO;
         this.groupDAO = groupDAO;
         this.courseDAO = courseDAO;
+        this.lessonDAO = lessonDAO;
         this.env = env;
     }
 
@@ -50,7 +42,7 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAll() throws ServiceException {
         List<Student> students = studentDAO.getAll();
         if (students.isEmpty()) {
-            throw new ServiceException("There are no Students in database");
+            throw new ServiceException("There are no students in database");
         }
         return students;
     }
@@ -59,7 +51,7 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAllActive() throws ServiceException {
         List<Student> students = studentDAO.getAllActive();
         if (students.isEmpty()) {
-            throw new ServiceException("There are no active Students in database");
+            throw new ServiceException("There are no active students in database");
         }
         return students;
     }
@@ -68,9 +60,8 @@ public class StudentServiceImpl implements StudentService {
     public Student getById(Integer id) throws ServiceException {
         Student student = studentDAO.getById(id);
         if (student == null) {
-            throw new ServiceException("There is no Student with such id:" + id);
+            throw new ServiceException("There is no student with such id:" + id);
         }
-
         return student;
     }
 
@@ -84,7 +75,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.update(student);
         } catch (DAOException e) {
-            throw new ServiceException("Unable to update Student.", e);
+            throw new ServiceException("Unable to update student.", e);
         }
     }
 
@@ -103,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
         group = groupDAO.getById(groupId);
 
         if (group == null) {
-            throw new ServiceException("Failed to assign student to Group. There is no Group with such id:" + groupId);
+            throw new ServiceException("Failed to assign student to group. There is no group with such id:" + groupId);
         }
 
         checkGroupSizeLimitation(groupId);
@@ -113,7 +104,7 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.update(student);
         } catch (DAOException e) {
-            throw new ServiceException("Failed to assign student to Group.", e);
+            throw new ServiceException("Failed to assign student to group.", e);
         }
     }
 
@@ -124,7 +115,7 @@ public class StudentServiceImpl implements StudentService {
 
         if (course == null) {
             throw new ServiceException(
-                    "Failed to assign student to Course. There is no Course with such id:" + courseId);
+                    "Failed to assign student to course. There is no course with such id:" + courseId);
         }
 
         checkIfStudentIsNotActive(student);
@@ -132,7 +123,35 @@ public class StudentServiceImpl implements StudentService {
         try {
             studentDAO.addStudentToCourse(student.getId(), courseId);
         } catch (DAOException e) {
-            throw new ServiceException("Failed to assign student to Course.", e);
+            throw new ServiceException("Failed to assign student to course.", e);
+        }
+    }
+
+    @Override
+    public List<Lesson> getDaySchedule(Student student, LocalDate day) throws ServiceException {
+        LocalDateTime startDateTime = day.atStartOfDay();
+        LocalDateTime endDateTime = day.atTime(23, 59, 59);
+
+        try {
+            return lessonDAO.getByDateTimeIntervalAndStudentId(student.getId(), startDateTime, endDateTime);
+        } catch (Exception e) {
+            throw new ServiceException("Failed to get student's day schedule.", e);
+        }
+    }
+
+    private void checkIfStudentIsNotActive(Student student) throws ServiceException {
+        if (!student.isActive()) {
+            throw new ServiceException("Student is not active.");
+        }
+    }
+
+    private void checkGroupSizeLimitation(Integer groupId) throws ServiceException {
+        int expectedGroupSize = studentDAO.getStudentsByGroupId(groupId).size() + 1;
+        int groupMaxSize = Integer.parseInt(env.getProperty("groupMaxSize"));
+
+        if (expectedGroupSize > groupMaxSize) {
+            throw new ServiceException(
+                    "Failed to assign student to group. Group max size(" + groupMaxSize + ") exceeded.");
         }
     }
 }

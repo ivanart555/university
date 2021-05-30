@@ -21,7 +21,6 @@ import com.ivanart555.university.mappers.StudentMapper;
 
 @Component
 public class StudentDAOImpl implements StudentDAO {
-    private static final boolean IS_ACTIVE = true;
     private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
@@ -72,7 +71,7 @@ public class StudentDAOImpl implements StudentDAO {
                         Statement.RETURN_GENERATED_KEYS);
                 ps.setString(1, student.getFirstName());
                 ps.setString(2, student.getLastName());
-                ps.setBoolean(3, IS_ACTIVE);
+                ps.setBoolean(3, student.isActive());
                 return ps;
             }
         }, key);
