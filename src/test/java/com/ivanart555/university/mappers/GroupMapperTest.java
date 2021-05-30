@@ -17,10 +17,13 @@ import com.ivanart555.university.entities.Group;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class GroupMapperTest {
-
-    @Autowired
     private GroupMapper groupMapper;
-
+   
+    @Autowired
+    private GroupMapperTest(GroupMapper groupMapper) {
+        this.groupMapper = groupMapper;
+    }
+  
     @Test
     void shouldReturnGroup_WhenCalledMapRow() throws SQLException {
         Group expectedGroup = new Group(1, "AB-01");
