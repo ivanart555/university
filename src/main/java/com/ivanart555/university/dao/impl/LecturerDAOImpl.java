@@ -14,6 +14,7 @@ import com.ivanart555.university.mappers.LecturerMapper;
 
 @Component
 public class LecturerDAOImpl implements LecturerDAO {
+    private static final boolean IS_ACTIVE = true;
     private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
@@ -27,6 +28,11 @@ public class LecturerDAOImpl implements LecturerDAO {
     public List<Lecturer> getAll() {
         return jdbcTemplate.query(env.getProperty("sql.lecturers.get.all"), new LecturerMapper());
     }
+   
+    @Override
+    public List<Lecturer> getAllActive() {
+        return jdbcTemplate.query(env.getProperty("sql.lecturers.get.all.active"), new LecturerMapper());
+    }
 
     @Override
     public Lecturer getById(Integer id) {
@@ -37,7 +43,7 @@ public class LecturerDAOImpl implements LecturerDAO {
     }
 
     @Override
-    public void delete(Integer id) throws DAOException {
+    public void delete(Integer id) {
         jdbcTemplate.update(env.getProperty("sql.lecturers.delete"), id);
     }
 
@@ -49,6 +55,16 @@ public class LecturerDAOImpl implements LecturerDAO {
 
     @Override
     public void create(Lecturer lecturer) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.lecturers.create"), lecturer.getFirstName(), lecturer.getLastName());
+        jdbcTemplate.update(env.getProperty("sql.lecturers.create"), lecturer.getFirstName(), lecturer.getLastName(), IS_ACTIVE);
+    }
+
+    @Override
+    public void addLecturerToCourse(Integer lecturerId, Integer courseId) throws DAOException {
+        jdbcTemplate.update(env.getProperty("sql.lecturers.add.lecturerToCourse"), lecturerId, courseId);
+    }
+
+    @Override
+    public void addLecturerToGroup(Integer lecturerId, Integer groupId) throws DAOException {
+        jdbcTemplate.update(env.getProperty("sql.lecturers.add.lecturerToGroup"), lecturerId, groupId);
     }
 }
