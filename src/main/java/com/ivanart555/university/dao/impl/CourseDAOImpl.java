@@ -37,7 +37,7 @@ public class CourseDAOImpl implements CourseDAO {
     }
 
     @Override
-    public void delete(Integer id) throws DAOException {
+    public void delete(Integer id) {
         jdbcTemplate.update(env.getProperty("sql.courses.delete"), id);
     }
 

@@ -28,14 +28,8 @@ import com.ivanart555.university.exception.DAOException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class CourseDAOImplTest {
-
-    @Autowired
     private Environment env;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private CourseDAO courseDAO;
 
     private static ResourceDatabasePopulator sqlScript;
@@ -47,6 +41,13 @@ class CourseDAOImplTest {
     private static final String COURSE_DESCRIPTION = "course_description";
     private static final String CONNECTION_ERROR = "Could not connect to database or SQL query error.";
 
+    @Autowired
+    private CourseDAOImplTest(CourseDAO courseDAO, Environment env, JdbcTemplate jdbcTemplate) {
+        this.courseDAO = courseDAO;
+        this.env = env;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @BeforeEach
     public void createTables() {
         sqlScript = new ResourceDatabasePopulator();

@@ -16,10 +16,13 @@ import com.ivanart555.university.entities.Course;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class CourseMapperTest {
-
-    @Autowired
     private CourseMapper courseMapper;
 
+    @Autowired
+    private CourseMapperTest(CourseMapper courseMapper){
+        this.courseMapper = courseMapper;
+    }
+    
     @Test
     void shouldReturnCourse_WhenCalledMapRow() throws SQLException {
         Course expectedCourse = new Course(1, "english", "English languadge learning.");
