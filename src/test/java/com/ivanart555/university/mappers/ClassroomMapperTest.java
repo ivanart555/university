@@ -17,10 +17,13 @@ import com.ivanart555.university.entities.Classroom;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class ClassroomMapperTest {
-
-    @Autowired
     private ClassroomMapper classroomMapper;
 
+    @Autowired
+    private ClassroomMapperTest(ClassroomMapper classroomMapper){
+        this.classroomMapper = classroomMapper;
+    }
+    
     @Test
     void shouldReturnClassroom_WhenCalledMapRow() throws SQLException {
         Classroom expectedClassroom = new Classroom(1, "100");
