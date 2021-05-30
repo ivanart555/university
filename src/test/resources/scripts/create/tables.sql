@@ -39,6 +39,7 @@ CREATE TABLE university.lecturers
     lecturer_id SERIAL NOT NULL,
     lecturer_name character varying(255) NOT NULL,
     lecturer_lastname character varying(255) NOT NULL,
+    active boolean NOT NULL,
     CONSTRAINT lecturers_pkey PRIMARY KEY (lecturer_id)
 );
 
@@ -83,6 +84,7 @@ CREATE TABLE university.lessons
     room_id integer NOT NULL,
     lesson_start timestamp without time zone NOT NULL,
     lesson_end timestamp without time zone NOT NULL,
+    lecturer_id integer NOT NULL,
     CONSTRAINT lessons_pkey PRIMARY KEY (lesson_id)
 );
 
@@ -110,6 +112,7 @@ CREATE TABLE university.students
     student_name character varying(255) NOT NULL,
     student_lastname character varying(255) NOT NULL,
     group_id integer,
+    active boolean NOT NULL,
     CONSTRAINT students_pkey PRIMARY KEY (student_id)
 );
 
