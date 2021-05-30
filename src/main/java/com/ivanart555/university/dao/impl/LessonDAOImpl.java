@@ -1,5 +1,6 @@
 package com.ivanart555.university.dao.impl;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +38,50 @@ public class LessonDAOImpl implements LessonDAO {
     }
 
     @Override
-    public void delete(Integer id) throws DAOException {
+    public void delete(Integer id) {
         jdbcTemplate.update(env.getProperty("sql.lessons.delete"), id);
     }
 
     @Override
     public void update(Lesson lesson) throws DAOException {
         jdbcTemplate.update(env.getProperty("sql.lessons.update"), lesson.getCourseId(), lesson.getRoomId(),
+                lesson.getLecturerId(),
                 lesson.getLessonStart(), lesson.getLessonEnd(), lesson.getId());
     }
 
     @Override
     public void create(Lesson lesson) throws DAOException {
         jdbcTemplate.update(env.getProperty("sql.lessons.create"), lesson.getCourseId(), lesson.getRoomId(),
+                lesson.getLecturerId(),
                 lesson.getLessonStart(), lesson.getLessonEnd());
+    }
+
+    @Override
+    public void assignLessonToGroup(Integer lessonId, Integer groupId) throws DAOException {
+        jdbcTemplate.update(env.getProperty("sql.lessons.add.lessonToGroup"), lessonId, groupId);
+    }
+
+    @Override
+    public List<Lesson> getByDateTimeIntervalAndGroupId(Integer groupId, LocalDateTime lessonStart,
+            LocalDateTime lessonEnd) {
+        return jdbcTemplate.query(env.getProperty("sql.lessons.get.byDateTimeIntervalAndGroupId"),
+                new Object[] { groupId, lessonStart, lessonEnd, lessonStart, lessonEnd, lessonStart, lessonEnd },
+                new LessonMapper());
+    }
+
+    @Override
+    public List<Lesson> getByDateTimeIntervalAndStudentId(Integer studentId, LocalDateTime lessonStart,
+            LocalDateTime lessonEnd) {
+        return jdbcTemplate.query(env.getProperty("sql.lessons.get.byDateTimeIntervalAndStudentId"),
+                new Object[] { studentId, lessonStart, lessonEnd, lessonStart, lessonEnd, lessonStart, lessonEnd },
+                new LessonMapper());
+    }
+
+    @Override
+    public List<Lesson> getByDateTimeIntervalAndLecturerId(Integer lecturerId, LocalDateTime lessonStart,
+            LocalDateTime lessonEnd) {
+        return jdbcTemplate.query(env.getProperty("sql.lessons.get.byDateTimeIntervalAndLecturerId"),
+                new Object[] { lecturerId, lessonStart, lessonEnd, lessonStart, lessonEnd, lessonStart, lessonEnd },
+                new LessonMapper());
     }
 }

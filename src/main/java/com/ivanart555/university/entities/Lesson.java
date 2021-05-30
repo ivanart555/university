@@ -6,15 +6,28 @@ public class Lesson {
     private int id;
     private int courseId;
     private int roomId;
+    private int lecturerId;
     private LocalDateTime lessonStart;
     private LocalDateTime lessonEnd;
 
-    public Lesson() {}
+    public Lesson() {
+    }
 
-    public Lesson(int id, int courseId, int roomId, LocalDateTime lessonStart, LocalDateTime lessonEnd) {
+    public Lesson(int courseId, int roomId, int lecturerId, LocalDateTime lessonStart,
+            LocalDateTime lessonEnd) {
+        this.courseId = courseId;
+        this.roomId = roomId;
+        this.lecturerId = lecturerId;
+        this.lessonStart = lessonStart;
+        this.lessonEnd = lessonEnd;
+    }
+    
+    public Lesson(int id, int courseId, int roomId, int lecturerId, LocalDateTime lessonStart,
+            LocalDateTime lessonEnd) {
         this.id = id;
         this.courseId = courseId;
         this.roomId = roomId;
+        this.lecturerId = lecturerId;
         this.lessonStart = lessonStart;
         this.lessonEnd = lessonEnd;
     }
@@ -59,10 +72,18 @@ public class Lesson {
         this.lessonEnd = lessonEnd;
     }
 
+    public int getLecturerId() {
+        return lecturerId;
+    }
+
+    public void setLecturerId(int lecturer_id) {
+        this.lecturerId = lecturer_id;
+    }
+
     @Override
     public String toString() {
-        return "Lesson [lessonId=" + id + ", courseId=" + courseId + ", roomId=" + roomId + ", lessonStart="
-                + lessonStart + ", lessonEnd=" + lessonEnd + "]";
+        return "Lesson [id=" + id + ", courseId=" + courseId + ", roomId=" + roomId + ", lecturerId=" + lecturerId
+                + ", lessonStart=" + lessonStart + ", lessonEnd=" + lessonEnd + "]";
     }
 
     @Override
@@ -70,8 +91,9 @@ public class Lesson {
         final int prime = 31;
         int result = 1;
         result = prime * result + courseId;
-        result = prime * result + ((lessonEnd == null) ? 0 : lessonEnd.hashCode());
         result = prime * result + id;
+        result = prime * result + lecturerId;
+        result = prime * result + ((lessonEnd == null) ? 0 : lessonEnd.hashCode());
         result = prime * result + ((lessonStart == null) ? 0 : lessonStart.hashCode());
         result = prime * result + roomId;
         return result;
@@ -88,12 +110,14 @@ public class Lesson {
         Lesson other = (Lesson) obj;
         if (courseId != other.courseId)
             return false;
+        if (id != other.id)
+            return false;
+        if (lecturerId != other.lecturerId)
+            return false;
         if (lessonEnd == null) {
             if (other.lessonEnd != null)
                 return false;
         } else if (!lessonEnd.equals(other.lessonEnd))
-            return false;
-        if (id != other.id)
             return false;
         if (lessonStart == null) {
             if (other.lessonStart != null)
