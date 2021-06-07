@@ -1,5 +1,7 @@
 package com.ivanart555.university.services.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +10,11 @@ import org.springframework.stereotype.Component;
 import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.dao.LecturerDAO;
+import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Lecturer;
+import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.LecturerService;
@@ -20,12 +24,14 @@ public class LecturerServiceImpl implements LecturerService {
     private LecturerDAO lecturerDAO;
     private CourseDAO courseDAO;
     private GroupDAO groupDAO;
+    private LessonDAO lessonDAO;
 
     @Autowired
-    public LecturerServiceImpl(LecturerDAO lecturerDAO, CourseDAO courseDAO, GroupDAO groupDAO) {
+    public LecturerServiceImpl(LecturerDAO lecturerDAO, CourseDAO courseDAO, GroupDAO groupDAO, LessonDAO lessonDAO) {
         this.lecturerDAO = lecturerDAO;
         this.courseDAO = courseDAO;
         this.groupDAO = groupDAO;
+        this.lessonDAO = lessonDAO;
     }
 
     @Override
@@ -115,7 +121,19 @@ public class LecturerServiceImpl implements LecturerService {
             throw new ServiceException("Failed to assign lecturer to course.", e);
         }
     }
+    
+    @Override
+    public List<Lesson> getDaySchedule(Lecturer lecturer, LocalDate day) throws ServiceException {
+        LocalDateTime startDateTime = day.atStartOfDay();
+        LocalDateTime endDateTime = day.atTime(23, 59, 59);
 
+        try {
+            return lessonDAO.getByDateTimeIntervalAndLecturerId(lecturer.getId(), startDateTime, endDateTime);
+        } catch (Exception e) {
+            throw new ServiceException("Failed to get lecturer's day schedule.", e);
+        }
+    }
+    
     private void checkIfLecturerIsNotActive(Lecturer lecturer) throws ServiceException {
         if (!lecturer.isActive()) {
             throw new ServiceException("Lecturer is not active.");
