@@ -9,12 +9,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.ivanart555.university.dao.impl.ClassroomDAOImpl;
-import com.ivanart555.university.dao.impl.CourseDAOImpl;
-import com.ivanart555.university.dao.impl.GroupDAOImpl;
-import com.ivanart555.university.dao.impl.LecturerDAOImpl;
-import com.ivanart555.university.dao.impl.LessonDAOImpl;
-import com.ivanart555.university.dao.impl.StudentDAOImpl;
 
 @Configuration
 @ComponentScan("com.ivanart555.university")
@@ -38,35 +32,5 @@ public class SpringConfig {
     @Bean
     public JdbcTemplate jdbcTemplate() {
         return new JdbcTemplate(dataSource());
-    }
-
-    @Bean
-    public CourseDAOImpl courseDAOImpl(JdbcTemplate jdbcTemplate) {
-        return new CourseDAOImpl(jdbcTemplate);
-    }
-
-    @Bean
-    public GroupDAOImpl groupDAOImpl(JdbcTemplate jdbcTemplate) {
-        return new GroupDAOImpl(jdbcTemplate);
-    }
-
-    @Bean
-    public StudentDAOImpl studentDAOImpl(JdbcTemplate jdbcTemplate) {
-        return new StudentDAOImpl(jdbcTemplate);
-    }
-
-    @Bean
-    public LecturerDAOImpl lecturerDAOImpl(JdbcTemplate jdbcTemplate) {
-        return new LecturerDAOImpl(jdbcTemplate);
-    }
-
-    @Bean
-    public ClassroomDAOImpl classroomDAOImpl(JdbcTemplate jdbcTemplate) {
-        return new ClassroomDAOImpl(jdbcTemplate);
-    }
-
-    @Bean
-    public LessonDAOImpl lessonDAOImpl(JdbcTemplate jdbcTemplate) {
-        return new LessonDAOImpl(jdbcTemplate);
     }
 }

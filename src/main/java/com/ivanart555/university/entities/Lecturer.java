@@ -4,16 +4,24 @@ public class Lecturer {
     private int id;
     private String firstName;
     private String lastName;
+    private boolean active;
 
     public Lecturer() {
     }
 
+    public Lecturer(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.active = true;
+    }
+    
     public Lecturer(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.active = true;
     }
-    
+
     public int getId() {
         return id;
     }
@@ -38,9 +46,18 @@ public class Lecturer {
         this.lastName = lastName;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @Override
     public String toString() {
-        return "Lecturer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + "]";
+        return "Lecturer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", active=" + active
+                + "]";
     }
 
     @Override

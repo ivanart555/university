@@ -28,14 +28,8 @@ import com.ivanart555.university.exception.DAOException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class GroupDAOImplTest {
-
-    @Autowired
     private Environment env;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private GroupDAO groupDAO;
 
     private static ResourceDatabasePopulator sqlScript;
@@ -46,6 +40,13 @@ class GroupDAOImplTest {
     private static final String GROUP_NAME = "group_name";
     private static final String CONNECTION_ERROR = "Could not connect to database or SQL query error.";
 
+    @Autowired
+    private GroupDAOImplTest(GroupDAO groupDAO, Environment env, JdbcTemplate jdbcTemplate) {
+        this.groupDAO = groupDAO;
+        this.env = env;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @BeforeEach
     public void createTables() {
         sqlScript = new ResourceDatabasePopulator();

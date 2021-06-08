@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
@@ -14,15 +15,13 @@ import com.ivanart555.university.mappers.GroupMapper;
 
 @Component
 public class GroupDAOImpl implements GroupDAO {
-
-    @Autowired
-    private Environment env;
-
+    private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public GroupDAOImpl(JdbcTemplate jdbcTemplate) {
+    public GroupDAOImpl(JdbcTemplate jdbcTemplate, Environment env) {
         this.jdbcTemplate = jdbcTemplate;
+        this.env = env;
     }
 
     @Override
@@ -39,7 +38,7 @@ public class GroupDAOImpl implements GroupDAO {
     }
 
     @Override
-    public void delete(Integer id) throws DAOException {
+    public void delete(Integer id) {
         jdbcTemplate.update(env.getProperty("sql.groups.delete"), id);
     }
 
@@ -50,6 +49,10 @@ public class GroupDAOImpl implements GroupDAO {
 
     @Override
     public void create(Group group) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.groups.create"), group.getName());
+        try {
+            jdbcTemplate.update(env.getProperty("sql.groups.create"), group.getName());
+        } catch (DuplicateKeyException e) {
+            throw new DAOException("Group " + group.getName() + " already exists.", e);
+        }
     }
 }

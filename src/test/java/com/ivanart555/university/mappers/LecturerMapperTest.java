@@ -16,10 +16,13 @@ import com.ivanart555.university.entities.Lecturer;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class LecturerMapperTest {
-
-    @Autowired
     private LecturerMapper lecturerMapper;
 
+    @Autowired
+    private LecturerMapperTest(LecturerMapper lecturerMapper){
+        this.lecturerMapper = lecturerMapper;
+    }
+    
     @Test
     void shouldReturnLecturer_WhenCalledMapRow() throws SQLException {
         Lecturer expectedLecturer = new Lecturer(1, "Alex", "Smith");

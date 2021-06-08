@@ -16,10 +16,13 @@ import com.ivanart555.university.entities.Student;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class StudentMapperTest {
-
-    @Autowired
     private StudentMapper studentMapper;
 
+    @Autowired
+    private StudentMapperTest(StudentMapper studentMapper){
+        this.studentMapper = studentMapper;
+    }
+    
     @Test
     void shouldReturnStudent_WhenCalledMapRow() throws SQLException {
         Student expectedStudent = new Student(1, "Peter", "Jackson", 4);

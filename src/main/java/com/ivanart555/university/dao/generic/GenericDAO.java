@@ -7,11 +7,11 @@ import com.ivanart555.university.exception.DAOException;
 
 public interface GenericDAO<T, K extends Serializable> {
 
-    List<T> getAll() throws DAOException;
+    List<T> getAll();
 
-    T getById(K id) throws DAOException;
+    T getById(K id);
 
-    void delete(K id) throws DAOException;
+    void delete(K id);
 
     void update(T t) throws DAOException;
 

@@ -28,28 +28,31 @@ import com.ivanart555.university.exception.DAOException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class StudentDAOImplTest {
-
-    @Autowired
     private Environment env;
-
-    @Autowired
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
     private StudentDAO studentDAO;
 
     private static ResourceDatabasePopulator sqlScript;
 
     private static final String CREATE_TABLES_SQL_SCRIPT = "scripts/create/tables.sql";
+    private static final String CREATE_TEST_DATA_SQL_SCRIPT = "scripts/create/testData.sql";
     private static final String WIPE_TABLES_SQL_SCRIPT = "scripts/wipe/tables.sql";
     private static final String STUDENT_ID = "student_id";
     private static final String STUDENT_FIRSTNAME = "student_name";
     private static final String STUDENT_LASTNAME = "student_lastname";
     private static final String GROUP_ID = "group_id";
+    private static final String ACTIVE = "active";
     private static final String CONNECTION_ERROR = "Could not connect to database or SQL query error.";
 
+    @Autowired
+    private StudentDAOImplTest(StudentDAO studentDAO, Environment env, JdbcTemplate jdbcTemplate) {
+        this.studentDAO = studentDAO;
+        this.env = env;
+        this.jdbcTemplate = jdbcTemplate;
+    }
+    
     @BeforeEach
-    public void createTables() {
+    void createTables() {
         sqlScript = new ResourceDatabasePopulator();
         sqlScript.addScript(new ClassPathResource(CREATE_TABLES_SQL_SCRIPT));
         DatabasePopulatorUtils.execute(sqlScript, jdbcTemplate.getDataSource());
@@ -62,9 +65,15 @@ class StudentDAOImplTest {
         DatabasePopulatorUtils.execute(sqlScript, jdbcTemplate.getDataSource());
     }
 
+    void createTestData() {
+        sqlScript = new ResourceDatabasePopulator();
+        sqlScript.addScript(new ClassPathResource(CREATE_TEST_DATA_SQL_SCRIPT));
+        DatabasePopulatorUtils.execute(sqlScript, jdbcTemplate.getDataSource());
+    }    
+    
     @Test
     void shouldAddStudentToDatabase_whenCalledCreate() throws DAOException {
-        Student expectedStudent = new Student(1, "Peter", "Jackson", 4);
+        Student expectedStudent = new Student("Peter", "Jackson");
         studentDAO.create(expectedStudent);
 
         String sql = env.getProperty("sql.students.get.byId");
@@ -78,7 +87,8 @@ class StudentDAOImplTest {
                     String studentName = rs.getString(STUDENT_FIRSTNAME);
                     String studentLastname = rs.getString(STUDENT_LASTNAME);
                     Integer groupId = rs.getInt(GROUP_ID);
-                    actualStudent = new Student(id, studentName, studentLastname, groupId);
+                    Boolean active = rs.getBoolean(ACTIVE);
+                    actualStudent = new Student(id, studentName, studentLastname, groupId, active);
                 }
             }
         } catch (SQLException e) {
@@ -90,7 +100,7 @@ class StudentDAOImplTest {
 
     @Test
     void shouldReturnStudentFromDatabase_whenGivenId() throws DAOException {
-        Student expectedStudent = new Student(1, "Peter", "Jackson", 4);
+        Student expectedStudent = new Student("Peter", "Jackson");
         studentDAO.create(expectedStudent);
 
         Student actualStudent = studentDAO.getById(expectedStudent.getId());
@@ -100,14 +110,31 @@ class StudentDAOImplTest {
     @Test
     void shouldReturnAllStudentsFromDatabase_whenCalledGetAll() throws DAOException {
         List<Student> expectedStudents = new ArrayList<>();
-        expectedStudents.add(new Student(1, "Peter", "Jackson", 4));
-        expectedStudents.add(new Student(2, "Alex", "Smith", 2));
-        expectedStudents.add(new Student(3, "Ann", "White", 1));
+        expectedStudents.add(new Student("Peter", "Jackson"));
+        expectedStudents.add(new Student("Alex", "Smith"));
+        expectedStudents.add(new Student("Ann", "White"));
 
         for (Student Student : expectedStudents) {
             studentDAO.create(Student);
         }
         assertEquals(expectedStudents, studentDAO.getAll());
+    }
+
+    @Test
+    void shouldReturnAllActiveStudentsFromDatabase_whenCalledGetAllActive() throws DAOException {
+        List<Student> expectedStudents = new ArrayList<>();
+        expectedStudents.add(new Student("Peter", "Jackson"));
+        expectedStudents.add(new Student("Alex", "Smith"));
+
+        Student notActiveStudent = new Student("Ann", "White");
+        notActiveStudent.setActive(false);
+
+        for (Student Student : expectedStudents) {
+            studentDAO.create(Student);
+        }
+        studentDAO.create(notActiveStudent);
+
+        assertEquals(expectedStudents, studentDAO.getAllActive());
     }
 
     @Test
@@ -132,5 +159,53 @@ class StudentDAOImplTest {
 
         studentDAO.delete(student.getId());
         assertNull(studentDAO.getById(student.getId()));
+    }
+
+    @Test
+    void shouldAddStudentIdAndCourseIdToStudentsCoursesTable_whenGivenStudentIdAndCourseId() throws DAOException {
+        createTestData();
+        int expectedStudentId = 1;
+        int expectedCourseId = 2;
+        int actualStudentId = 0;
+        int actualCourseId = 0;
+
+        studentDAO.addStudentToCourse(expectedStudentId, expectedCourseId);
+
+        String sql = "SELECT * FROM university.students_courses WHERE student_id =? AND course_id = ?";
+        try (Connection con = jdbcTemplate.getDataSource().getConnection();
+                PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, expectedStudentId);
+            ps.setInt(2, expectedCourseId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    actualStudentId = rs.getInt("student_id");
+                    actualCourseId = rs.getInt("course_id");
+                }
+            }
+        } catch (SQLException e) {
+            throw new DAOException(CONNECTION_ERROR, e);
+        }
+
+        assertEquals(expectedStudentId, actualStudentId);
+        assertEquals(expectedCourseId, actualCourseId);
+    }
+    
+    @Test
+    void shouldReturnStudentsFromDatabase_whenGivenGroupId() throws DAOException {
+        List<Student> expectedStudents = new ArrayList<>();
+        expectedStudents.add(new Student(1, "Peter", "Jackson", 1));
+        expectedStudents.add(new Student(2, "Alex", "Smith", 1));
+        expectedStudents.add(new Student(3, "Ann", "White", 2));
+        
+        for (Student Student : expectedStudents) {
+            studentDAO.create(Student);
+        }
+        for (Student Student : expectedStudents) {
+            studentDAO.update(Student);
+        }
+        expectedStudents.remove(2); 
+         
+        List<Student> actualStudents = studentDAO.getStudentsByGroupId(1);
+        assertEquals(expectedStudents, actualStudents);
     }
 }

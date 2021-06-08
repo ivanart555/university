@@ -14,15 +14,13 @@ import com.ivanart555.university.mappers.ClassroomMapper;
 
 @Component
 public class ClassroomDAOImpl implements ClassroomDAO {
-
-    @Autowired
-    private Environment env;
-
+    private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public ClassroomDAOImpl(JdbcTemplate jdbcTemplate) {
+    public ClassroomDAOImpl(JdbcTemplate jdbcTemplate, Environment env) {
         this.jdbcTemplate = jdbcTemplate;
+        this.env = env;
     }
 
     @Override
@@ -39,7 +37,7 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     }
 
     @Override
-    public void delete(Integer id) throws DAOException {
+    public void delete(Integer id) {
         jdbcTemplate.update(env.getProperty("sql.classrooms.delete"), id);
     }
 
