@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.DAOException;
+
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.ClassroomService;
 
@@ -31,10 +32,13 @@ public class ClassroomServiceImpl implements ClassroomService {
 
     @Override
     public Classroom getById(Integer id) throws ServiceException {
-        Classroom classroom = classroomDAO.getById(id);
-        if (classroom == null) {
-            throw new ServiceException("There is no Classroom with such id:" + id);
+        Classroom classroom;
+        try {
+            classroom = classroomDAO.getById(id);
+        } catch (DAOException e) {
+            throw new ServiceException("Unable to get Classroom from database.", e);
         }
+
         return classroom;
     }
 
