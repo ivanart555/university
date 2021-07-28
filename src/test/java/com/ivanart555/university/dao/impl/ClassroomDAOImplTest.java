@@ -1,7 +1,7 @@
 package com.ivanart555.university.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +25,7 @@ import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.EntityNotFoundException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class ClassroomDAOImplTest {
@@ -46,7 +47,7 @@ class ClassroomDAOImplTest {
         this.env = env;
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @BeforeEach
     public void createTables() {
         sqlScript = new ResourceDatabasePopulator();
@@ -126,6 +127,7 @@ class ClassroomDAOImplTest {
         classroomDAO.create(classroom);
 
         classroomDAO.delete(classroom.getId());
-        assertNull(classroomDAO.getById(classroom.getId()));
+
+        assertThrows(EntityNotFoundException.class, () -> classroomDAO.getById(classroom.getId()));
     }
 }

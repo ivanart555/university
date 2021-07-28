@@ -34,12 +34,13 @@ public class ClassroomDAOImpl implements ClassroomDAO {
 
     @Override
     public List<Classroom> getAll() {
+        LOGGER.debug("Trying to get all Classrooms.");
         return jdbcTemplate.query(env.getProperty("sql.classrooms.get.all"), new ClassroomMapper());
     }
 
     @Override
     public Classroom getById(Integer id) throws DAOException {
-        LOGGER.debug("getById() [{}]", id);
+        LOGGER.debug("Trying to get Classroom by id: {}", id);
         Classroom classroom = new Classroom();
         try {
             classroom = jdbcTemplate.queryForObject(env.getProperty("sql.classrooms.get.byId"), new Object[] { id },
@@ -51,23 +52,36 @@ public class ClassroomDAOImpl implements ClassroomDAO {
             String msg = format("Unable to get Classroom with ID '%s'", id);
             throw new QueryNotExecuteException(msg);
         }
-        LOGGER.trace("Found '{}'", classroom);
-        return classroom;
+        LOGGER.debug("Found:'{}'", classroom);
 
+        return classroom;
     }
 
     @Override
     public void delete(Integer id) {
+        LOGGER.debug("Trying to delete Classroom by id: {}", id);
         jdbcTemplate.update(env.getProperty("sql.classrooms.delete"), id);
     }
 
     @Override
     public void update(Classroom classRoom) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.classrooms.update"), classRoom.getName(), classRoom.getId());
+        LOGGER.debug("Trying to update {}", classRoom);
+        try {
+            jdbcTemplate.update(env.getProperty("sql.classrooms.update"), classRoom.getName(), classRoom.getId());
+        } catch (DataAccessException e) {
+            String msg = format("Unable to update '%s'", classRoom);
+            throw new QueryNotExecuteException(msg);
+        }
     }
 
     @Override
     public void create(Classroom classRoom) throws DAOException {
-        jdbcTemplate.update(env.getProperty("sql.classrooms.create"), classRoom.getName());
+        LOGGER.debug("Trying to create {}", classRoom);
+        try {
+            jdbcTemplate.update(env.getProperty("sql.classrooms.create"), classRoom.getName());
+        } catch (DataAccessException e) {
+            String msg = format("Unable to create '%s'", classRoom);
+            throw new QueryNotExecuteException(msg);
+        }
     }
 }
