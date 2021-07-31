@@ -47,6 +47,7 @@ public class ClassroomServiceImpl implements ClassroomService {
             LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
             LOGGER.error("Something got wrong with DAO.");
+            throw new ServiceException("Unable to get Classroom by id.", e);
         }
         LOGGER.info("Classroom with id {} received successfully.", id);
 
