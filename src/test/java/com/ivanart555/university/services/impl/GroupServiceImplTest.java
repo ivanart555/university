@@ -39,7 +39,7 @@ class GroupServiceImplTest {
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException {
+    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
         when(groupDAO.getById(anyInt())).thenReturn(group);
 
         groupServiceImpl.getById(anyInt());

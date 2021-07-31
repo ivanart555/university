@@ -1,7 +1,7 @@
 package com.ivanart555.university.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +25,7 @@ import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.EntityNotFoundException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class GroupDAOImplTest {
@@ -126,6 +127,7 @@ class GroupDAOImplTest {
         groupDAO.create(group);
 
         groupDAO.delete(group.getId());
-        assertNull(groupDAO.getById(group.getId()));
+        
+        assertThrows(EntityNotFoundException.class, () -> groupDAO.getById(group.getId()));
     }
 }
