@@ -48,7 +48,7 @@ class CourseDAOImplTest {
         this.env = env;
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @BeforeEach
     public void createTables() {
         sqlScript = new ResourceDatabasePopulator();
@@ -130,7 +130,7 @@ class CourseDAOImplTest {
         courseDAO.create(сourse);
 
         courseDAO.delete(сourse.getId());
-        
+
         assertThrows(EntityNotFoundException.class, () -> courseDAO.getById(сourse.getId()));
     }
 }

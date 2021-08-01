@@ -1,7 +1,7 @@
 package com.ivanart555.university.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +25,7 @@ import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.LecturerDAO;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.EntityNotFoundException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class LecturerDAOImplTest {
@@ -48,7 +49,7 @@ class LecturerDAOImplTest {
         this.env = env;
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @BeforeEach
     public void createTables() {
         sqlScript = new ResourceDatabasePopulator();
@@ -68,7 +69,7 @@ class LecturerDAOImplTest {
         sqlScript.addScript(new ClassPathResource(CREATE_TEST_DATA_SQL_SCRIPT));
         DatabasePopulatorUtils.execute(sqlScript, jdbcTemplate.getDataSource());
     }
-    
+
     @Test
     void shouldAddLecturerToDatabase_whenCalledCreate() throws DAOException {
         Lecturer expectedLecturer = new Lecturer(1, "Alex", "Smith");
@@ -123,7 +124,7 @@ class LecturerDAOImplTest {
 
         expectedLecturer.setFirstName("Linda");
         expectedLecturer.setFirstName("Flax");
-        
+
         lecturerDAO.update(expectedLecturer);
 
         Lecturer actualLecturer = lecturerDAO.getById(expectedLecturer.getId());
@@ -136,9 +137,10 @@ class LecturerDAOImplTest {
         lecturerDAO.create(lecturer);
 
         lecturerDAO.delete(lecturer.getId());
-        assertNull(lecturerDAO.getById(lecturer.getId()));
+
+        assertThrows(EntityNotFoundException.class, () -> lecturerDAO.getById(lecturer.getId()));
     }
-    
+
     @Test
     void shouldAddLecturerIdAndCourseIdToLecturersCoursesTable_whenGivenLecturerIdAndCourseId() throws DAOException {
         createTestData();
@@ -167,7 +169,7 @@ class LecturerDAOImplTest {
         assertEquals(expectedLecturerId, actualLecturerId);
         assertEquals(expectedCourseId, actualCourseId);
     }
-    
+
     @Test
     void shouldAddLecturerIdAndGroupIdToLecturersGroupsTable_whenGivenLecturerIdAndGroupId() throws DAOException {
         createTestData();

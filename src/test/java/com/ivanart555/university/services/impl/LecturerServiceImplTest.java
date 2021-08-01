@@ -70,7 +70,7 @@ class LecturerServiceImplTest {
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException {
+    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
         when(lecturerDAO.getById(anyInt())).thenReturn(lecturer);
 
         lecturerServiceImpl.getById(anyInt());
