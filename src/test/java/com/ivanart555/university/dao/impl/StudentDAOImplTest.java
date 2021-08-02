@@ -1,7 +1,7 @@
 package com.ivanart555.university.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +25,7 @@ import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.StudentDAO;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.EntityNotFoundException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class StudentDAOImplTest {
@@ -50,7 +51,7 @@ class StudentDAOImplTest {
         this.env = env;
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @BeforeEach
     void createTables() {
         sqlScript = new ResourceDatabasePopulator();
@@ -69,8 +70,8 @@ class StudentDAOImplTest {
         sqlScript = new ResourceDatabasePopulator();
         sqlScript.addScript(new ClassPathResource(CREATE_TEST_DATA_SQL_SCRIPT));
         DatabasePopulatorUtils.execute(sqlScript, jdbcTemplate.getDataSource());
-    }    
-    
+    }
+
     @Test
     void shouldAddStudentToDatabase_whenCalledCreate() throws DAOException {
         Student expectedStudent = new Student("Peter", "Jackson");
@@ -158,7 +159,7 @@ class StudentDAOImplTest {
         studentDAO.create(student);
 
         studentDAO.delete(student.getId());
-        assertNull(studentDAO.getById(student.getId()));
+        assertThrows(EntityNotFoundException.class, () -> studentDAO.getById(student.getId()));
     }
 
     @Test
@@ -189,22 +190,22 @@ class StudentDAOImplTest {
         assertEquals(expectedStudentId, actualStudentId);
         assertEquals(expectedCourseId, actualCourseId);
     }
-    
+
     @Test
     void shouldReturnStudentsFromDatabase_whenGivenGroupId() throws DAOException {
         List<Student> expectedStudents = new ArrayList<>();
         expectedStudents.add(new Student(1, "Peter", "Jackson", 1));
         expectedStudents.add(new Student(2, "Alex", "Smith", 1));
         expectedStudents.add(new Student(3, "Ann", "White", 2));
-        
+
         for (Student Student : expectedStudents) {
             studentDAO.create(Student);
         }
         for (Student Student : expectedStudents) {
             studentDAO.update(Student);
         }
-        expectedStudents.remove(2); 
-         
+        expectedStudents.remove(2);
+
         List<Student> actualStudents = studentDAO.getStudentsByGroupId(1);
         assertEquals(expectedStudents, actualStudents);
     }

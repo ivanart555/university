@@ -48,7 +48,7 @@ public class LessonServiceImpl implements LessonService {
         if (lessons.isEmpty()) {
             throw new ServiceException("There are no Lessons in database");
         }
-        LOGGER.info("All Lessons received successfully.");
+        LOGGER.info("All Lessons were received successfully.");
 
         return lessons;
     }
