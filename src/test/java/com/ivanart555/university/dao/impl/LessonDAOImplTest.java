@@ -1,7 +1,7 @@
 package com.ivanart555.university.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,6 +26,7 @@ import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.EntityNotFoundException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class LessonDAOImplTest {
@@ -146,7 +147,7 @@ class LessonDAOImplTest {
         lessonDAO.create(lesson);
 
         lessonDAO.delete(lesson.getId());
-        assertNull(lessonDAO.getById(lesson.getId()));
+        assertThrows(EntityNotFoundException.class, () -> lessonDAO.getById(lesson.getId()));
     }
 
     @Test

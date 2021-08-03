@@ -1,7 +1,7 @@
 package com.ivanart555.university.dao.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -25,6 +25,7 @@ import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.EntityNotFoundException;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 class CourseDAOImplTest {
@@ -47,7 +48,7 @@ class CourseDAOImplTest {
         this.env = env;
         this.jdbcTemplate = jdbcTemplate;
     }
-    
+
     @BeforeEach
     public void createTables() {
         sqlScript = new ResourceDatabasePopulator();
@@ -125,10 +126,11 @@ class CourseDAOImplTest {
 
     @Test
     void shouldDeleteCourseFromDatabase_whenGivenId() throws DAOException {
-        Course Course = new Course(1, "english", "English languadge learning.");
-        courseDAO.create(Course);
+        Course сourse = new Course(1, "english", "English languadge learning.");
+        courseDAO.create(сourse);
 
-        courseDAO.delete(Course.getId());
-        assertNull(courseDAO.getById(Course.getId()));
+        courseDAO.delete(сourse.getId());
+
+        assertThrows(EntityNotFoundException.class, () -> courseDAO.getById(сourse.getId()));
     }
 }

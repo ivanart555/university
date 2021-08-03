@@ -41,7 +41,7 @@ class ClassroomServiceImplTest {
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException {
+    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
         when(classroomDAO.getById(anyInt())).thenReturn(classroom);
 
         classroomServiceImpl.getById(anyInt());

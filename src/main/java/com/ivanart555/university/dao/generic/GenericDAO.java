@@ -9,7 +9,7 @@ public interface GenericDAO<T, K extends Serializable> {
 
     List<T> getAll();
 
-    T getById(K id);
+    T getById(K id) throws DAOException;
 
     void delete(K id);
 
