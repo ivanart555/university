@@ -4,13 +4,17 @@
 <meta charset="UTF-8">
 <title>All Classrooms</title>
 </head>
+<h1>Classrooms</h1>
 <body>
-
-<div th:each="classroom ${classrooms}">
-    <a th:text="${classroom.id}" >id</a>
-    <a th:text="${classroom.name}" >name</a>
-</div>
-	<br />
-	<hr />
+	<table>
+		<tr>
+			<th>Id</th>
+			<th>Number</th>
+		</tr>
+		<tr th:each="classroom, classStat : ${classrooms}">
+			<td th:text="${classroom.getId()}">id</td>
+			<td th:text="${classroom.getName()}">name</td>
+		</tr>
+	</table>
 </body>
 </html>
