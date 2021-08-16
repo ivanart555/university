@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>All Classrooms</title>
+</head>
+<body>
+
+<div th:each="classroom ${classrooms}">
+    <a th:text="${classroom.id}" >id</a>
+    <a th:text="${classroom.name}" >name</a>
+</div>
+	<br />
+	<hr />
+</body>
+</html>
