@@ -1,20 +1,95 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-<meta charset="UTF-8">
-<title>All Classrooms</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+	crossorigin="anonymous">
+
 </head>
-<h1>Classrooms</h1>
+
 <body>
-	<table>
-		<tr>
-			<th>Id</th>
-			<th>Number</th>
-		</tr>
-		<tr th:each="classroom, classStat : ${classrooms}">
-			<td th:text="${classroom.getId()}">id</td>
-			<td th:text="${classroom.getName()}">name</td>
-		</tr>
-	</table>
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<a class="navbar-brand" th:href="@{/home}">University</a>
+
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/students}">Students</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/groups}">Groups</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/lecturers}">Lecturers</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/courses}">Courses</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/classrooms}">Classrooms</a></li>
+			</ul>
+
+
+		</div>
+	</nav>
+
+
+	<div class="container my-2">
+		<h1>Classrooms</h1>
+
+		<table border="1" class="table table-striped table-responsive-md">
+			<thead>
+				<tr>
+					<th>Id</th>
+					<th>Number</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each="classroom : ${classrooms}">
+					<td th:text="${classroom.id}">id</td>
+					<td th:text="${classroom.name}">name</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<nav aria-label="Page navigation" class="paging">
+			<ul class="pagination justify-content-center"
+				th:if="${totalPages > 1}">
+				<li class="page-item"
+					th:classappend="${!classroomPage.hasPrevious()? 'disabled' : ''}">
+					<a class="page-link"
+					th:href="@{/classrooms(size=${classroomPage.size}, page=${currentPage - 1})}"
+					tabindex="-1">Previous</a>
+				</li>
+
+				<th:block th:each="number : ${pageNumbers}">
+					<li class="page-item"
+						th:classappend="${number == currentPage? 'active' : ''}"><a
+						class="page-link"
+						th:href="@{/classrooms(size=${classroomPage.size}, page=${number})}"
+						th:text="${number}"></a></li>
+
+
+				</th:block>
+
+				<li class="page-item"
+					th:classappend="${!classroomPage.hasNext()? 'disabled' : ''}"><a
+					class="page-link"
+					th:href="@{/classrooms(size=${classroomPage.size}, page=${currentPage + 1})}">Next</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
 </body>
 </html>
