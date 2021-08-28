@@ -53,7 +53,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr th:each="course : ${courses}">
+				<tr th:each="course : ${coursePage.content}">
 					<td th:text="${course.id}">id</td>
 					<td th:text="${course.name}">name</td>
 				</tr>
