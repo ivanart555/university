@@ -2,11 +2,16 @@ package com.ivanart555.university.services.impl;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.ClassroomDAO;
@@ -236,5 +241,26 @@ public class LessonServiceImpl implements LessonService {
         }
 
         return lessons.isEmpty();
+    }
+
+    @Override
+    public Page<Lesson> findPaginated(Pageable pageable) throws ServiceException {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Lesson> allLessons = getAll();
+        int lessonsSize = allLessons.size();
+
+        List<Lesson> list;
+
+        if (lessonsSize < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, lessonsSize);
+            list = allLessons.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), lessonsSize);
     }
 }
