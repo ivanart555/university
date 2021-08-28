@@ -3,6 +3,9 @@ package com.ivanart555.university.services;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.ServiceException;
@@ -18,4 +21,6 @@ public interface StudentService extends GenericService<Student, Integer> {
 
     List<Lesson> getDaySchedule(Student student, LocalDate day) throws ServiceException;
 
+    Page<Student> findPaginated(Pageable pageable) throws ServiceException;
+    
 }
