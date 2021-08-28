@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
 import com.ivanart555.university.exception.QueryNotExecuteException;

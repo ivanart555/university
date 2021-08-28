@@ -1,10 +1,15 @@
 package com.ivanart555.university.services.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.CourseDAO;
@@ -80,5 +85,26 @@ public class CourseServiceImpl implements CourseService {
             throw new ServiceException("Unable to create Course.", e);
         }
         LOGGER.info("Course with id {} created successfully.", course.getId());
+    }
+
+    @Override
+    public Page<Course> findPaginated(Pageable pageable) throws ServiceException {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Course> allCourses = getAll();
+        int coursesSize = allCourses.size();
+
+        List<Course> list;
+
+        if (coursesSize < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, coursesSize);
+            list = allCourses.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), coursesSize);
     }
 }
