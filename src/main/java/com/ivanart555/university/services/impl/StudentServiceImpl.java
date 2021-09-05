@@ -234,7 +234,7 @@ public class StudentServiceImpl implements StudentService {
         } else {
             int toIndex = Math.min(startItem + pageSize, studentsSize);
             list = allStudents.subList(startItem, toIndex);
-        }
+        }   
 
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), studentsSize);
     }
