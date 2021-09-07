@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.exception.ServiceException;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceImplTest {

@@ -24,7 +24,7 @@ class LessonMapperTest {
     private LessonMapperTest(LessonMapper lessonMapper){
         this.lessonMapper = lessonMapper;
     }
-    
+
     @Test
     void shouldReturnLesson_WhenCalledMapRow() throws SQLException {
         LocalDateTime lessonStart = LocalDateTime.now();

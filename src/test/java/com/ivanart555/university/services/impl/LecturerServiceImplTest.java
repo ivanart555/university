@@ -45,10 +45,10 @@ class LecturerServiceImplTest {
     private Group group;
     @Mock
     private Course course;
-    
+
     @InjectMocks
     private LecturerServiceImpl lecturerServiceImpl;
-  
+
     @Test
     void shouldInvokeGetAllMethod_whenCalledGetAll() throws ServiceException {
         List<Lecturer> lecturers = new ArrayList<>();
@@ -94,7 +94,7 @@ class LecturerServiceImplTest {
         lecturerServiceImpl.create(lecturer);
         verify(lecturerDAO).create(lecturer);
     }
-    
+
     @Test
     void shouldInvokeGetByIdAndAddLecturerToCourseMethods_whenCalledAddLecturerToCourse() throws ServiceException, DAOException {
         when(courseDAO.getById(anyInt())).thenReturn(course);
@@ -104,7 +104,7 @@ class LecturerServiceImplTest {
         verify(courseDAO).getById(anyInt());
         verify(lecturerDAO).addLecturerToCourse(anyInt(), anyInt());
     }
-    
+
     @Test
     void shouldInvokeGetByIdAndAddLecturerToGroupMethods_whenCalledAddLecturerToGroup() throws ServiceException, DAOException {
         when(groupDAO.getById(anyInt())).thenReturn(group);
@@ -114,12 +114,12 @@ class LecturerServiceImplTest {
         verify(groupDAO).getById(anyInt());
         verify(lecturerDAO).addLecturerToGroup(anyInt(), anyInt());
     }
-    
+
     @Test
     void shouldInvokeGetByDateTimeIntervalAndLecturerIdMethod_whenCalledGetDaySchedule()
             throws ServiceException, DAOException {
         lecturerServiceImpl.getDaySchedule(lecturer, LocalDate.now());
         verify(lessonDAO).getByDateTimeIntervalAndLecturerId(anyInt(), any(LocalDateTime.class),
                 any(LocalDateTime.class));
-    }    
+    }
 }
