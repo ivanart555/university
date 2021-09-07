@@ -20,27 +20,27 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.ivanart555.university.config.TestContext;
-import com.ivanart555.university.entities.Student;
-import com.ivanart555.university.services.StudentService;
+import com.ivanart555.university.entities.Classroom;
+import com.ivanart555.university.services.ClassroomService;
 
 @SpringJUnitWebConfig(TestContext.class)
 @ExtendWith(MockitoExtension.class)
-class StudentsControllerTest {
+class ClasroomsControllerTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private StudentService studentService;
+    private ClassroomService classroomService;
 
     @Mock
-    Page<Student> anyPage;
+    Page<Classroom> anyPage;
 
     @InjectMocks
-    private StudentsController studentsController;
+    private ClassroomsController classroomsController;
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(studentsController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(classroomsController).build();
     }
 
     @Test
@@ -50,13 +50,12 @@ class StudentsControllerTest {
 
     @Test
     void studentsControllerTest() throws Exception {
-        when(studentService.findPaginated(any())).thenReturn(anyPage);
-
-        mockMvc.perform(get("/students"))
+        when(classroomService.findPaginated(any())).thenReturn(anyPage);
+        mockMvc.perform(get("/classrooms"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("studentPage"))
+                .andExpect(model().attributeExists("classroomPage"))
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
-                .andExpect(view().name("students/index"));
+                .andExpect(view().name("classrooms/index"));
     }
 }
