@@ -2,12 +2,17 @@ package com.ivanart555.university.services.impl;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.CourseDAO;
@@ -211,5 +216,26 @@ public class StudentServiceImpl implements StudentService {
             throw new ServiceException(
                     "Failed to assign student to group. Group max size(" + groupMaxSize + ") exceeded.");
         }
+    }
+
+    @Override
+    public Page<Student> findPaginated(Pageable pageable) throws ServiceException {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Student> allStudents = getAll();
+        int studentsSize = allStudents.size();
+
+        List<Student> list;
+
+        if (studentsSize < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, studentsSize);
+            list = allStudents.subList(startItem, toIndex);
+        }   
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), studentsSize);
     }
 }

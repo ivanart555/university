@@ -6,6 +6,7 @@
 *.nar
 hs_err_pid*
 *.mdj
+*.log
 
 .settings/
 bin/

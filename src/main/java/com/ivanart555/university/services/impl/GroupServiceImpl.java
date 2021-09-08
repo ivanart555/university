@@ -1,10 +1,15 @@
 package com.ivanart555.university.services.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.GroupDAO;
@@ -80,5 +85,26 @@ public class GroupServiceImpl implements GroupService {
             throw new ServiceException("Unable to create Group", e);
         }
         LOGGER.info("Group with id {} created successfully.", group.getId());
+    }
+
+    @Override
+    public Page<Group> findPaginated(Pageable pageable) throws ServiceException {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Group> allGroups = getAll();
+        int groupsSize = allGroups.size();
+
+        List<Group> list;
+
+        if (groupsSize < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, groupsSize);
+            list = allGroups.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), groupsSize);
     }
 }

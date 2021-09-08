@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.exception.DAOException;

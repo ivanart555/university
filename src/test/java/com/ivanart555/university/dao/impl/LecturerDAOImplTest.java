@@ -19,7 +19,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.init.DatabasePopulatorUtils;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
-import org.springframework.test.context.junit.jupiter.*;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dao.LecturerDAO;

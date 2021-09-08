@@ -22,7 +22,7 @@ class CourseMapperTest {
     private CourseMapperTest(CourseMapper courseMapper){
         this.courseMapper = courseMapper;
     }
-    
+
     @Test
     void shouldReturnCourse_WhenCalledMapRow() throws SQLException {
         Course expectedCourse = new Course(1, "english", "English languadge learning.");

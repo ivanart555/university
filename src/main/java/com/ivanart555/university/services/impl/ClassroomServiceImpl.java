@@ -1,10 +1,15 @@
 package com.ivanart555.university.services.impl;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.ClassroomDAO;
@@ -80,5 +85,26 @@ public class ClassroomServiceImpl implements ClassroomService {
             throw new ServiceException("Unable to create Classroom.", e);
         }
         LOGGER.info("Classroom with id {} created successfully.", classroom.getId());
+    }
+
+    @Override
+    public Page<Classroom> findPaginated(Pageable pageable) throws ServiceException {
+        int pageSize = pageable.getPageSize();
+        int currentPage = pageable.getPageNumber();
+        int startItem = currentPage * pageSize;
+
+        List<Classroom> allClassrooms = getAll();
+        int classroomsSize = allClassrooms.size();
+
+        List<Classroom> list;
+
+        if (classroomsSize < startItem) {
+            list = Collections.emptyList();
+        } else {
+            int toIndex = Math.min(startItem + pageSize, classroomsSize);
+            list = allClassrooms.subList(startItem, toIndex);
+        }
+
+        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), classroomsSize);
     }
 }
