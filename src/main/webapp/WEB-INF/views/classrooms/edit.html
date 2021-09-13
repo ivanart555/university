@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Edit Classroom</title>
+</head>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+	crossorigin="anonymous">
+<body class="h-100">
+
+
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<a class="navbar-brand" th:href="@{/home}">University</a>
+
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/students}">Students</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/groups}">Groups</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/lecturers}">Lecturers</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/courses}">Courses</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/classrooms}">Classrooms</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/lessons}">Schedule</a></li>
+			</ul>
+
+		</div>
+	</nav>
+
+	<div class="container h-100">
+		<div class="row h-100 justify-content-center align-items-center">
+			<div class="col-10 col-md-8 col-lg-6">
+
+				<form th:method="PATCH"
+					th:action="@{/classrooms/{id}(id=${classroom.getId()})}"
+					th:object="${classroom}">
+					
+					<h1>Edit Classroom:</h1>
+
+					<div class="form-group">
+						<div class="d-grid gap-3">
+						 <label for="name">Number:</label>
+							<input type="text" class="form-control name" id="name"
+								th:field="*{name}">
+							<button type="submit" class="btn btn-primary btn-customized">Submit</button>
+						</div>
+					</div>
+				</form>
+
+			</div>
+		</div>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+		crossorigin="anonymous"></script>
+</body>
+</html>

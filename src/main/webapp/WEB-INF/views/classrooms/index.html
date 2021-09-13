@@ -9,9 +9,6 @@
 	rel="stylesheet"
 	integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
 	crossorigin="anonymous">
-
-</head>
-
 <body>
 
 	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -41,10 +38,8 @@
 				<li class="nav-item"><a class="nav-link" th:href="@{/lessons}">Schedule</a></li>
 			</ul>
 
-
 		</div>
 	</nav>
-
 
 	<div class="container my-2">
 		<h1>Classrooms</h1>
@@ -54,12 +49,23 @@
 				<tr>
 					<th>Id</th>
 					<th>Number</th>
+					<th>
+						<div align="right">
+							<a class="btn btn-success" href="/classrooms/new" role="button">Add</a>
+						</div>Actions
+					</th>
 				</tr>
 			</thead>
+
 			<tbody>
 				<tr th:each="classroom : ${classroomPage.content}">
 					<td th:text="${classroom.id}">id</td>
 					<td th:text="${classroom.name}">name</td>
+					<td><a class="btn btn-outline-secondary"
+						th:href="@{/classrooms/{id}/edit(id=${classroom.id})}"
+						role="button">Edit</a> <a class="btn btn-outline-danger"
+						th:href="@{/classrooms/{id}/delete(id=${classroom.id})}"
+						role="button"> Delete</a></td>
 				</tr>
 			</tbody>
 		</table>
@@ -80,8 +86,6 @@
 						class="page-link"
 						th:href="@{/classrooms(size=${classroomPage.size}, page=${number})}"
 						th:text="${number}"></a></li>
-
-
 				</th:block>
 
 				<li class="page-item"
@@ -93,5 +97,9 @@
 		</nav>
 	</div>
 
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+		crossorigin="anonymous"></script>
 </body>
 </html>
