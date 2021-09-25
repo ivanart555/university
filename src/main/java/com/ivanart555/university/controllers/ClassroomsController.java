@@ -44,7 +44,6 @@ public class ClassroomsController {
         Page<Classroom> classroomPage = classroomService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
 
         model.addAttribute("classroomPage", classroomPage);
-
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", classroomPage.getTotalPages());
 
