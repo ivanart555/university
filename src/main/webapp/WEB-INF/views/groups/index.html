@@ -54,15 +54,128 @@
 				<tr>
 					<th>Id</th>
 					<th>Number</th>
+					<th>
+						<div align="right">
+							<button type="button" class="btn btn-success"
+								data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
+						</div>Actions
+					</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr th:each="group : ${groupPage.content}">
 					<td th:text="${group.id}">id</td>
 					<td th:text="${group.name}">name</td>
+					<td>
+						<button type="button" class="btn btn-outline-secondary"
+							data-bs-toggle="modal"
+							th:attr="data-bs-target='#modalUpdate'+${group.id}">Edit
+						</button>
+
+						<button type="button" class="btn btn-outline-danger"
+							data-bs-toggle="modal"
+							th:attr="data-bs-target='#modalDelete'+${group.id}">Delete
+						</button>
+
+						<div class="modal fade text-body"
+							th:attr="id='modalUpdate'+${group.id}" tabindex="-1"
+							aria-labelledby="modalUpdate" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="updateModalLabel">Edit group</h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+										<form th:method="PATCH"
+											th:action="@{/groups/edit/{id}(id=${group.id})}"
+											th:object="${group}">
+											<div class="mb-3">
+												<label for="name" class="form-label">Number:</label> <input
+													type="text" class="form-control" id="name" name="name"
+													th:value="*{name}" />
+											</div>
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">Close</button>
+												<button type="submit" class="btn btn-success">Update
+													group</button>
+											</div>
+										</form>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div class="modal fade text-body"
+							th:attr="id='modalDelete'+${group.id}" tabindex="-1"
+							aria-labelledby="modalDelete" aria-hidden="true">
+							<div class="modal-dialog">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+										<button type="button" class="btn-close"
+											data-bs-dismiss="modal" aria-label="Close"></button>
+									</div>
+									<div class="modal-body">
+
+										<form class="form-horizontal"
+											th:action="@{/groups/delete/{id}(id=${group.id})}"
+											th:method="DELETE">
+											<input id="id" name="id" type="hidden" th:value="${group.id}" />
+											<div class="form-group">
+
+												<div class="text-nowrap bd-highlight">
+													<p
+														th:text="'Are you sure you want to delete group:' + ' ' + ${group.name} + ' ' + '?'"></p>
+												</div>
+
+											</div>
+
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary"
+													data-bs-dismiss="modal">Close</button>
+												<button type="submit" class="btn btn-danger">Delete
+													group</button>
+											</div>
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</td>
 				</tr>
 			</tbody>
 		</table>
+
+		<div class="modal fade" id="addModal" tabindex="-1"
+			aria-labelledby="addModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="addModalLabel">New group</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
+					</div>
+					<div class="modal-body">
+						<form th:method="POST" th:action="@{/groups}" th:object="${group}">
+							<div class="mb-3">
+								<label for="name" class="form-label">Number:</label> <input
+									type="text" th:field="*{name}" class="form-control" id="name">
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Close</button>
+								<button type="submit" class="btn btn-success">Submit</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
 
 		<nav aria-label="Page navigation" class="paging">
 			<ul class="pagination justify-content-center"
@@ -92,6 +205,11 @@
 			</ul>
 		</nav>
 	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+		crossorigin="anonymous"></script>
 
 </body>
 </html>
