@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -47,6 +48,8 @@ public class ClassroomsController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", classroomPage.getTotalPages());
 
+        model.addAttribute("classroom", new Classroom());
+
         int totalPages = classroomPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -58,32 +61,20 @@ public class ClassroomsController {
         return "classrooms/index";
     }
 
-    @GetMapping("/new")
-    public String newClassroom(@ModelAttribute("classroom") Classroom classroom) {
-        return "classrooms/new";
-    }
-
     @PostMapping()
     public String create(@ModelAttribute("classroom") Classroom classroom) throws ServiceException {
         classroomService.create(classroom);
         return REDIRECT_CLASSROOMS;
     }
-    
-    @GetMapping("/{id}/edit")
-    public String edit(Model model, @PathVariable("id") int id) throws ServiceException {
-        model.addAttribute("classroom", classroomService.getById(id));
-        return "classrooms/edit";
-    }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("classroom") Classroom classroom, @PathVariable("id") int id)
             throws ServiceException {
         classroomService.update(classroom);
         return REDIRECT_CLASSROOMS;
     }
 
-
-    @RequestMapping("/{id}/delete")
+    @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
         classroomService.delete(id);
         return REDIRECT_CLASSROOMS;
