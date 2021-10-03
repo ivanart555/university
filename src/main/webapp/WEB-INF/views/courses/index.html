@@ -21,24 +21,34 @@
 		<div class="collapse navbar-collapse" id="navbarColor02">
 
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/students}">Students</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/students}">Students</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/groups}">Groups</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/groups}">Groups</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/lecturers}">Lecturers</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/lecturers}">Lecturers</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/courses}">Courses</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/courses}">Courses</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/classrooms}">Classrooms</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/classrooms}">Classrooms</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/lessons}">Schedule</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/lessons}">Schedule</a>
+				</li>
 			</ul>
 
 
@@ -55,10 +65,13 @@
 					<th>Id</th>
 					<th>Name</th>
 					<th>Description</th>
-					<th><div align="right">
+					<th>
+						<div align="right">
 							<button type="button" class="btn btn-success"
 								data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
-						</div>Actions</th>
+						</div>
+						Actions
+					</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -92,12 +105,12 @@
 											th:action="@{/courses/edit/{id}(id=${course.id})}"
 											th:object="${course}">
 											<div class="mb-3">
-												<label for="name" class="form-label">Name:</label> <input
-													type="text" class="form-control" id="name" name="name"
-													th:value="*{name}" /> <label for="description"
-													class="form-label">Description:</label> <input type="text"
-													class="form-control" id="description" name="description"
-													th:value="*{description}" />
+												<label for="name" class="form-label">Name:</label>
+												<input type="text" class="form-control" id="name"
+													name="name" th:value="*{name}" />
+												<label for="description" class="form-label">Description:</label>
+												<input type="text" class="form-control" id="description"
+													name="description" th:value="*{description}" />
 											</div>
 
 											<div class="modal-footer">
@@ -170,8 +183,9 @@
 						<form th:method="POST" th:action="@{/courses}"
 							th:object="${course}">
 							<div class="mb-3">
-								<label for="name" class="form-label">Name:</label> <input
-									type="text" th:field="*{name}" class="form-control" id="name">
+								<label for="name" class="form-label">Name:</label>
+								<input type="text" th:field="*{name}" class="form-control"
+									id="name">
 								<label for="description" class="form-label">Description:</label>
 								<input type="text" class="form-control" id="description"
 									name="description" th:value="*{description}" />
@@ -195,23 +209,24 @@
 				<li class="page-item"
 					th:classappend="${!coursePage.hasPrevious()? 'disabled' : ''}">
 					<a class="page-link"
-					th:href="@{/courses(size=${coursePage.size}, page=${currentPage - 1})}"
-					tabindex="-1">Previous</a>
+						th:href="@{/courses(size=${coursePage.size}, page=${currentPage - 1})}"
+						tabindex="-1">Previous</a>
 				</li>
 
 				<th:block th:each="number : ${pageNumbers}">
 					<li class="page-item"
-						th:classappend="${number == currentPage? 'active' : ''}"><a
-						class="page-link"
-						th:href="@{/courses(size=${coursePage.size}, page=${number})}"
-						th:text="${number}"></a></li>
+						th:classappend="${number == currentPage? 'active' : ''}">
+						<a class="page-link"
+							th:href="@{/courses(size=${coursePage.size}, page=${number})}"
+							th:text="${number}"></a>
+					</li>
 
 				</th:block>
 
 				<li class="page-item"
-					th:classappend="${!coursePage.hasNext()? 'disabled' : ''}"><a
-					class="page-link"
-					th:href="@{/courses(size=${coursePage.size}, page=${currentPage + 1})}">Next</a>
+					th:classappend="${!coursePage.hasNext()? 'disabled' : ''}">
+					<a class="page-link"
+						th:href="@{/courses(size=${coursePage.size}, page=${currentPage + 1})}">Next</a>
 				</li>
 			</ul>
 		</nav>

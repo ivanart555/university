@@ -18,24 +18,34 @@
 		<div class="collapse navbar-collapse" id="navbarColor02">
 
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/students}">Students</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/students}">Students</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/groups}">Groups</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/groups}">Groups</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/lecturers}">Lecturers</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/lecturers}">Lecturers</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/courses}">Courses</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/courses}">Courses</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link"
-					th:href="@{/classrooms}">Classrooms</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/classrooms}">Classrooms</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item"><a class="nav-link" th:href="@{/lessons}">Schedule</a></li>
+				<li class="nav-item">
+					<a class="nav-link" th:href="@{/lessons}">Schedule</a>
+				</li>
 			</ul>
 
 		</div>
@@ -53,7 +63,8 @@
 						<div align="right">
 							<button type="button" class="btn btn-success"
 								data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
-						</div>Actions
+						</div>
+						Actions
 					</th>
 				</tr>
 			</thead>
@@ -89,9 +100,9 @@
 											th:action="@{/classrooms/edit/{id}(id=${classroom.id})}"
 											th:object="${classroom}">
 											<div class="mb-3">
-												<label for="name" class="form-label">Number:</label> <input
-													type="text" class="form-control" id="name" name="name"
-													th:value="*{name}" />
+												<label for="name" class="form-label">Number:</label>
+												<input type="text" class="form-control" id="name"
+													name="name" th:value="*{name}" />
 											</div>
 
 											<div class="modal-footer">
@@ -163,8 +174,9 @@
 						<form th:method="POST" th:action="@{/classrooms}"
 							th:object="${classroom}">
 							<div class="mb-3">
-								<label for="name" class="form-label">Number:</label> <input
-									type="text" th:field="*{name}" class="form-control" id="name">
+								<label for="name" class="form-label">Number:</label>
+								<input type="text" th:field="*{name}" class="form-control"
+									id="name">
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
@@ -183,22 +195,23 @@
 				<li class="page-item"
 					th:classappend="${!classroomPage.hasPrevious()? 'disabled' : ''}">
 					<a class="page-link"
-					th:href="@{/classrooms(size=${classroomPage.size}, page=${currentPage - 1})}"
-					tabindex="-1">Previous</a>
+						th:href="@{/classrooms(size=${classroomPage.size}, page=${currentPage - 1})}"
+						tabindex="-1">Previous</a>
 				</li>
 
 				<th:block th:each="number : ${pageNumbers}">
 					<li class="page-item"
-						th:classappend="${number == currentPage? 'active' : ''}"><a
-						class="page-link"
-						th:href="@{/classrooms(size=${classroomPage.size}, page=${number})}"
-						th:text="${number}"></a></li>
+						th:classappend="${number == currentPage? 'active' : ''}">
+						<a class="page-link"
+							th:href="@{/classrooms(size=${classroomPage.size}, page=${number})}"
+							th:text="${number}"></a>
+					</li>
 				</th:block>
 
 				<li class="page-item"
-					th:classappend="${!classroomPage.hasNext()? 'disabled' : ''}"><a
-					class="page-link"
-					th:href="@{/classrooms(size=${classroomPage.size}, page=${currentPage + 1})}">Next</a>
+					th:classappend="${!classroomPage.hasNext()? 'disabled' : ''}">
+					<a class="page-link"
+						th:href="@{/classrooms(size=${classroomPage.size}, page=${currentPage + 1})}">Next</a>
 				</li>
 			</ul>
 		</nav>
