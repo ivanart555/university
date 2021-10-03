@@ -85,8 +85,6 @@
 												<label class="form-check-label" for="active"> Active
 												</label>
 												<input type="checkbox" name="active" th:checked="*{active}" />
-
-
 											</div>
 
 											<div class="modal-footer">
@@ -149,7 +147,7 @@
 			<div class="modal-dialog">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title" id="addModalLabel">New classroom</h5>
+						<h5 class="modal-title" id="addModalLabel">New student</h5>
 						<button type="button" class="btn-close" data-bs-dismiss="modal"
 							aria-label="Close"></button>
 					</div>
@@ -157,7 +155,7 @@
 						<form th:method="POST" th:action="@{/students}"
 							th:object="${student}">
 							<div class="mb-3">
-								<label for="firstName" class="form-label">Name: </label>
+								<label for="firstName" class="form-label">Name:</label>
 								<input type="text" class="form-control" id="firstName"
 									name="firstName" th:value="*{firstName}" />
 								<label for="lastName" class="form-label">Last name:</label>
@@ -166,13 +164,8 @@
 								<label for="groupId" class="form-label">Group Id:</label>
 								<input type="text" class="form-control" id="groupId"
 									name="groupId" th:value="*{groupId}" />
-
-								<label for="active" class="form-label">Active:</label>
-								<input type="checkbox" class="form-control" id="active"
-									name="active" th:field="*{active}"
-									onclick="this.value = this.checked" />
-
-
+								<label class="form-check-label" for="active"> Active </label>
+								<input type="checkbox" name="active" th:checked="*{active}" />
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
@@ -214,37 +207,6 @@
 			</ul>
 		</nav>
 	</div>
-
-	<script type="text/javascript">
-		let elementsArray = document.querySelectorAll("modalUpdate");
-
-		elementsArray.forEach(function(elem) {
-			elem.addEventListener("show.bs.modal", function(event) {
-
-				var button = event.relatedTarget
-				var isActive = button.getAttribute('data-bs-isActive')
-
-			});
-		});
-
-		var exampleModal = document.getElementById('exampleModal')
-		exampleModal.addEventListener('show.bs.modal', function(event) {
-			// Button that triggered the modal
-			var button = event.relatedTarget
-			// Extract info from data-bs-* attributes
-			var recipient = button.getAttribute('data-bs-whatever')
-			// If necessary, you could initiate an AJAX request here
-			// and then do the updating in a callback.
-			//
-			// Update the modal's content.
-			var modalTitle = exampleModal.querySelector('.modal-title')
-			var modalBodyInput = exampleModal
-					.querySelector('.modal-body input')
-
-			modalTitle.textContent = 'New message to ' + recipient
-			modalBodyInput.value = recipient
-		})
-	</script>
 
 	<script
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
