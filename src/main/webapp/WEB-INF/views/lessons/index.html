@@ -51,12 +51,12 @@
 					<td th:text="${lesson.lecturerId}">lecturerId</td>
 					<td th:text="${lesson.roomId}">roomId</td>
 					<td>
-						<button type="button" class="btn btn-outline-secondary"
+						<button type="button" class="btn btn-outline-secondary btn-sm"
 							data-bs-toggle="modal"
 							th:attr="data-bs-target='#modalUpdate'+${lesson.id}">Edit
 						</button>
 
-						<button type="button" class="btn btn-outline-danger"
+						<button type="button" class="btn btn-outline-danger btn-sm"
 							data-bs-toggle="modal"
 							th:attr="data-bs-target='#modalDelete'+${lesson.id}">Delete
 						</button>
@@ -210,7 +210,6 @@
 							th:href="@{/lessons(size=${lessonPage.size}, page=${number})}"
 							th:text="${number}"></a>
 					</li>
-
 
 				</th:block>
 
