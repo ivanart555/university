@@ -52,7 +52,7 @@ class GroupsControllerTest {
     }
 
     @Test
-    void studentsControllerTest() throws Exception {
+    void shouldReturnViewGroupsIndex_whenCalledGroupsGET() throws Exception {
         when(groupService.findPaginated(any())).thenReturn(anyPage);
         mockMvc.perform(get("/groups"))
                 .andExpect(status().isOk())

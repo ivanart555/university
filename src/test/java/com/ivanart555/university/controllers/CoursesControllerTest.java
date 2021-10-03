@@ -52,7 +52,7 @@ class CoursesControllerTest {
     }
 
     @Test
-    void studentsControllerTest() throws Exception {
+    void shouldReturnViewCoursesIndex_whenCalledCoursesGET() throws Exception {
         when(courseService.findPaginated(any())).thenReturn(anyPage);
         mockMvc.perform(get("/courses"))
                 .andExpect(status().isOk())
