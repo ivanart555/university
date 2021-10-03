@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
+<title>Courses</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -14,60 +15,22 @@
 
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-		<a class="navbar-brand" th:href="@{/home}">University</a>
-
-
-		<div class="collapse navbar-collapse" id="navbarColor02">
-
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/students}">Students</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/groups}">Groups</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/lecturers}">Lecturers</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/courses}">Courses</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/classrooms}">Classrooms</a>
-				</li>
-			</ul>
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item">
-					<a class="nav-link" th:href="@{/lessons}">Schedule</a>
-				</li>
-			</ul>
-
-
-		</div>
-	</nav>
-
+	<nav aria-label="Navigation bar" th:replace="layouts :: navbar"></nav>
 
 	<div class="container my-2">
 		<h1>Courses</h1>
 
-		<table border="1" class="table table-striped table-responsive-md">
+		<table aria-label="List of all courses" border="1"
+			class="table table-striped table-responsive-md">
 			<thead>
 				<tr>
-					<th>Id</th>
-					<th>Name</th>
-					<th>Description</th>
-					<th>
-						<div align="right">
-							<button type="button" class="btn btn-success"
+					<th scope="col">Id</th>
+					<th scope="col">Name</th>
+					<th scope="col">Description</th>
+					<th scope="col">
+						<div class="parent position-relative">
+							<button type="button"
+								class="btn btn-success btn-sm position-absolute top-0 end-0"
 								data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
 						</div>
 						Actions
@@ -80,12 +43,12 @@
 					<td th:text="${course.name}">name</td>
 					<td th:text="${course.description}">description</td>
 					<td>
-						<button type="button" class="btn btn-outline-secondary"
+						<button type="button" class="btn btn-outline-secondary btn-sm"
 							data-bs-toggle="modal"
 							th:attr="data-bs-target='#modalUpdate'+${course.id}">Edit
 						</button>
 
-						<button type="button" class="btn btn-outline-danger"
+						<button type="button" class="btn btn-outline-danger btn-sm"
 							data-bs-toggle="modal"
 							th:attr="data-bs-target='#modalDelete'+${course.id}">Delete
 						</button>
