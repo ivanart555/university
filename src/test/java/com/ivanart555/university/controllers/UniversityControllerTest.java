@@ -36,7 +36,7 @@ class UniversityControllerTest {
     }
 
     @Test
-    void shouldReturnViewUniversityHome_whenCalledHomeGET() throws Exception {
+    void studentsControllerTest() throws Exception {
         mockMvc.perform(get("/home"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("university/home"));

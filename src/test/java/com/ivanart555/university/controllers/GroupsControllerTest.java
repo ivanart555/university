@@ -3,10 +3,7 @@ package com.ivanart555.university.controllers;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -52,7 +49,7 @@ class GroupsControllerTest {
     }
 
     @Test
-    void shouldReturnViewGroupsIndex_whenCalledGroupsGET() throws Exception {
+    void studentsControllerTest() throws Exception {
         when(groupService.findPaginated(any())).thenReturn(anyPage);
         mockMvc.perform(get("/groups"))
                 .andExpect(status().isOk())
@@ -60,28 +57,5 @@ class GroupsControllerTest {
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
                 .andExpect(view().name("groups/index"));
-    }
-    
-    @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsPOST() throws Exception {
-        mockMvc.perform(post("/groups"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("group"))
-                .andExpect(view().name("redirect:/groups"));
-    }
-
-    @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/groups/edit/1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("group"))
-                .andExpect(view().name("redirect:/groups"));
-    }
-
-    @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsDeleteIdDELETE() throws Exception {
-        mockMvc.perform(delete("/groups/delete/1"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/groups"));
     }
 }

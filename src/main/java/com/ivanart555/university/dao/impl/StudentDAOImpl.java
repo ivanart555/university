@@ -30,7 +30,7 @@ import com.ivanart555.university.mappers.StudentMapper;
 
 @Component
 public class StudentDAOImpl implements StudentDAO {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentDAOImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LessonDAOImpl.class);
     private final Environment env;
     private final JdbcTemplate jdbcTemplate;
 
@@ -83,7 +83,7 @@ public class StudentDAOImpl implements StudentDAO {
 
         try {
             jdbcTemplate.update(env.getProperty("sql.students.update"), student.getFirstName(), student.getLastName(),
-                    student.getGroupId(), student.isActive(), student.getId());
+                    student.getGroupId(), student.getId());
         } catch (DataAccessException e) {
             String msg = format("Unable to update '%s'", student);
             throw new QueryNotExecuteException(msg);

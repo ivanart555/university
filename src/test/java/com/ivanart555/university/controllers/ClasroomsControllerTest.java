@@ -4,9 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -52,7 +49,7 @@ class ClasroomsControllerTest {
     }
 
     @Test
-    void shouldReturnViewClassroomsIndex_whenCalledClassroomsGET() throws Exception {
+    void studentsControllerTest() throws Exception {
         when(classroomService.findPaginated(any())).thenReturn(anyPage);
         mockMvc.perform(get("/classrooms"))
                 .andExpect(status().isOk())
@@ -60,28 +57,5 @@ class ClasroomsControllerTest {
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
                 .andExpect(view().name("classrooms/index"));
-    }
-
-    @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsPOST() throws Exception {
-        mockMvc.perform(post("/classrooms"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("classroom"))
-                .andExpect(view().name("redirect:/classrooms"));
-    }
-
-    @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/classrooms/edit/20"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("classroom"))
-                .andExpect(view().name("redirect:/classrooms"));
-    }
-
-    @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsDeleteIdDELETE() throws Exception {
-        mockMvc.perform(delete("/classrooms/delete/20"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/classrooms"));
     }
 }

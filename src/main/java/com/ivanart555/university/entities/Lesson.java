@@ -76,8 +76,8 @@ public class Lesson {
         return lecturerId;
     }
 
-    public void setLecturerId(int lecturerId) {
-        this.lecturerId = lecturerId;
+    public void setLecturerId(int lecturer_id) {
+        this.lecturerId = lecturer_id;
     }
 
     @Override
