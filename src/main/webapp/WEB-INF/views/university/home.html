@@ -1,7 +1,6 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-<title>University</title>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link
@@ -19,9 +18,39 @@
 		integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
 		crossorigin="anonymous"></script>
 
-	<nav th:replace="layouts :: navbar"></nav>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+		<a class="navbar-brand" th:href="@{/home}">University</a>
+
+
+		<div class="collapse navbar-collapse" id="navbarColor02">
+
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/students}">Students</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/groups}">Groups</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/lecturers}">Lecturers</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/courses}">Courses</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link"
+					th:href="@{/classrooms}">Classrooms</a></li>
+			</ul>
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item"><a class="nav-link" th:href="@{/lessons}">Schedule</a></li>
+			</ul>
+
+
+		</div>
+	</nav>
 
 	<img src="/resources/library.jpeg" class="img-fluid" alt="...">
+
 
 </body>
 </html>
