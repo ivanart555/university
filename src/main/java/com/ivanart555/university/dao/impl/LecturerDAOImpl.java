@@ -76,6 +76,7 @@ public class LecturerDAOImpl implements LecturerDAO {
         try {
             jdbcTemplate.update(env.getProperty("sql.lecturers.update"), lecturer.getFirstName(),
                     lecturer.getLastName(),
+                    lecturer.isActive(),
                     lecturer.getId());
         } catch (DataAccessException e) {
             String msg = format("Unable to update '%s'", lecturer);
