@@ -1,7 +1,21 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "classrooms")
 public class Classroom {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "room_id", unique = true)
     private int id;
+
+    @Column(name = "room_name", unique = true)
     private String name;
 
     public Classroom() {
