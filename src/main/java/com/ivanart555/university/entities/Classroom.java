@@ -8,11 +8,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "classrooms")
+@Table(name = "classrooms", schema="university")
 public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "room_id", unique = true)
+    @Column(name = "room_id")
     private int id;
 
     @Column(name = "room_name", unique = true)
