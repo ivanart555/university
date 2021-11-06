@@ -34,9 +34,7 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     @Override
     public Classroom getById(Integer id) throws DAOException {
         LOGGER.debug("Trying to get Classroom by id: {}", id);
-        Classroom classroom = new Classroom();
-
-        classroom = entityManager.find(Classroom.class, id);
+        Classroom classroom = entityManager.find(Classroom.class, id);
         if (classroom == null) {
             String msg = format("Classroom with id '%s' not found", id);
             throw new EntityNotFoundException(msg);
@@ -53,7 +51,7 @@ public class ClassroomDAOImpl implements ClassroomDAO {
         Classroom classroom = entityManager.find(Classroom.class, id);
 
         if (classroom != null) {
-            entityManager.remove(id);
+            entityManager.remove(classroom);
         }
     }
 
