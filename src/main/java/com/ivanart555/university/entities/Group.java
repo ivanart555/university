@@ -1,7 +1,21 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "groups", schema="university")
 public class Group {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "group_id")
     private int id;
+
+    @Column(name = "group_name", unique = true)
     private String name;
 
     public Group() {
@@ -11,7 +25,7 @@ public class Group {
         this.id = id;
         this.name = name;
     }
-    
+
     public Group(String name) {
         this.name = name;
     }
