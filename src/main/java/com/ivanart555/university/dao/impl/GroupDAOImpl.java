@@ -6,25 +6,17 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DuplicateKeyException;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.GroupDAO;
-import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
-import com.ivanart555.university.exception.QueryNotExecuteException;
-import com.ivanart555.university.mappers.GroupMapper;
 
 @Component
 @Transactional
@@ -37,7 +29,8 @@ public class GroupDAOImpl implements GroupDAO {
     @Override
     public List<Group> getAll() {
         LOGGER.debug("Trying to get all Groups.");
-        return entityManager.createQuery("FROM Group").getResultList();
+        TypedQuery<Group> query = entityManager.createQuery("FROM Group", Group.class);
+        return query.getResultList();
     }
 
     @Override

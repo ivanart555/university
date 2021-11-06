@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
+import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
 
@@ -28,7 +30,8 @@ public class ClassroomDAOImpl implements ClassroomDAO {
     @Override
     public List<Classroom> getAll() {
         LOGGER.debug("Trying to get all Classrooms.");
-        return entityManager.createQuery("FROM Classroom").getResultList();
+        TypedQuery<Classroom> query = entityManager.createQuery("FROM Classroom", Classroom.class);
+        return query.getResultList();
     }
 
     @Override
