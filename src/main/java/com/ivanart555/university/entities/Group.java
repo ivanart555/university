@@ -1,14 +1,19 @@
 package com.ivanart555.university.entities;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "groups", schema="university")
+@Table(name = "groups", schema = "university")
 public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +22,9 @@ public class Group {
 
     @Column(name = "group_name", unique = true)
     private String name;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    private List<Student> students = new ArrayList<>();
 
     public Group() {
     }
@@ -44,6 +52,24 @@ public class Group {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    public void addStudent(Student student) {
+        students.add(student);
+        student.setGroup(this);
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
+        student.setGroup(null);
     }
 
     @Override
