@@ -19,6 +19,7 @@ import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.dao.StudentDAO;
+import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.ServiceException;
@@ -96,6 +97,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void update(Student student) throws ServiceException {
+        setNullGroupWhenZeroId(student, student.getGroup().getId());
+
+        if (student.getGroup() != null) {
+            assignStudentToGroup(student, student.getGroup().getId());
+        }
+        
         try {
             studentDAO.update(student);
         } catch (QueryNotExecuteException e) {
@@ -108,6 +115,12 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void create(Student student) throws ServiceException {
+        setNullGroupWhenZeroId(student, student.getGroup().getId());
+
+        if (student.getGroup() != null) {
+            assignStudentToGroup(student, student.getGroup().getId());
+        }
+        
         try {
             studentDAO.create(student);
         } catch (DAOException e) {
@@ -118,13 +131,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void assignStudentToGroup(Student student, Integer groupId) throws ServiceException {
+        Group group = null;
+
         try {
-            groupDAO.getById(groupId);
+            group = groupDAO.getById(groupId);
         } catch (EntityNotFoundException e) {
             throw new ServiceException(
                     "Failed to assign Student to Group. There is no Group with such id:" + groupId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to assign Student to Group.", e);
@@ -133,15 +146,7 @@ public class StudentServiceImpl implements StudentService {
         checkGroupSizeLimitation(groupId);
         checkIfStudentIsNotActive(student);
 
-        student.setGroupId(groupId);
-        try {
-            studentDAO.update(student);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            throw new ServiceException("Failed to assign Student to Group.", e);
-        }
-        LOGGER.info("Student with id {} assigned to Group with id: {} successfully.", student.getId(), groupId);
+        student.setGroup(group);
     }
 
     @Override
@@ -201,10 +206,6 @@ public class StudentServiceImpl implements StudentService {
         int expectedGroupSize = 0;
         try {
             expectedGroupSize = studentDAO.getStudentsByGroupId(groupId).size() + 1;
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException("Failed to get Students by Group id", e);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Students by Group id.", e);
@@ -234,8 +235,15 @@ public class StudentServiceImpl implements StudentService {
         } else {
             int toIndex = Math.min(startItem + pageSize, studentsSize);
             list = allStudents.subList(startItem, toIndex);
-        }   
+        }
 
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), studentsSize);
     }
+
+    public void setNullGroupWhenZeroId(Student student, int groupId) {
+        if (groupId == 0) {
+            student.setGroup(null);
+        }
+    }
+
 }

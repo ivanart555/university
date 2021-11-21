@@ -1,11 +1,33 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "students", schema = "university")
 public class Student {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
     private int id;
+
+    @Column(name = "student_name")
     private String firstName;
+
+    @Column(name = "student_lastname")
     private String lastName;
-    private int groupId;
+
+    @Column(name = "active")
     private boolean active;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Group group;
 
     public Student() {
     }
@@ -16,19 +38,17 @@ public class Student {
         this.active = true;
     }
 
-    public Student(int id, String firstName, String lastName, int groupId) {
+    public Student(int id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.groupId = groupId;
         this.active = true;
     }
 
-    public Student(int id, String firstName, String lastName, int groupId, boolean active) {
+    public Student(int id, String firstName, String lastName, boolean active) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.groupId = groupId;
         this.active = active;
     }
 
@@ -56,14 +76,6 @@ public class Student {
         this.lastName = lastName;
     }
 
-    public int getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -72,20 +84,28 @@ public class Student {
         this.active = active;
     }
 
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
     @Override
     public String toString() {
-        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", groupId=" + groupId
-                + ", active=" + active + "]";
+        return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", active=" + active
+                + ", group=" + group + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
+        result = prime * result + (active ? 1231 : 1237);
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
-        result = prime * result + groupId;
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         result = prime * result + id;
+        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         return result;
     }
 
@@ -98,19 +118,19 @@ public class Student {
         if (getClass() != obj.getClass())
             return false;
         Student other = (Student) obj;
+        if (active != other.active)
+            return false;
         if (firstName == null) {
             if (other.firstName != null)
                 return false;
         } else if (!firstName.equals(other.firstName))
             return false;
-        if (groupId != other.groupId)
+        if (id != other.id)
             return false;
         if (lastName == null) {
             if (other.lastName != null)
                 return false;
         } else if (!lastName.equals(other.lastName))
-            return false;
-        if (id != other.id)
             return false;
         return true;
     }

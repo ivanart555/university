@@ -77,7 +77,7 @@ public class PersistenceJPAConfig {
     final Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-
+        hibernateProperties.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         return hibernateProperties;
     }
     

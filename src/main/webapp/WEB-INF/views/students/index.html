@@ -27,15 +27,14 @@
 					<th scope="col">Id</th>
 					<th scope="col">Name</th>
 					<th scope="col">Last name</th>
-					<th scope="col">Group Id</th>
+					<th scope="col">Group</th>
 					<th scope="col">Active</th>
 					<th scope="col">
 						<div class="parent position-relative">
 							<button type="button"
 								class="btn btn-success btn-sm position-absolute top-0 end-0"
 								data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
-						</div>
-						Actions
+						</div> Actions
 					</th>
 				</tr>
 			</thead>
@@ -44,7 +43,7 @@
 					<td th:text="${student.id}"></td>
 					<td th:text="${student.firstName}"></td>
 					<td th:text="${student.lastName}"></td>
-					<td th:text="${student.groupId}"></td>
+					<td th:text="${student?.group?.name}"></td>
 					<td th:text="${student.active}"></td>
 					<td>
 						<button type="button" class="btn btn-outline-secondary btn-sm"
@@ -73,18 +72,27 @@
 											th:action="@{/students/edit/{id}(id=${student.id})}"
 											th:object="${student}">
 											<div class="mb-3">
-												<label for="firstName" class="form-label">Name:</label>
-												<input type="text" class="form-control" id="firstName"
-													name="firstName" th:value="*{firstName}" />
-												<label for="lastName" class="form-label">Last name:</label>
-												<input type="text" class="form-control" id="lastName"
+												<label for="firstName" class="form-label">Name:</label> <input
+													type="text" class="form-control" id="firstName"
+													name="firstName" th:value="*{firstName}" /> <label
+													for="lastName" class="form-label">Last name:</label> <input
+													type="text" class="form-control" id="lastName"
 													name="lastName" th:value="*{lastName}" />
-												<label for="groupId" class="form-label">Group Id:</label>
-												<input type="text" class="form-control" id="groupId"
-													name="groupId" th:value="*{groupId}" />
+
+												<label for="groupId" class="form-label">Group:</label> 
+												
+												<select
+													class="form-select" id="groupId" th:field="*{group.id}">
+													<option th:if="*{group} == null"
+														 value=0 selected>Select group for Student</option>
+													<option th:unless="*{group} == null"
+														 th:value="*{group.id}" th:utext="*{group.name}" selected></option>
+													<option th:each="group : ${groups}" th:value="${group.id}"
+														th:utext="${group.name}" />
+												</select>
+
 												<label class="form-check-label" for="active"> Active
-												</label>
-												<input type="checkbox" name="active" th:checked="*{active}" />
+												</label> <input type="checkbox" name="active" th:checked="*{active}" />
 											</div>
 
 											<div class="modal-footer">
@@ -155,17 +163,20 @@
 						<form th:method="POST" th:action="@{/students}"
 							th:object="${student}">
 							<div class="mb-3">
-								<label for="firstName" class="form-label">Name:</label>
-								<input type="text" class="form-control" id="firstName"
-									name="firstName" th:value="*{firstName}" />
-								<label for="lastName" class="form-label">Last name:</label>
-								<input type="text" class="form-control" id="lastName"
-									name="lastName" th:value="*{lastName}" />
-								<label for="groupId" class="form-label">Group Id:</label>
-								<input type="text" class="form-control" id="groupId"
-									name="groupId" th:value="*{groupId}" />
-								<label class="form-check-label" for="active"> Active </label>
-								<input type="checkbox" name="active" th:checked="*{active}" />
+								<label for="firstName" class="form-label">Name:</label> <input
+									type="text" class="form-control" id="firstName"
+									name="firstName" th:value="*{firstName}" /> <label
+									for="lastName" class="form-label">Last name:</label> <input
+									type="text" class="form-control" id="lastName" name="lastName"
+									th:value="*{lastName}" />
+
+								<label for="groupId" class="form-label">Group:</label> <select
+									class="form-select" id="groupId" th:field="*{group.id}">
+									<option value=0 selected>Select group for Student</option>
+									<option th:each="group : ${groups}" th:value="${group.id}"
+										th:utext="${group.name}" />
+								</select> <label class="form-check-label" for="active"> Active </label> <input
+									type="checkbox" name="active" checked="checked" />
 							</div>
 							<div class="modal-footer">
 								<button type="button" class="btn btn-secondary"
@@ -184,25 +195,24 @@
 				<li class="page-item"
 					th:classappend="${!studentPage.hasPrevious()? 'disabled' : ''}">
 					<a class="page-link"
-						th:href="@{/students(size=${studentPage.size}, page=${currentPage - 1})}"
-						tabindex="-1">Previous</a>
+					th:href="@{/students(size=${studentPage.size}, page=${currentPage - 1})}"
+					tabindex="-1">Previous</a>
 				</li>
 
 				<th:block th:each="number : ${pageNumbers}">
 					<li class="page-item"
-						th:classappend="${number == currentPage? 'active' : ''}">
-						<a class="page-link"
-							th:href="@{/students(size=${studentPage.size}, page=${number})}"
-							th:text="${number}"></a>
-					</li>
+						th:classappend="${number == currentPage? 'active' : ''}"><a
+						class="page-link"
+						th:href="@{/students(size=${studentPage.size}, page=${number})}"
+						th:text="${number}"></a></li>
 
 
 				</th:block>
 
 				<li class="page-item"
-					th:classappend="${!studentPage.hasNext()? 'disabled' : ''}">
-					<a class="page-link"
-						th:href="@{/students(size=${studentPage.size}, page=${currentPage + 1})}">Next</a>
+					th:classappend="${!studentPage.hasNext()? 'disabled' : ''}"><a
+					class="page-link"
+					th:href="@{/students(size=${studentPage.size}, page=${currentPage + 1})}">Next</a>
 				</li>
 			</ul>
 		</nav>

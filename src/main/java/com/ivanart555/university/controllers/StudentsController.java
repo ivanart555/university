@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.GroupService;
 import com.ivanart555.university.services.StudentService;
 
 @Controller
@@ -28,10 +29,12 @@ import com.ivanart555.university.services.StudentService;
 public class StudentsController {
     private static final String REDIRECT_STUDENTS = "redirect:/students";
     private StudentService studentService;
+    private GroupService groupService;
 
     @Autowired
-    public StudentsController(StudentService studentService) {
+    public StudentsController(StudentService studentService, GroupService groupService) {
         this.studentService = studentService;
+        this.groupService = groupService;
     }
 
     @GetMapping()
@@ -46,7 +49,9 @@ public class StudentsController {
         model.addAttribute("studentPage", studentPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", studentPage.getTotalPages());
-
+        
+        model.addAttribute("groups", groupService.getAll());
+        
         model.addAttribute("student", new Student());
         
         int totalPages = studentPage.getTotalPages();
@@ -67,7 +72,7 @@ public class StudentsController {
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("student") Student student, @PathVariable("id") int id)
+    public String update(Model model, @ModelAttribute("student") Student student, @PathVariable("id") int id)
             throws ServiceException {
         studentService.update(student);
         return REDIRECT_STUDENTS;
@@ -78,5 +83,4 @@ public class StudentsController {
         studentService.delete(id);
         return REDIRECT_STUDENTS;
     }
-
 }
