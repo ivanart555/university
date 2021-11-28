@@ -1,25 +1,32 @@
 package com.ivanart555.university.entities;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "courses", schema="university")
+@Table(name = "courses", schema = "university")
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "course_id")
-    private int id;
-    
+    private Integer id;
+
     @Column(name = "course_name", unique = true)
     private String name;
-    
+
     @Column(name = "course_description")
     private String description;
+
+    @ManyToMany(mappedBy = "courses", fetch=FetchType.EAGER)
+    private Set<Group> groups;
 
     public Course() {
     }
@@ -35,12 +42,12 @@ public class Course {
         this.description = description;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int courseId) {
-        this.id = courseId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -59,9 +66,17 @@ public class Course {
         this.description = description;
     }
 
+    public Set<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<Group> groups) {
+        this.groups = groups;
+    }
+
     @Override
     public String toString() {
-        return "Course [id = " + id + ", name=" + name + ", description=" + description + "]";
+        return "Course [id=" + id + ", name=" + name + ", description=" + description + ", groups=" + groups + "]";
     }
 
     @Override
@@ -69,6 +84,7 @@ public class Course {
         final int prime = 31;
         int result = 1;
         result = prime * result + ((description == null) ? 0 : description.hashCode());
+        result = prime * result + ((groups == null) ? 0 : groups.hashCode());
         result = prime * result + id;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
@@ -87,6 +103,11 @@ public class Course {
             if (other.description != null)
                 return false;
         } else if (!description.equals(other.description))
+            return false;
+        if (groups == null) {
+            if (other.groups != null)
+                return false;
+        } else if (!groups.equals(other.groups))
             return false;
         if (id != other.id)
             return false;
