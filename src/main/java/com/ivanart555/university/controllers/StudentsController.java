@@ -49,11 +49,11 @@ public class StudentsController {
         model.addAttribute("studentPage", studentPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", studentPage.getTotalPages());
-        
+
         model.addAttribute("groups", groupService.getAll());
-        
+
         model.addAttribute("student", new Student());
-        
+
         int totalPages = studentPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -64,7 +64,7 @@ public class StudentsController {
 
         return "students/index";
     }
-    
+
     @PostMapping()
     public String create(@ModelAttribute("student") Student student) throws ServiceException {
         studentService.create(student);
@@ -72,7 +72,7 @@ public class StudentsController {
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(Model model, @ModelAttribute("student") Student student, @PathVariable("id") int id)
+    public String update(@ModelAttribute("student") Student student, @PathVariable("id") int id)
             throws ServiceException {
         studentService.update(student);
         return REDIRECT_STUDENTS;
