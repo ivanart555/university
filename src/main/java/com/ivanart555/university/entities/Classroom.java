@@ -13,7 +13,7 @@ public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "room_id")
-    private int id;
+    private Integer id;
 
     @Column(name = "room_name", unique = true)
     private String name;
@@ -30,11 +30,11 @@ public class Classroom {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
