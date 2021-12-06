@@ -17,8 +17,6 @@ public interface StudentService extends GenericService<Student, Integer> {
 
     void assignStudentToGroup(Student student, Integer groupId) throws ServiceException;
 
-    void assignStudentToCourse(Student student, Integer courseId) throws ServiceException;
-
     List<Lesson> getDaySchedule(Student student, LocalDate day) throws ServiceException;
 
     Page<Student> findPaginated(Pageable pageable) throws ServiceException;

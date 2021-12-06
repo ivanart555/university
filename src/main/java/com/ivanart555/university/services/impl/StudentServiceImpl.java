@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.dao.StudentDAO;
@@ -36,15 +35,13 @@ public class StudentServiceImpl implements StudentService {
     private Environment env;
     private StudentDAO studentDAO;
     private GroupDAO groupDAO;
-    private CourseDAO courseDAO;
     private LessonDAO lessonDAO;
 
     @Autowired
-    public StudentServiceImpl(StudentDAO studentDAO, GroupDAO groupDAO, CourseDAO courseDAO, LessonDAO lessonDAO,
+    public StudentServiceImpl(StudentDAO studentDAO, GroupDAO groupDAO, LessonDAO lessonDAO,
             Environment env) {
         this.studentDAO = studentDAO;
         this.groupDAO = groupDAO;
-        this.courseDAO = courseDAO;
         this.lessonDAO = lessonDAO;
         this.env = env;
     }
@@ -102,7 +99,7 @@ public class StudentServiceImpl implements StudentService {
         if (student.getGroup() != null) {
             assignStudentToGroup(student, student.getGroup().getId());
         }
-        
+
         try {
             studentDAO.update(student);
         } catch (QueryNotExecuteException e) {
@@ -120,7 +117,7 @@ public class StudentServiceImpl implements StudentService {
         if (student.getGroup() != null) {
             assignStudentToGroup(student, student.getGroup().getId());
         }
-        
+
         try {
             studentDAO.create(student);
         } catch (DAOException e) {
@@ -147,33 +144,6 @@ public class StudentServiceImpl implements StudentService {
         checkIfStudentIsNotActive(student);
 
         student.setGroup(group);
-    }
-
-    @Override
-    public void assignStudentToCourse(Student student, Integer courseId) throws ServiceException {
-        try {
-            courseDAO.getById(courseId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(
-                    "Failed to assign Student to Course. There is no Course with such id:" + courseId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Course by id.", e);
-        }
-
-        checkIfStudentIsNotActive(student);
-
-        try {
-            studentDAO.addStudentToCourse(student.getId(), courseId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Failed to assign Student to Course.", e);
-        }
-        LOGGER.info("Student with id {} assigned to Course with id: {} successfully.", student.getId(), courseId);
     }
 
     @Override

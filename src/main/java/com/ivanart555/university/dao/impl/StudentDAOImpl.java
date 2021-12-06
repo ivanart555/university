@@ -79,12 +79,6 @@ public class StudentDAOImpl implements StudentDAO {
     }
 
     @Override
-    public void addStudentToCourse(Integer studentId, Integer courseId) throws DAOException {
-        LOGGER.debug("Trying to add Student with id:{} to Course wit id:{}", studentId, courseId);
-//TODO        jdbcTemplate.update(env.getProperty("sql.students.add.studentToCourse"), studentId, courseId);
-    }
-
-    @Override
     public List<Student> getStudentsByGroupId(Integer groupId) throws DAOException {
         LOGGER.debug("Trying to get Students by Group with id:{}", groupId);
         TypedQuery<Student> query = entityManager
