@@ -17,9 +17,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.CourseDAO;
-import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.dao.LecturerDAO;
 import com.ivanart555.university.dao.LessonDAO;
+import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.DAOException;
@@ -35,14 +35,12 @@ public class LecturerServiceImpl implements LecturerService {
     private static final String SOMETHING_WRONG_WITH_DAO = "Something got wrong with DAO.";
     private LecturerDAO lecturerDAO;
     private CourseDAO courseDAO;
-    private GroupDAO groupDAO;
     private LessonDAO lessonDAO;
 
     @Autowired
-    public LecturerServiceImpl(LecturerDAO lecturerDAO, CourseDAO courseDAO, GroupDAO groupDAO, LessonDAO lessonDAO) {
+    public LecturerServiceImpl(LecturerDAO lecturerDAO, CourseDAO courseDAO, LessonDAO lessonDAO) {
         this.lecturerDAO = lecturerDAO;
         this.courseDAO = courseDAO;
-        this.groupDAO = groupDAO;
         this.lessonDAO = lessonDAO;
     }
 
@@ -94,6 +92,12 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void update(Lecturer lecturer) throws ServiceException {
+        setNullCourseWhenZeroId(lecturer, lecturer.getCourse().getId());
+
+        if (lecturer.getCourse() != null) {
+            addLecturerToCourse(lecturer, lecturer.getCourse().getId());
+        }
+
         try {
             lecturerDAO.update(lecturer);
         } catch (QueryNotExecuteException e) {
@@ -106,6 +110,8 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void create(Lecturer lecturer) throws ServiceException {
+        setNullCourseWhenZeroId(lecturer, lecturer.getCourse().getId());
+
         try {
             lecturerDAO.create(lecturer);
         } catch (DAOException e) {
@@ -116,13 +122,13 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void addLecturerToCourse(Lecturer lecturer, Integer courseId) throws ServiceException {
+        Course course = null;
+
         try {
-            courseDAO.getById(courseId);
+            course = courseDAO.getById(courseId);
         } catch (EntityNotFoundException e) {
             throw new ServiceException(
                     "Failed to assign Lecturer to Course. There is no Course with such id:" + courseId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Course by id.", e);
@@ -130,36 +136,8 @@ public class LecturerServiceImpl implements LecturerService {
 
         checkIfLecturerIsNotActive(lecturer);
 
-        try {
-            lecturerDAO.addLecturerToCourse(lecturer.getId(), courseId);
-        } catch (DAOException e) {
-            throw new ServiceException("Failed to assign Lecturer to course.", e);
-        }
+        lecturer.setCourse(course);
         LOGGER.info("Lecturer with id:{} added to Course with id:{} successfully.", lecturer.getId(), courseId);
-    }
-
-    @Override
-    public void addLecturerToGroup(Lecturer lecturer, Integer groupId) throws ServiceException {
-        try {
-            groupDAO.getById(groupId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(
-                    "Failed to assign Lecturer to Group. There is no Group with such id:" + groupId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Group by id.", e);
-        }
-
-        checkIfLecturerIsNotActive(lecturer);
-
-        try {
-            lecturerDAO.addLecturerToGroup(lecturer.getId(), groupId);
-        } catch (DAOException e) {
-            throw new ServiceException("Failed to assign Lecturer to course.", e);
-        }
-        LOGGER.info("Lecturer with id:{} added to Group with id:{} successfully.", lecturer.getId(), groupId);
     }
 
     @Override
@@ -208,5 +186,11 @@ public class LecturerServiceImpl implements LecturerService {
         }
 
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), lecturersSize);
+    }
+
+    public void setNullCourseWhenZeroId(Lecturer lecturer, int courseId) {
+        if (courseId == 0) {
+            lecturer.setCourse(null);
+        }
     }
 }

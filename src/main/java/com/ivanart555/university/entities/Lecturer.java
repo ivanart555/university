@@ -1,10 +1,34 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "lecturers", schema = "university")
 public class Lecturer {
-    private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "lecturer_id")
+    private Integer id;
+
+    @Column(name = "lecturer_name")
     private String firstName;
+
+    @Column(name = "lecturer_lastname")
     private String lastName;
+
+    @Column(name = "active")
     private boolean active;
+
+    @OneToOne
+    @JoinColumn(name = "course_id", referencedColumnName = "course_id")
+    private Course course;
 
     public Lecturer() {
     }
@@ -14,7 +38,7 @@ public class Lecturer {
         this.lastName = lastName;
         this.active = true;
     }
-    
+
     public Lecturer(Integer id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
@@ -22,11 +46,11 @@ public class Lecturer {
         this.active = true;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,6 +78,14 @@ public class Lecturer {
         this.active = active;
     }
 
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
+    }
+
     @Override
     public String toString() {
         return "Lecturer [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", active=" + active
@@ -64,9 +96,10 @@ public class Lecturer {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-        result = prime * result + id;
+        result = prime * result + (active ? 1231 : 1237);
         result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+        result = prime * result + id;
+        result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
         return result;
     }
 
@@ -79,17 +112,19 @@ public class Lecturer {
         if (getClass() != obj.getClass())
             return false;
         Lecturer other = (Lecturer) obj;
-        if (lastName == null) {
-            if (other.lastName != null)
-                return false;
-        } else if (!lastName.equals(other.lastName))
-            return false;
-        if (id != other.id)
+        if (active != other.active)
             return false;
         if (firstName == null) {
             if (other.firstName != null)
                 return false;
         } else if (!firstName.equals(other.firstName))
+            return false;
+        if (id != other.id)
+            return false;
+        if (lastName == null) {
+            if (other.lastName != null)
+                return false;
+        } else if (!lastName.equals(other.lastName))
             return false;
         return true;
     }
