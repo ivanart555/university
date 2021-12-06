@@ -25,8 +25,8 @@
                     <th scope="col">Description</th>
                     <th scope="col">
                         <div class="parent position-relative">
-                            <button type="button" class="btn btn-success btn-sm position-absolute top-0 end-0" data-bs-toggle="modal"
-                                data-bs-target="#addModal">Add</button>
+                            <button type="button" class="btn btn-success btn-sm position-absolute top-0 end-0"
+                                data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
                         </div>
                         Actions
                     </th>
@@ -50,21 +50,25 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="updateModalLabel">Edit course</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form th:method="PATCH" th:action="@{/courses/edit/{id}(id=${course.id})}" th:object="${course}">
+                                        <form th:method="PATCH" th:action="@{/courses/edit/{id}(id=${course.id})}"
+                                            th:object="${course}">
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Name:</label>
-                                                <input type="text" class="form-control" id="name" name="name" th:value="*{name}" />
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    th:value="*{name}" />
                                                 <label for="description" class="form-label">Description:</label>
-                                                <input type="text" class="form-control" id="description" name="description"
-                                                    th:value="*{description}" />
+                                                <input type="text" class="form-control" id="description"
+                                                    name="description" th:value="*{description}" />
                                             </div>
 
                                             <label for="groupsList">Groups studying this course:</label>
                                             <ul class="list-group" id="groupsList">
-                                                <li class="list-group-item" th:each="group : *{groups}" th:text="${group?.name}"></li>
+                                                <li class="list-group-item" th:each="group : *{groups}"
+                                                    th:text="${group?.name}"></li>
                                             </ul>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -83,12 +87,13 @@
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
 
-                                        <form class="form-horizontal" th:action="@{/courses/delete/{id}(id=${course.id})}"
-                                            th:method="DELETE">
+                                        <form class="form-horizontal"
+                                            th:action="@{/courses/delete/{id}(id=${course.id})}" th:method="DELETE">
                                             <input id="id" name="id" type="hidden" th:value="${course.id}" />
                                             <div class="form-group">
 
@@ -128,7 +133,8 @@
                                 <label for="name" class="form-label">Name:</label>
                                 <input type="text" th:field="*{name}" class="form-control" id="name">
                                 <label for="description" class="form-label">Description:</label>
-                                <input type="text" class="form-control" id="description" name="description" th:value="*{description}" />
+                                <input type="text" class="form-control" id="description" name="description"
+                                    th:value="*{description}" />
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -145,12 +151,14 @@
         <nav aria-label="Page navigation" class="paging">
             <ul class="pagination justify-content-center" th:if="${totalPages > 1}">
                 <li class="page-item" th:classappend="${!coursePage.hasPrevious()? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/courses(size=${coursePage.size}, page=${currentPage - 1})}" tabindex="-1">Previous</a>
+                    <a class="page-link" th:href="@{/courses(size=${coursePage.size}, page=${currentPage - 1})}"
+                        tabindex="-1">Previous</a>
                 </li>
 
                 <th:block th:each="number : ${pageNumbers}">
                     <li class="page-item" th:classappend="${number == currentPage? 'active' : ''}">
-                        <a class="page-link" th:href="@{/courses(size=${coursePage.size}, page=${number})}" th:text="${number}"></a>
+                        <a class="page-link" th:href="@{/courses(size=${coursePage.size}, page=${number})}"
+                            th:text="${number}"></a>
                     </li>
 
                 </th:block>

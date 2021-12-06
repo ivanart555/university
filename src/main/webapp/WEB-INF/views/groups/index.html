@@ -24,8 +24,8 @@
                     <th scope="col">Number</th>
                     <th scope="col">
                         <div class="parent position-relative">
-                            <button type="button" class="btn btn-success btn-sm position-absolute top-0 end-0" data-bs-toggle="modal"
-                                data-bs-target="#addModal">Add</button>
+                            <button type="button" class="btn btn-success btn-sm position-absolute top-0 end-0"
+                                data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
                         </div>
                         Actions
                     </th>
@@ -42,24 +42,28 @@
                         <button type="button" class="btn btn-sm btn-outline-danger btn-sm" data-bs-toggle="modal"
                             th:attr="data-bs-target='#modalDelete'+${group.id}">Delete</button>
 
-                        <div class="modal fade text-body" th:attr="id='modalUpdate'+${group.id}" tabindex="-1" aria-labelledby="modalUpdate"
-                            aria-hidden="true">
+                        <div class="modal fade text-body" th:attr="id='modalUpdate'+${group.id}" tabindex="-1"
+                            aria-labelledby="modalUpdate" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="updateModalLabel">Edit group</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form th:method="PATCH" th:action="@{/groups/edit/{id}(id=${group.id})}" th:object="${group}">
+                                        <form th:method="PATCH" th:action="@{/groups/edit/{id}(id=${group.id})}"
+                                            th:object="${group}">
                                             <div class="mb-3">
                                                 <label for="name" class="form-label">Number:</label>
-                                                <input type="text" class="form-control" id="name" name="name" th:value="*{name}" />
+                                                <input type="text" class="form-control" id="name" name="name"
+                                                    th:value="*{name}" />
                                             </div>
                                             <label for="coursesListEdit">Courses:</label>
                                             <ul class="list-group" id="coursesListEdit">
                                                 <li class="list-group-item" th:each="course : ${allCourses}">
-                                                    <input type="checkbox" name="courses" th:text="${course.name}" th:value="${course.id}"
+                                                    <input type="checkbox" name="courses" th:text="${course.name}"
+                                                        th:value="${course.id}"
                                                         th:checked="${#sets.contains(group.courses, course)}">
                                                 </li>
                                             </ul>
@@ -75,22 +79,25 @@
                             </div>
                         </div>
 
-                        <div class="modal fade text-body" th:attr="id='modalDelete'+${group.id}" tabindex="-1" aria-labelledby="modalDelete"
-                            aria-hidden="true">
+                        <div class="modal fade text-body" th:attr="id='modalDelete'+${group.id}" tabindex="-1"
+                            aria-labelledby="modalDelete" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
                                         <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
 
-                                        <form class="form-horizontal" th:action="@{/groups/delete/{id}(id=${group.id})}" th:method="DELETE">
+                                        <form class="form-horizontal" th:action="@{/groups/delete/{id}(id=${group.id})}"
+                                            th:method="DELETE">
                                             <input id="id" name="id" type="hidden" th:value="${group.id}" />
                                             <div class="form-group">
 
                                                 <div class="text-nowrap bd-highlight">
-                                                    <p th:text="'Are you sure you want to delete group:' + ' ' + ${group.name} + ' ' + '?'"></p>
+                                                    <p
+                                                        th:text="'Are you sure you want to delete group:' + ' ' + ${group.name} + ' ' + '?'"></p>
                                                 </div>
 
                                             </div>
@@ -143,12 +150,14 @@
         <nav aria-label="Page navigation" class="paging">
             <ul class="pagination justify-content-center" th:if="${totalPages > 1}">
                 <li class="page-item" th:classappend="${!groupPage.hasPrevious()? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/groups(size=${groupPage.size}, page=${currentPage - 1})}" tabindex="-1">Previous</a>
+                    <a class="page-link" th:href="@{/groups(size=${groupPage.size}, page=${currentPage - 1})}"
+                        tabindex="-1">Previous</a>
                 </li>
 
                 <th:block th:each="number : ${pageNumbers}">
                     <li class="page-item" th:classappend="${number == currentPage? 'active' : ''}">
-                        <a class="page-link" th:href="@{/groups(size=${groupPage.size}, page=${number})}" th:text="${number}"></a>
+                        <a class="page-link" th:href="@{/groups(size=${groupPage.size}, page=${number})}"
+                            th:text="${number}"></a>
                     </li>
 
                 </th:block>
