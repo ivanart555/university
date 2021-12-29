@@ -24,13 +24,11 @@ import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
-import com.ivanart555.university.exception.QueryNotExecuteException;
 import com.ivanart555.university.services.StudentService;
 
 @Component
 public class StudentServiceImpl implements StudentService {
     private static final Logger LOGGER = LoggerFactory.getLogger(StudentServiceImpl.class);
-    private static final String QUERY_DIDNT_EXECUTE = "Query didn't execute. Check SQL query.";
     private static final String SOMETHING_WRONG_WITH_DAO = "Something got wrong with DAO.";
     private Environment env;
     private StudentDAO studentDAO;
@@ -75,8 +73,6 @@ public class StudentServiceImpl implements StudentService {
             studentDAO.getById(id);
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Student with id {} not found!", id);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Student by id.", e);
@@ -102,8 +98,6 @@ public class StudentServiceImpl implements StudentService {
 
         try {
             studentDAO.update(student);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             throw new ServiceException("Unable to update Student.", e);
         }
@@ -152,11 +146,9 @@ public class StudentServiceImpl implements StudentService {
         LocalDateTime endDateTime = day.atTime(23, 59, 59);
         List<Lesson> lessons = null;
         try {
-            lessons = lessonDAO.getByDateTimeIntervalAndStudentId(student.getId(), startDateTime, endDateTime);
+            lessons = lessonDAO.getByDateTimeIntervalAndGroupId(student.getGroup().getId(), startDateTime, endDateTime);
         } catch (EntityNotFoundException e) {
             throw new ServiceException("Failed to get Student's day schedule.", e);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Student's day schedule.", e);

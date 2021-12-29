@@ -2,32 +2,50 @@ package com.ivanart555.university.entities;
 
 import java.time.LocalDateTime;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "lessons", schema = "university")
 public class Lesson {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "lesson_id")
     private int id;
-    private int courseId;
-    private int roomId;
-    private int lecturerId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Course course;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "classroom_room_id")
+    private Classroom classroom;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "lecturer_lecturer_id")
+    private Lecturer lecturer;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "group_group_id")
+    private Group group;
+
+    @Column(name = "lesson_start")
     private LocalDateTime lessonStart;
+
+    @Column(name = "lesson_end")
     private LocalDateTime lessonEnd;
 
     public Lesson() {
     }
 
-    public Lesson(int courseId, int roomId, int lecturerId, LocalDateTime lessonStart,
+    public Lesson(LocalDateTime lessonStart,
             LocalDateTime lessonEnd) {
-        this.courseId = courseId;
-        this.roomId = roomId;
-        this.lecturerId = lecturerId;
-        this.lessonStart = lessonStart;
-        this.lessonEnd = lessonEnd;
-    }
-    
-    public Lesson(int id, int courseId, int roomId, int lecturerId, LocalDateTime lessonStart,
-            LocalDateTime lessonEnd) {
-        this.id = id;
-        this.courseId = courseId;
-        this.roomId = roomId;
-        this.lecturerId = lecturerId;
         this.lessonStart = lessonStart;
         this.lessonEnd = lessonEnd;
     }
@@ -40,20 +58,36 @@ public class Lesson {
         this.id = id;
     }
 
-    public int getCourseId() {
-        return courseId;
+    public Course getCourse() {
+        return course;
     }
 
-    public void setCourseId(int courseId) {
-        this.courseId = courseId;
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
-    public int getRoomId() {
-        return roomId;
+    public Classroom getClassroom() {
+        return classroom;
     }
 
-    public void setRoomId(int roomId) {
-        this.roomId = roomId;
+    public void setClassroom(Classroom classroom) {
+        this.classroom = classroom;
+    }
+
+    public Lecturer getLecturer() {
+        return lecturer;
+    }
+
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public LocalDateTime getLessonStart() {
@@ -72,17 +106,9 @@ public class Lesson {
         this.lessonEnd = lessonEnd;
     }
 
-    public int getLecturerId() {
-        return lecturerId;
-    }
-
-    public void setLecturerId(int lecturerId) {
-        this.lecturerId = lecturerId;
-    }
-
     @Override
     public String toString() {
-        return "Lesson [id=" + id + ", courseId=" + courseId + ", roomId=" + roomId + ", lecturerId=" + lecturerId
+        return "Lesson [id=" + id + ", course=" + course + ", classroom=" + classroom + ", lecturer=" + lecturer
                 + ", lessonStart=" + lessonStart + ", lessonEnd=" + lessonEnd + "]";
     }
 
@@ -90,12 +116,9 @@ public class Lesson {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + courseId;
         result = prime * result + id;
-        result = prime * result + lecturerId;
         result = prime * result + ((lessonEnd == null) ? 0 : lessonEnd.hashCode());
         result = prime * result + ((lessonStart == null) ? 0 : lessonStart.hashCode());
-        result = prime * result + roomId;
         return result;
     }
 
@@ -108,11 +131,7 @@ public class Lesson {
         if (getClass() != obj.getClass())
             return false;
         Lesson other = (Lesson) obj;
-        if (courseId != other.courseId)
-            return false;
         if (id != other.id)
-            return false;
-        if (lecturerId != other.lecturerId)
             return false;
         if (lessonEnd == null) {
             if (other.lessonEnd != null)
@@ -124,8 +143,7 @@ public class Lesson {
                 return false;
         } else if (!lessonStart.equals(other.lessonStart))
             return false;
-        if (roomId != other.roomId)
-            return false;
         return true;
     }
+
 }

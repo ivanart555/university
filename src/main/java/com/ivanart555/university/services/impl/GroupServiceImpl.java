@@ -1,5 +1,8 @@
 package com.ivanart555.university.services.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,17 +16,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import com.ivanart555.university.dao.GroupDAO;
+import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
-import com.ivanart555.university.exception.QueryNotExecuteException;
 import com.ivanart555.university.services.GroupService;
 
 @Component
 public class GroupServiceImpl implements GroupService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupServiceImpl.class);
+    private static final String SOMETHING_WRONG_WITH_DAO = "Something got wrong with DAO.";
     private GroupDAO groupDAO;
+    private LessonDAO lessonDAO;
 
     @Autowired
     public GroupServiceImpl(GroupDAO groupDAO) {
@@ -48,10 +54,8 @@ public class GroupServiceImpl implements GroupService {
             group = groupDAO.getById(id);
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Group with id {} not found!", id);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
-            LOGGER.error("Something got wrong with DAO.");
+            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Group by id.", e);
         }
         LOGGER.info("Group with id {} received successfully.", id);
@@ -69,8 +73,6 @@ public class GroupServiceImpl implements GroupService {
     public void update(Group group) throws ServiceException {
         try {
             groupDAO.update(group);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
             throw new ServiceException("Unable to update Group.", e);
         }
@@ -85,6 +87,25 @@ public class GroupServiceImpl implements GroupService {
             throw new ServiceException("Unable to create Group", e);
         }
         LOGGER.info("Group with id {} created successfully.", group.getId());
+    }
+
+    @Override
+    public List<Lesson> getDaySchedule(Group group, LocalDate day) throws ServiceException {
+        LocalDateTime startDateTime = day.atStartOfDay();
+        LocalDateTime endDateTime = day.atTime(23, 59, 59);
+        List<Lesson> lessons = new ArrayList<>();
+
+        try {
+            lessons = lessonDAO.getByDateTimeIntervalAndGroupId(group.getId(), startDateTime, endDateTime);
+        } catch (EntityNotFoundException e) {
+            LOGGER.info("Schedule for Group with id {} not found", group.getId());
+        } catch (DAOException e) {
+            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
+            throw new ServiceException("Unable to get Schedule for Group.", e);
+        }
+        LOGGER.info("Schedule for Lecturer with id {} received successfully.", group.getId());
+
+        return lessons;
     }
 
     @Override

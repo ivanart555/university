@@ -27,8 +27,9 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @Profile("prod")
-@ComponentScan("com.ivanart555.university.dao")
+@ComponentScan("com.ivanart555.university")
 @PropertySource("classpath:persistence-postgresql.properties")
+@PropertySource("classpath:application.properties")
 @EnableTransactionManagement
 public class PersistenceJPAConfig {
     private static final Logger LOGGER = LoggerFactory.getLogger(PersistenceJPAConfig.class);

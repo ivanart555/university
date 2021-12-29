@@ -17,7 +17,7 @@ public class Classroom {
 
     @Column(name = "room_name", unique = true)
     private String name;
-
+    
     public Classroom() {
     }
 

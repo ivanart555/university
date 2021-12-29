@@ -16,7 +16,6 @@ import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
-import com.ivanart555.university.exception.QueryNotExecuteException;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.ClassroomService;
 
@@ -48,8 +47,6 @@ public class ClassroomServiceImpl implements ClassroomService {
             classroom = classroomDAO.getById(id);
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Classroom with id {} not found!", id);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
             LOGGER.error("Something got wrong with DAO.");
             throw new ServiceException("Unable to get Classroom by id.", e);
@@ -69,8 +66,6 @@ public class ClassroomServiceImpl implements ClassroomService {
     public void update(Classroom classroom) throws ServiceException {
         try {
             classroomDAO.update(classroom);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
             throw new ServiceException("Unable to update Classroom.", e);
         }

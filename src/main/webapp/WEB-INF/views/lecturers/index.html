@@ -35,7 +35,10 @@
                     <td th:text="${lecturer.id}"></td>
                     <td th:text="${lecturer.firstName}"></td>
                     <td th:text="${lecturer.lastName}"></td>
-                    <td th:text="${lecturer.active}"></td>
+                    <td>
+                        <input class="form-check-input" type="checkbox" name="active" disabled
+                            th:checked="${lecturer.active}">
+                    </td>
                     <td th:text="${lecturer?.course?.name}"></td>
                     <td>
                         <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
@@ -134,6 +137,7 @@
                                     th:value="*{lastName}" />
                                 <label class="form-check-label" for="active"> Active </label>
                                 <input type="checkbox" name="active" checked />
+                                <br>
                                 <label for="groupId" class="form-label">Course:</label>
                                 <select class="form-select" id="courseId" th:field="*{course.id}">
                                     <option value=0 selected>Select course for Lecturer</option>

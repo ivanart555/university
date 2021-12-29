@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -25,8 +27,14 @@ public class Course {
     @Column(name = "course_description")
     private String description;
 
-    @ManyToMany(mappedBy = "courses", fetch=FetchType.EAGER)
+    @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
     private Set<Group> groups;
+
+    @OneToOne(mappedBy = "course")
+    private Lecturer lecturer;
+
+    @OneToMany(mappedBy = "course")
+    private Set<Lesson> lessons;
 
     public Course() {
     }
@@ -74,18 +82,33 @@ public class Course {
         this.groups = groups;
     }
 
+    public Lecturer getLecturer() {
+        return lecturer;
+    }
+
+    public void setLecturer(Lecturer lecturer) {
+        this.lecturer = lecturer;
+    }
+
+    public Set<Lesson> getLessons() {
+        return lessons;
+    }
+
+    public void setLessons(Set<Lesson> lessons) {
+        this.lessons = lessons;
+    }
+
     @Override
     public String toString() {
-        return "Course [id=" + id + ", name=" + name + ", description=" + description + ", groups=" + groups + "]";
+        return "Course [id=" + id + ", name=" + name + ", description=" + description + ", groups=" + groups
+                + ", lecturer=" + lecturer + ", lessons=" + lessons + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((description == null) ? 0 : description.hashCode());
-        result = prime * result + ((groups == null) ? 0 : groups.hashCode());
-        result = prime * result + id;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         return result;
     }
@@ -99,17 +122,10 @@ public class Course {
         if (getClass() != obj.getClass())
             return false;
         Course other = (Course) obj;
-        if (description == null) {
-            if (other.description != null)
+        if (id == null) {
+            if (other.id != null)
                 return false;
-        } else if (!description.equals(other.description))
-            return false;
-        if (groups == null) {
-            if (other.groups != null)
-                return false;
-        } else if (!groups.equals(other.groups))
-            return false;
-        if (id != other.id)
+        } else if (!id.equals(other.id))
             return false;
         if (name == null) {
             if (other.name != null)
@@ -118,4 +134,5 @@ public class Course {
             return false;
         return true;
     }
+
 }

@@ -38,7 +38,7 @@ public class LecturerDAOImpl implements LecturerDAO {
     public List<Lecturer> getAllActive() {
         LOGGER.debug("Trying to get all active Lecturers.");
         TypedQuery<Lecturer> query = entityManager
-                .createQuery("SELECT l FROM Lecturer l LEFT JOIN FETCH l.course WHERE s.active = TRUE", Lecturer.class);
+                .createQuery("SELECT l FROM Lecturer l LEFT JOIN FETCH l.course WHERE l.active = TRUE", Lecturer.class);
         return query.getResultList();
     }
 
