@@ -32,6 +32,22 @@ CREATE TABLE university.groups
     CONSTRAINT groups_group_name_key UNIQUE (group_name)
 );
 
+DROP TABLE IF EXISTS university.group_course CASCADE;
+
+CREATE TABLE university.group_course
+(
+    group_id integer NOT NULL,
+    course_id integer NOT NULL,
+    CONSTRAINT group_course_course_id_fkey FOREIGN KEY (course_id)
+        REFERENCES university.courses (course_id)
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION,
+    CONSTRAINT group_course_group_id_fkey FOREIGN KEY (group_id)
+        REFERENCES university.groups (group_id)
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+
 DROP TABLE IF EXISTS university.lecturers CASCADE;
 
 CREATE TABLE university.lecturers
@@ -40,68 +56,24 @@ CREATE TABLE university.lecturers
     lecturer_name character varying(255) NOT NULL,
     lecturer_lastname character varying(255) NOT NULL,
     active boolean NOT NULL,
-    CONSTRAINT lecturers_pkey PRIMARY KEY (lecturer_id)
+    course_id integer,
+    CONSTRAINT lecturers_pkey PRIMARY KEY (lecturer_id),
+    CONSTRAINT lecturers_course_id_key UNIQUE (course_id)
 );
 
-DROP TABLE IF EXISTS university.lecturers_courses CASCADE;
-
-CREATE TABLE university.lecturers_courses
-(
-    lecturer_id integer NOT NULL,
-    course_id integer NOT NULL,
-    CONSTRAINT lecturers_courses_course_id_fkey FOREIGN KEY (course_id)
-        REFERENCES university.courses (course_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT lecturers_courses_lecturer_id_fkey FOREIGN KEY (lecturer_id)
-        REFERENCES university.lecturers (lecturer_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS university.lecturers_groups CASCADE;
-
-CREATE TABLE university.lecturers_groups
-(
-    lecturer_id integer NOT NULL,
-    group_id integer NOT NULL,
-    CONSTRAINT lecturers_groups_group_id_fkey FOREIGN KEY (group_id)
-        REFERENCES university.groups (group_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT lecturers_groups_lecturer_id_fkey FOREIGN KEY (lecturer_id)
-        REFERENCES university.lecturers (lecturer_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
 
 DROP TABLE IF EXISTS university.lessons CASCADE;
 
 CREATE TABLE university.lessons
 (
     lesson_id SERIAL NOT NULL,
-    course_id integer NOT NULL,
-    room_id integer NOT NULL,
-    lesson_start timestamp without time zone NOT NULL,
-    lesson_end timestamp without time zone NOT NULL,
-    lecturer_id integer NOT NULL,
+    course_course_id integer,
+    classroom_room_id integer,
+    lesson_start timestamp without time zone,
+    lesson_end timestamp without time zone,
+    lecturer_lecturer_id integer,
+    group_group_id integer,
     CONSTRAINT lessons_pkey PRIMARY KEY (lesson_id)
-);
-
-DROP TABLE IF EXISTS university.lessons_groups CASCADE;
-
-CREATE TABLE university.lessons_groups
-(
-    lesson_id integer NOT NULL,
-    group_id integer NOT NULL,
-    CONSTRAINT lessons_groups_group_id_fkey FOREIGN KEY (group_id)
-        REFERENCES university.groups (group_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT lessons_groups_lesson_id_fkey FOREIGN KEY (lesson_id)
-        REFERENCES university.lessons (lesson_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS university.students CASCADE;
@@ -111,39 +83,8 @@ CREATE TABLE university.students
     student_id SERIAL NOT NULL,
     student_name character varying(255) NOT NULL,
     student_lastname character varying(255) NOT NULL,
-    group_id integer,
     active boolean NOT NULL,
+    group_group_id integer,
     CONSTRAINT students_pkey PRIMARY KEY (student_id)
 );
 
-DROP TABLE IF EXISTS university.students_courses CASCADE;
-
-CREATE TABLE university.students_courses
-(
-    student_id integer NOT NULL,
-    course_id integer NOT NULL,
-    CONSTRAINT students_courses_course_id_fkey FOREIGN KEY (course_id)
-        REFERENCES university.courses (course_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT students_courses_student_id_fkey FOREIGN KEY (student_id)
-        REFERENCES university.students (student_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
-
-DROP TABLE IF EXISTS university.students_groups CASCADE;
-
-CREATE TABLE university.students_groups
-(
-    student_id integer NOT NULL,
-    group_id integer NOT NULL,
-    CONSTRAINT students_groups_group_id_fkey FOREIGN KEY (group_id)
-        REFERENCES university.groups (group_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE,
-    CONSTRAINT students_groups_student_id_fkey FOREIGN KEY (student_id)
-        REFERENCES university.students (student_id)
-        ON UPDATE CASCADE
-        ON DELETE CASCADE
-);
