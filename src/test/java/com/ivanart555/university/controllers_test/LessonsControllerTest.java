@@ -1,4 +1,4 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.controllers_test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,11 +22,16 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.ivanart555.university.config.TestContext;
-import com.ivanart555.university.entities.Lesson;
+import com.ivanart555.university.config.TestSpringConfig;
+import com.ivanart555.university.controllers.LessonsController;
+import com.ivanart555.university.dto.LessonDto;
+import com.ivanart555.university.services.ClassroomService;
+import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.services.GroupService;
+import com.ivanart555.university.services.LecturerService;
 import com.ivanart555.university.services.LessonService;
 
-@SpringJUnitWebConfig(TestContext.class)
+@SpringJUnitWebConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
 class LessonsControllerTest {
 
@@ -34,9 +39,17 @@ class LessonsControllerTest {
 
     @Mock
     private LessonService lessonService;
+    @Mock
+    private CourseService courseService;
+    @Mock
+    private LecturerService lecturerService;
+    @Mock
+    private ClassroomService classroomService;
+    @Mock
+    private GroupService groupService;
 
     @Mock
-    Page<Lesson> anyPage;
+    Page<LessonDto> anyPage;
 
     @InjectMocks
     private LessonsController lessonsController;
@@ -59,14 +72,19 @@ class LessonsControllerTest {
                 .andExpect(model().attributeExists("lessonPage"))
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
+                .andExpect(model().attributeExists("lessonDto"))
+                .andExpect(model().attributeExists("courses"))
+                .andExpect(model().attributeExists("lecturers"))
+                .andExpect(model().attributeExists("classrooms"))
+                .andExpect(model().attributeExists("groups"))
                 .andExpect(view().name("lessons/index"));
     }
-    
+
     @Test
     void shouldRedirectToLessons_whenCalledLessonsPOST() throws Exception {
         mockMvc.perform(post("/lessons"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("lesson"))
+                .andExpect(model().attributeExists("lessonDto"))
                 .andExpect(view().name("redirect:/lessons"));
     }
 
@@ -74,7 +92,7 @@ class LessonsControllerTest {
     void shouldRedirectToLessons_whenCalledLessonsEditIdPATCH() throws Exception {
         mockMvc.perform(patch("/lessons/edit/20"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("lesson"))
+                .andExpect(model().attributeExists("lessonDto"))
                 .andExpect(view().name("redirect:/lessons"));
     }
 

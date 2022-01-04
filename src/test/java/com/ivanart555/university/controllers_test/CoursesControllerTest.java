@@ -1,12 +1,12 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.controllers_test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
@@ -22,28 +22,29 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.ivanart555.university.config.TestContext;
-import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.services.ClassroomService;
+import com.ivanart555.university.config.TestSpringConfig;
+import com.ivanart555.university.controllers.CoursesController;
+import com.ivanart555.university.entities.Course;
+import com.ivanart555.university.services.CourseService;
 
-@SpringJUnitWebConfig(TestContext.class)
+@SpringJUnitWebConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
-class ClasroomsControllerTest {
+class CoursesControllerTest {
 
     private MockMvc mockMvc;
 
     @Mock
-    private ClassroomService classroomService;
+    private CourseService courseService;
 
     @Mock
-    Page<Classroom> anyPage;
+    Page<Course> anyPage;
 
     @InjectMocks
-    private ClassroomsController classroomsController;
+    private CoursesController coursesController;
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(classroomsController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(coursesController).build();
     }
 
     @Test
@@ -52,36 +53,37 @@ class ClasroomsControllerTest {
     }
 
     @Test
-    void shouldReturnViewClassroomsIndex_whenCalledClassroomsGET() throws Exception {
-        when(classroomService.findPaginated(any())).thenReturn(anyPage);
-        mockMvc.perform(get("/classrooms"))
+    void shouldReturnViewCoursesIndex_whenCalledCoursesGET() throws Exception {
+        when(courseService.findPaginated(any())).thenReturn(anyPage);
+        mockMvc.perform(get("/courses"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("classroomPage"))
+                .andExpect(model().attributeExists("coursePage"))
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
-                .andExpect(view().name("classrooms/index"));
+                .andExpect(model().attributeExists("course"))
+                .andExpect(view().name("courses/index"));
     }
 
     @Test
     void shouldRedirectToClassrooms_whenCalledClassroomsPOST() throws Exception {
-        mockMvc.perform(post("/classrooms"))
+        mockMvc.perform(post("/courses"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("classroom"))
-                .andExpect(view().name("redirect:/classrooms"));
+                .andExpect(model().attributeExists("course"))
+                .andExpect(view().name("redirect:/courses"));
     }
 
     @Test
     void shouldRedirectToClassrooms_whenCalledClassroomsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/classrooms/edit/20"))
+        mockMvc.perform(patch("/courses/edit/1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("classroom"))
-                .andExpect(view().name("redirect:/classrooms"));
+                .andExpect(model().attributeExists("course"))
+                .andExpect(view().name("redirect:/courses"));
     }
 
     @Test
     void shouldRedirectToClassrooms_whenCalledClassroomsDeleteIdDELETE() throws Exception {
-        mockMvc.perform(delete("/classrooms/delete/20"))
+        mockMvc.perform(delete("/courses/delete/1"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/classrooms"));
+                .andExpect(view().name("redirect:/courses"));
     }
 }

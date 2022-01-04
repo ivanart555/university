@@ -1,4 +1,4 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.controllers_test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,11 +22,13 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.ivanart555.university.config.TestContext;
+import com.ivanart555.university.config.TestSpringConfig;
+import com.ivanart555.university.controllers.LecturersController;
 import com.ivanart555.university.entities.Lecturer;
+import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.LecturerService;
 
-@SpringJUnitWebConfig(TestContext.class)
+@SpringJUnitWebConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
 class LecturersControllerTest {
 
@@ -34,7 +36,9 @@ class LecturersControllerTest {
 
     @Mock
     private LecturerService lecturerService;
-
+    
+    @Mock
+    private CourseService courseService;
     @Mock
     Page<Lecturer> anyPage;
 
@@ -59,9 +63,10 @@ class LecturersControllerTest {
                 .andExpect(model().attributeExists("lecturerPage"))
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
+                .andExpect(model().attributeExists("lecturer"))
                 .andExpect(view().name("lecturers/index"));
     }
-    
+
     @Test
     void shouldRedirectToLecturers_whenCalledLecturersPOST() throws Exception {
         mockMvc.perform(post("/lecturers"))
