@@ -1,5 +1,6 @@
-package com.ivanart555.university.services.impl;
+package com.ivanart555.university.services.impl_test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -27,6 +28,7 @@ import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.impl.LecturerServiceImpl;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -96,23 +98,16 @@ class LecturerServiceImplTest {
     }
 
     @Test
-    void shouldInvokeGetByIdAndAddLecturerToCourseMethods_whenCalledAddLecturerToCourse() throws ServiceException, DAOException {
+    void shouldInvokeGetByIdAndSetCourseToLecturer_whenCalledAddLecturerToCourse()
+            throws ServiceException, DAOException {
+        Lecturer lecturer = new Lecturer();
+        lecturer.setActive(true);
+
         when(courseDAO.getById(anyInt())).thenReturn(course);
-        when(lecturer.isActive()).thenReturn(true);
 
-        lecturerServiceImpl.addLecturerToCourse(lecturer, anyInt());
+        lecturerServiceImpl.addLecturerToCourse(lecturer, course);
         verify(courseDAO).getById(anyInt());
-        verify(lecturerDAO).addLecturerToCourse(anyInt(), anyInt());
-    }
-
-    @Test
-    void shouldInvokeGetByIdAndAddLecturerToGroupMethods_whenCalledAddLecturerToGroup() throws ServiceException, DAOException {
-        when(groupDAO.getById(anyInt())).thenReturn(group);
-        when(lecturer.isActive()).thenReturn(true);
-
-        lecturerServiceImpl.addLecturerToGroup(lecturer, anyInt());
-        verify(groupDAO).getById(anyInt());
-        verify(lecturerDAO).addLecturerToGroup(anyInt(), anyInt());
+        assertEquals(course, lecturer.getCourse());
     }
 
     @Test

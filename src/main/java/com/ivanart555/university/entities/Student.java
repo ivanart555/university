@@ -52,6 +52,13 @@ public class Student {
         this.active = active;
     }
 
+    public Student(String firstName, String lastName, Group group) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.group = group;
+        this.active = true;
+    }
+
     public int getId() {
         return id;
     }

@@ -33,7 +33,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     public List<Classroom> getAll() throws ServiceException {
         List<Classroom> classrooms = classroomDAO.getAll();
         if (classrooms.isEmpty()) {
-            throw new ServiceException("There are no Classrooms in database");
+            LOGGER.warn("There are no Classrooms in database");
         }
         LOGGER.info("All Classrooms received successfully.");
 

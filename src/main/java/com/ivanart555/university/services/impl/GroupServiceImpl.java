@@ -40,7 +40,7 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> getAll() throws ServiceException {
         List<Group> groups = groupDAO.getAll();
         if (groups.isEmpty()) {
-            throw new ServiceException("There are no Groups in database");
+            LOGGER.warn("There are no Groups in database");
         }
         LOGGER.info("All Groups received successfully.");
 

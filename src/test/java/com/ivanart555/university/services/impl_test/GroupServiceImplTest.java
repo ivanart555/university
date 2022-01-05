@@ -1,4 +1,4 @@
-package com.ivanart555.university.services.impl;
+package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -17,6 +17,7 @@ import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.impl.GroupServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceImplTest {

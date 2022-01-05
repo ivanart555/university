@@ -29,7 +29,7 @@ public class StudentDAOImpl implements StudentDAO {
     @Override
     public List<Student> getAll() {
         LOGGER.debug("Trying to get all Students.");
-        TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s LEFT JOIN FETCH s.group",
+        TypedQuery<Student> query = entityManager.createQuery("SELECT s FROM Student s LEFT JOIN FETCH s.group ORDER BY s.id",
                 Student.class);
         return query.getResultList();
     }
@@ -38,7 +38,7 @@ public class StudentDAOImpl implements StudentDAO {
     public List<Student> getAllActive() {
         LOGGER.debug("Trying to get all active Students.");
         TypedQuery<Student> query = entityManager.createQuery(
-                "SELECT s FROM Student s LEFT JOIN FETCH s.group WHERE s.active = TRUE",
+                "SELECT s FROM Student s LEFT JOIN FETCH s.group WHERE s.active = TRUE ORDER BY s.id",
                 Student.class);
         return query.getResultList();
     }

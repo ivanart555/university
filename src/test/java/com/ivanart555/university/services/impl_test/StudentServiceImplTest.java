@@ -1,5 +1,6 @@
-package com.ivanart555.university.services.impl;
+package com.ivanart555.university.services.impl_test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -28,6 +29,7 @@ import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.impl.StudentServiceImpl;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -98,31 +100,24 @@ class StudentServiceImplTest {
     }
 
     @Test
-    void shouldInvokeGetByIdAndUpdateMethods_whenCalledAssignStudentToGroup() throws ServiceException, DAOException {
+    void shouldInvokeGetByIdAndSetGroupToStudent_whenCalledAddStudentToGroup() throws ServiceException, DAOException {
+        Student student = new Student();
+        student.setActive(true);
+
         when(groupDAO.getById(anyInt())).thenReturn(group);
-        when(student.isActive()).thenReturn(true);
 
-        studentServiceImpl.assignStudentToGroup(student, anyInt());
+        studentServiceImpl.addStudentToGroup(student, group);
         verify(groupDAO).getById(anyInt());
-        verify(studentDAO).update(student);
+        assertEquals(group, student.getGroup());
     }
 
     @Test
-    void shouldInvokeGetByIdAndAddStudentToCourseMethods_whenCalledAssignStudentToCourse()
+    void shouldInvokeGetByDateTimeIntervalAndGroupIdMethod_whenCalledGetDaySchedule()
             throws ServiceException, DAOException {
-        when(courseDAO.getById(anyInt())).thenReturn(course);
-        when(student.isActive()).thenReturn(true);
-
-        studentServiceImpl.assignStudentToCourse(student, anyInt());
-        verify(courseDAO).getById(anyInt());
-        verify(studentDAO).addStudentToCourse(anyInt(), anyInt());
-    }
-
-    @Test
-    void shouldInvokeGetByDateTimeIntervalAndStudentIdMethod_whenCalledGetDaySchedule()
-            throws ServiceException, DAOException {
+        Student student = new Student("Alex", "Black");
+        student.setGroup(new Group(1, "AF-01"));
         studentServiceImpl.getDaySchedule(student, LocalDate.now());
-        verify(lessonDAO).getByDateTimeIntervalAndStudentId(anyInt(), any(LocalDateTime.class),
+        verify(lessonDAO).getByDateTimeIntervalAndGroupId(anyInt(), any(LocalDateTime.class),
                 any(LocalDateTime.class));
     }
 }

@@ -1,4 +1,4 @@
-package com.ivanart555.university.services.impl;
+package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
@@ -22,6 +22,7 @@ import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.dao.LecturerDAO;
 import com.ivanart555.university.dao.LessonDAO;
+import com.ivanart555.university.dto.LessonDto;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Group;
@@ -29,6 +30,7 @@ import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.impl.LessonServiceImpl;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -53,6 +55,8 @@ class LessonServiceImplTest {
     private Classroom classroom;
     @Mock
     private Group group;
+    @Mock
+    private LessonDto lessonDto;
 
     @InjectMocks
     private LessonServiceImpl lessonServiceImpl;
@@ -64,6 +68,16 @@ class LessonServiceImplTest {
         when(lessonDAO.getAll()).thenReturn(lessons);
 
         lessonServiceImpl.getAll();
+        verify(lessonDAO).getAll();
+    }
+    
+    @Test
+    void shouldInvokeGetAllMethod_whenCalledGetAllDto() throws ServiceException {
+        List<Lesson> lessons = new ArrayList<>();
+        lessons.add(lesson);
+        when(lessonDAO.getAll()).thenReturn(lessons);
+
+        lessonServiceImpl.getAllDto();
         verify(lessonDAO).getAll();
     }
 
@@ -92,42 +106,19 @@ class LessonServiceImplTest {
         lessonServiceImpl.create(lesson);
         verify(lessonDAO).create(lesson);
     }
-
+    
     @Test
-    void shouldInvokeGetByIdAndUpdateMethods_whenCalledAssignLessonToGroup() throws ServiceException, DAOException {
-        when(courseDAO.getById(anyInt())).thenReturn(course);
-
-        lessonServiceImpl.assignLessonToCourse(lesson, anyInt());
-        verify(courseDAO).getById(anyInt());
-        verify(lessonDAO).update(lesson);
+    void shouldInvokeCreateMethods_whenCalledCreateWithLessonDto() throws ServiceException, DAOException {
+        Lesson lesson = new Lesson(null , null);
+        lessonServiceImpl.create(lessonDto);
+        verify(lessonDAO).create(lesson);
     }
-
+    
     @Test
-    void shouldInvokeGetByIdAndUpdateMethods_whenCalledAssignLessonToClassroom() throws ServiceException, DAOException {
-        when(classroomDAO.getById(anyInt())).thenReturn(classroom);
-
-        lessonServiceImpl.assignLessonToClassroom(lesson, anyInt());
-        verify(classroomDAO).getById(anyInt());
+    void shouldInvokeUpdateMethod_whenCalledUpdateWithLessonDto() throws ServiceException, DAOException {
+        Lesson lesson = new Lesson(null , null);
+        lessonServiceImpl.update(lessonDto);
         verify(lessonDAO).update(lesson);
-    }
-
-    @Test
-    void shouldInvokeGetByIdAndUpdateMethods_whenCalledAssignLessonToLecturer() throws ServiceException, DAOException {
-        when(lecturerDAO.getById(anyInt())).thenReturn(lecturer);
-
-        lessonServiceImpl.assignLessonToLecturer(lesson, anyInt());
-        verify(lecturerDAO).getById(anyInt());
-        verify(lessonDAO).update(lesson);
-    }
-
-    @Test
-    void shouldInvokeGetByIdAndAssignLessonToGroupMethods_whenCalledAssignLessonToGroup()
-            throws ServiceException, DAOException {
-        when(groupDAO.getById(anyInt())).thenReturn(group);
-
-        lessonServiceImpl.assignLessonToGroup(lesson, anyInt());
-        verify(groupDAO).getById(anyInt());
-        verify(lessonDAO).assignLessonToGroup(anyInt(), anyInt());
     }
 
     @Test

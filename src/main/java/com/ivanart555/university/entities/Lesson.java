@@ -50,6 +50,16 @@ public class Lesson {
         this.lessonEnd = lessonEnd;
     }
 
+    public Lesson(Course course, Classroom classroom, Lecturer lecturer, Group group, LocalDateTime lessonStart,
+            LocalDateTime lessonEnd) {
+        this.course = course;
+        this.classroom = classroom;
+        this.lecturer = lecturer;
+        this.group = group;
+        this.lessonStart = lessonStart;
+        this.lessonEnd = lessonEnd;
+    }
+
     public int getId() {
         return id;
     }

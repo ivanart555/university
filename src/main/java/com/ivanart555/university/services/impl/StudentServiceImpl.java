@@ -48,7 +48,7 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAll() throws ServiceException {
         List<Student> students = studentDAO.getAll();
         if (students.isEmpty()) {
-            throw new ServiceException("There are no Students in database");
+            LOGGER.warn("There are no Students in database");
         }
         LOGGER.info("All Students were received successfully.");
 
@@ -59,7 +59,7 @@ public class StudentServiceImpl implements StudentService {
     public List<Student> getAllActive() throws ServiceException {
         List<Student> students = studentDAO.getAllActive();
         if (students.isEmpty()) {
-            throw new ServiceException("There are no active Students in database");
+            LOGGER.warn("There are no active Students in database");
         }
         LOGGER.info("All active Students were received successfully.");
 
@@ -90,10 +90,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void update(Student student) throws ServiceException {
-        setNullGroupWhenZeroId(student, student.getGroup().getId());
+        setNullGroupWhenNullId(student);
 
         if (student.getGroup() != null) {
-            assignStudentToGroup(student, student.getGroup().getId());
+            addStudentToGroup(student, student.getGroup());
         }
 
         try {
@@ -106,10 +106,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void create(Student student) throws ServiceException {
-        setNullGroupWhenZeroId(student, student.getGroup().getId());
+        setNullGroupWhenNullId(student);
 
         if (student.getGroup() != null) {
-            assignStudentToGroup(student, student.getGroup().getId());
+            addStudentToGroup(student, student.getGroup());
         }
 
         try {
@@ -121,23 +121,22 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void assignStudentToGroup(Student student, Integer groupId) throws ServiceException {
-        Group group = null;
-
+    public void addStudentToGroup(Student student, Group group) throws ServiceException {
+        checkGroupSizeLimitation(group.getId());
+        checkIfStudentIsNotActive(student);
+        
         try {
-            group = groupDAO.getById(groupId);
+            group = groupDAO.getById(group.getId());
         } catch (EntityNotFoundException e) {
             throw new ServiceException(
-                    "Failed to assign Student to Group. There is no Group with such id:" + groupId);
+                    "Failed to assign Student to Group. There is no Group with such id:" + group.getId());
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to assign Student to Group.", e);
         }
 
-        checkGroupSizeLimitation(groupId);
-        checkIfStudentIsNotActive(student);
-
         student.setGroup(group);
+        LOGGER.info("Student with id:{} added to Group with id:{} successfully.", student.getId(), group.getId());
     }
 
     @Override
@@ -202,8 +201,10 @@ public class StudentServiceImpl implements StudentService {
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), studentsSize);
     }
 
-    public void setNullGroupWhenZeroId(Student student, int groupId) {
-        if (groupId == 0) {
+    private void setNullGroupWhenNullId(Student student) {
+        Group group = student.getGroup();
+        
+        if (group != null && group.getId() == null) {
             student.setGroup(null);
         }
     }

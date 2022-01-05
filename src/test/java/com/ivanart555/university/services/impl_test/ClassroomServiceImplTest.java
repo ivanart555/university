@@ -1,4 +1,4 @@
-package com.ivanart555.university.services.impl;
+package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -12,11 +12,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.impl.ClassroomServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class ClassroomServiceImplTest {
@@ -25,6 +27,9 @@ class ClassroomServiceImplTest {
 
     @Mock
     private Classroom classroom;
+
+    @Mock
+    private Pageable pageable;
 
     @InjectMocks
     private ClassroomServiceImpl classroomServiceImpl;

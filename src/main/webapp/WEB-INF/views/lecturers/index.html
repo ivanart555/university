@@ -69,7 +69,7 @@
                                                 <br>
                                                 <label for="courseId" class="form-label">Course:</label>
                                                 <select class="form-select" id="courseId" th:field="*{course.id}">
-                                                    <option th:if="*{course} == null" value=0 selected>Select
+                                                    <option th:if="*{course} == null" value="" selected>Select
                                                         course for Lecturer</option>
                                                     <option th:unless="*{course} == null" th:value="*{course.id}"
                                                         th:utext="*{course.name}" selected></option>
@@ -140,7 +140,7 @@
                                 <br>
                                 <label for="groupId" class="form-label">Course:</label>
                                 <select class="form-select" id="courseId" th:field="*{course.id}">
-                                    <option value=0 selected>Select course for Lecturer</option>
+                                    <option value="" selected>Select course for Lecturer</option>
                                     <option th:each="course : ${courses}" th:value="${course.id}"
                                         th:utext="${course.name}" />
                                 </select>

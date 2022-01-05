@@ -17,7 +17,7 @@ import javax.persistence.Table;
 @Table(name = "courses", schema = "university")
 public class Course {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "course_id")
     private Integer id;
 

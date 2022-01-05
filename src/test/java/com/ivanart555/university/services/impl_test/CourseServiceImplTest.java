@@ -1,4 +1,4 @@
-package com.ivanart555.university.services.impl;
+package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
@@ -17,6 +17,7 @@ import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.impl.CourseServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceImplTest {

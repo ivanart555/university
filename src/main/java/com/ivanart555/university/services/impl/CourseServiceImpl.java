@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> getAll() throws ServiceException {
         List<Course> courses = courseDAO.getAll();
         if (courses.isEmpty()) {
-            throw new ServiceException("There are no Courses in database");
+            LOGGER.warn("There are no Courses in database");
         }
         LOGGER.info("All Courses received successfully.");
 

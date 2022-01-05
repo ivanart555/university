@@ -111,7 +111,7 @@ public class LessonDAOImpl implements LessonDAO {
                 .setParameter("lessonStart", lessonStart)
                 .setParameter("lessonEnd", lessonEnd)
                 .getResultList();
-
+                
         if (lessons.isEmpty()) {
             String msg = format("Lessons were not found by date/time interval('%s','%s') and Group id:'%s'.",
                     lessonStart, lessonEnd, groupId);

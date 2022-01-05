@@ -57,7 +57,7 @@ public class LecturerServiceImpl implements LecturerService {
     public List<Lecturer> getAllActive() throws ServiceException {
         List<Lecturer> lecturers = lecturerDAO.getAllActive();
         if (lecturers.isEmpty()) {
-            LOGGER.info("There are no Lecturers in database");
+            LOGGER.info("There are no active Lecturers in database");
             return lecturers;
         }
         LOGGER.info("All active Lecturers received successfully.");
@@ -89,10 +89,10 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void update(Lecturer lecturer) throws ServiceException {
-        setNullCourseWhenZeroId(lecturer, lecturer.getCourse().getId());
+        setNullCourseWhenNullId(lecturer);
 
         if (lecturer.getCourse() != null) {
-            addLecturerToCourse(lecturer, lecturer.getCourse().getId());
+            addLecturerToCourse(lecturer, lecturer.getCourse());
         }
 
         try {
@@ -105,7 +105,7 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void create(Lecturer lecturer) throws ServiceException {
-        setNullCourseWhenZeroId(lecturer, lecturer.getCourse().getId());
+        setNullCourseWhenNullId(lecturer);
 
         try {
             lecturerDAO.create(lecturer);
@@ -116,23 +116,22 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public void addLecturerToCourse(Lecturer lecturer, Integer courseId) throws ServiceException {
-        Course course = null;
+    public void addLecturerToCourse(Lecturer lecturer, Course course) throws ServiceException {
+
+        checkIfLecturerIsNotActive(lecturer);
 
         try {
-            course = courseDAO.getById(courseId);
+            course = courseDAO.getById(course.getId());
         } catch (EntityNotFoundException e) {
             throw new ServiceException(
-                    "Failed to assign Lecturer to Course. There is no Course with such id:" + courseId);
+                    "Failed to assign Lecturer to Course. There is no Course with such id:" + course.getId());
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Course by id.", e);
         }
 
-        checkIfLecturerIsNotActive(lecturer);
-
         lecturer.setCourse(course);
-        LOGGER.info("Lecturer with id:{} added to Course with id:{} successfully.", lecturer.getId(), courseId);
+        LOGGER.info("Lecturer with id:{} added to Course with id:{} successfully.", lecturer.getId(), course.getId());
     }
 
     @Override
@@ -181,8 +180,10 @@ public class LecturerServiceImpl implements LecturerService {
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), lecturersSize);
     }
 
-    public void setNullCourseWhenZeroId(Lecturer lecturer, int courseId) {
-        if (courseId == 0) {
+    private void setNullCourseWhenNullId(Lecturer lecturer) {
+        Course course = lecturer.getCourse();
+
+        if (course != null && course.getId() == null) {
             lecturer.setCourse(null);
         }
     }
