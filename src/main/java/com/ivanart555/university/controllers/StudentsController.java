@@ -65,7 +65,7 @@ public class StudentsController {
         return "students/index";
     }
 
-    @PostMapping()
+    @PostMapping
     public String create(@ModelAttribute("student") Student student) throws ServiceException {
         studentService.create(student);
         return REDIRECT_STUDENTS;
