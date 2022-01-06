@@ -1,9 +1,23 @@
 package com.ivanart555.university.entities;
 
-public class Classroom {
-    private int id;
-    private String name;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "classrooms", schema="university")
+public class Classroom {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "room_id")
+    private Integer id;
+
+    @Column(name = "room_name", unique = true)
+    private String name;
+    
     public Classroom() {
     }
 
@@ -16,11 +30,11 @@ public class Classroom {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

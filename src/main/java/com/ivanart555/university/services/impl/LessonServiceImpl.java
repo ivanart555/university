@@ -19,17 +19,20 @@ import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.dao.LecturerDAO;
 import com.ivanart555.university.dao.LessonDAO;
+import com.ivanart555.university.dto.LessonDto;
+import com.ivanart555.university.entities.Classroom;
+import com.ivanart555.university.entities.Course;
+import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
-import com.ivanart555.university.exception.QueryNotExecuteException;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.LessonService;
 
 @Component
 public class LessonServiceImpl implements LessonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LessonServiceImpl.class);
-    private static final String QUERY_DIDNT_EXECUTE = "Query didn't execute. Check SQL query.";
     private static final String SOMETHING_WRONG_WITH_DAO = "Something got wrong with DAO.";
     private LessonDAO lessonDAO;
     private CourseDAO courseDAO;
@@ -51,11 +54,16 @@ public class LessonServiceImpl implements LessonService {
     public List<Lesson> getAll() throws ServiceException {
         List<Lesson> lessons = lessonDAO.getAll();
         if (lessons.isEmpty()) {
-            throw new ServiceException("There are no Lessons in database");
+            LOGGER.info("There are no Lessons in database");
+            return lessons;
         }
         LOGGER.info("All Lessons were received successfully.");
 
         return lessons;
+    }
+
+    public List<LessonDto> getAllDto() throws ServiceException {
+        return convertLessonsToDto(getAll());
     }
 
     @Override
@@ -65,8 +73,6 @@ public class LessonServiceImpl implements LessonService {
             lesson = lessonDAO.getById(id);
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Lesson with id {} not found!", id);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
             throw new ServiceException("Unable to get Lesson by id.", e);
@@ -86,8 +92,6 @@ public class LessonServiceImpl implements LessonService {
     public void update(Lesson lesson) throws ServiceException {
         try {
             lessonDAO.update(lesson);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             throw new ServiceException("Unable to update Lecturer.", e);
         }
@@ -104,105 +108,14 @@ public class LessonServiceImpl implements LessonService {
         LOGGER.info("Lesson with id {} created successfully.", lesson.getId());
     }
 
-    @Override
-    public void assignLessonToCourse(Lesson lesson, Integer courseId) throws ServiceException {
-        try {
-            courseDAO.getById(courseId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(
-                    "Failed to assign Lesson to Course. There is no Course with such id:" + courseId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Course by id.", e);
-        }
-
-        lesson.setCourseId(courseId);
-
-        try {
-            lessonDAO.update(lesson);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            throw new ServiceException("Unable to update Lesson.", e);
-        }
-        LOGGER.info("Lesson with id {} assigned to Course with id: {} successfully.", lesson.getId(), courseId);
+    public void create(LessonDto lessonDto) throws ServiceException {
+        Lesson lesson = convertDtoToLesson(lessonDto);
+        create(lesson);
     }
-
-    @Override
-    public void assignLessonToClassroom(Lesson lesson, Integer roomId) throws ServiceException {
-        try {
-            classroomDAO.getById(roomId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(
-                    "Failed to assign Lesson to Classroom. There is no Classroom with such id:" + roomId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Classroom by id.", e);
-        }
-        LOGGER.info("Classroom with id {} received successfully.", roomId);
-
-        lesson.setRoomId(roomId);
-
-        try {
-            lessonDAO.update(lesson);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            throw new ServiceException("Failed to assign Lesson to Classroom.", e);
-        }
-        LOGGER.info("Lesson with id {} assigned to Classroom with id: {} successfully.", lesson.getId(), roomId);
-    }
-
-    @Override
-    public void assignLessonToLecturer(Lesson lesson, Integer lecturerId) throws ServiceException {
-        try {
-            lecturerDAO.getById(lecturerId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(
-                    "Failed to assign Lesson to Lecturer. There is no Lecturer with such id:" + lecturerId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Lecturer by id.", e);
-        }
-
-        lesson.setLecturerId(lecturerId);
-
-        try {
-            lessonDAO.update(lesson);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            throw new ServiceException("Failed to assign Lesson to Lecturer.", e);
-        }
-        LOGGER.info("Lesson with id {} assigned to Lecturer with id: {} successfully.", lesson.getId(), lecturerId);
-    }
-
-    @Override
-    public void assignLessonToGroup(Lesson lesson, Integer groupId) throws ServiceException {
-        try {
-            groupDAO.getById(groupId);
-        } catch (EntityNotFoundException e) {
-            throw new ServiceException(
-                    "Failed to assign Lesson to Group. There is no Group with such id:" + groupId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Group by id.", e);
-        }
-
-        try {
-            lessonDAO.assignLessonToGroup(lesson.getId(), groupId);
-        } catch (DAOException e) {
-            throw new ServiceException("Failed to assign lesson to group.", e);
-        }
-        LOGGER.info("Lesson with id {} assigned to Group with id: {} successfully.", lesson.getId(), groupId);
+    
+    public void update(LessonDto lessonDto) throws ServiceException {
+        Lesson lesson = convertDtoToLesson(lessonDto);
+        update(lesson);
     }
 
     @Override
@@ -218,8 +131,6 @@ public class LessonServiceImpl implements LessonService {
 
         try {
             lessonDAO.update(lesson);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             throw new ServiceException("Failed to assign Lesson to date/time for Group.", e);
         }
@@ -234,8 +145,6 @@ public class LessonServiceImpl implements LessonService {
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Lessons were not found by date/time interval({},{}) and Group id:{}.", lessonStart,
                     lessonEnd, groupId);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error(QUERY_DIDNT_EXECUTE);
         } catch (DAOException e) {
             LOGGER.error(SOMETHING_WRONG_WITH_DAO);
         }
@@ -244,15 +153,15 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public Page<Lesson> findPaginated(Pageable pageable) throws ServiceException {
+    public Page<LessonDto> findPaginated(Pageable pageable) throws ServiceException {
         int pageSize = pageable.getPageSize();
         int currentPage = pageable.getPageNumber();
         int startItem = currentPage * pageSize;
 
-        List<Lesson> allLessons = getAll();
+        List<LessonDto> allLessons = getAllDto();
         int lessonsSize = allLessons.size();
 
-        List<Lesson> list;
+        List<LessonDto> list;
 
         if (lessonsSize < startItem) {
             list = Collections.emptyList();
@@ -262,5 +171,80 @@ public class LessonServiceImpl implements LessonService {
         }
 
         return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), lessonsSize);
+    }
+
+    private Lesson convertDtoToLesson(LessonDto lessonDto) throws ServiceException {
+        Lesson lesson = new Lesson();
+        lesson.setId(lessonDto.getId());
+
+        Classroom classroom;
+        try {
+            classroom = lessonDto.getRoomId() == null ? null : classroomDAO.getById(lessonDto.getRoomId());
+            lesson.setClassroom(classroom);
+        } catch (EntityNotFoundException e) {
+            LOGGER.warn("Classroom with id '%s' not found");
+        } catch (DAOException e) {
+            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
+        }
+
+        Course course;
+        try {
+            course = lessonDto.getCourseId() == null ? null : courseDAO.getById(lessonDto.getCourseId());
+            lesson.setCourse(course);
+        } catch (EntityNotFoundException e) {
+            LOGGER.warn("Course with id '%s' not found");
+        } catch (DAOException e) {
+            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
+        }
+
+        Lecturer lecturer;
+        try {
+            lecturer = lessonDto.getLecturerId() == null ? null : lecturerDAO.getById(lessonDto.getLecturerId());
+            lesson.setLecturer(lecturer);
+        } catch (EntityNotFoundException e) {
+            LOGGER.warn("Lecturer with id '%s' not found");
+        } catch (DAOException e) {
+            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
+        }
+        
+        Group group;
+        try {
+            group = lessonDto.getGroupId() == null ? null : groupDAO.getById(lessonDto.getGroupId());
+            lesson.setGroup(group);
+        } catch (EntityNotFoundException e) {
+            LOGGER.warn("Group with id '%s' not found");
+        } catch (DAOException e) {
+            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
+        }
+        
+        lesson.setLessonStart(lessonDto.getLessonStart());
+        lesson.setLessonEnd(lessonDto.getLessonEnd());
+
+        return lesson;
+    }
+
+    private List<LessonDto> convertLessonsToDto(List<Lesson> lessons) {
+        List<LessonDto> lessonsDto = new ArrayList<>();
+        for (Lesson lesson : lessons) {
+            lessonsDto.add(convertLessonToDto(lesson));
+        }
+        return lessonsDto;
+    }
+
+    private LessonDto convertLessonToDto(Lesson lesson) {
+        LessonDto lessonDto = new LessonDto();
+        lessonDto.setId(lesson.getId());
+        lessonDto.setCourseId(lesson.getCourse() == null ? null : lesson.getCourse().getId());
+        lessonDto.setCourseName(lesson.getCourse() == null ? null : lesson.getCourse().getName());
+        lessonDto.setGroupId(lesson.getGroup() == null ? null : lesson.getGroup().getId());
+        lessonDto.setGroupName(lesson.getGroup() == null ? null : lesson.getGroup().getName());
+        lessonDto.setRoomId(lesson.getClassroom() == null ? null : lesson.getClassroom().getId());
+        lessonDto.setRoomName(lesson.getClassroom() == null ? null : lesson.getClassroom().getName());
+        lessonDto.setLecturerId(lesson.getLecturer() == null ? null : lesson.getLecturer().getId());
+        lessonDto.setLecturerFirstName(lesson.getLecturer() == null ? null : lesson.getLecturer().getFirstName());
+        lessonDto.setLecturerLastName(lesson.getLecturer() == null ? null : lesson.getLecturer().getLastName());
+        lessonDto.setLessonStart(lesson.getLessonStart());
+        lessonDto.setLessonEnd(lesson.getLessonEnd());
+        return lessonDto;
     }
 }

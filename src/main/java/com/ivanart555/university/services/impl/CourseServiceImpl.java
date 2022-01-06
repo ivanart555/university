@@ -16,7 +16,6 @@ import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.EntityNotFoundException;
-import com.ivanart555.university.exception.QueryNotExecuteException;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.CourseService;
 
@@ -34,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
     public List<Course> getAll() throws ServiceException {
         List<Course> courses = courseDAO.getAll();
         if (courses.isEmpty()) {
-            throw new ServiceException("There are no Courses in database");
+            LOGGER.warn("There are no Courses in database");
         }
         LOGGER.info("All Courses received successfully.");
 
@@ -48,8 +47,6 @@ public class CourseServiceImpl implements CourseService {
             course = courseDAO.getById(id);
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Course with id {} not found!", id);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
             LOGGER.error("Something got wrong with DAO.");
             throw new ServiceException("Unable to get Course by id.", e);
@@ -69,8 +66,6 @@ public class CourseServiceImpl implements CourseService {
     public void update(Course course) throws ServiceException {
         try {
             courseDAO.update(course);
-        } catch (QueryNotExecuteException e) {
-            LOGGER.error("Query didn't execute. Check SQL query.");
         } catch (DAOException e) {
             throw new ServiceException("Unable to update Course.", e);
         }

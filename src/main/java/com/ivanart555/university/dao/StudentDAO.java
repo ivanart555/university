@@ -12,7 +12,4 @@ public interface StudentDAO extends GenericDAO<Student, Integer> {
     List<Student> getAllActive();
     
     List<Student> getStudentsByGroupId(Integer groupId) throws DAOException;
-    
-    void addStudentToCourse(Integer studentId, Integer courseId) throws DAOException;
-
 }

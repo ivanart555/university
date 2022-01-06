@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.LecturerService;
 
 @Controller
@@ -28,10 +29,12 @@ import com.ivanart555.university.services.LecturerService;
 public class LecturersController {
     private static final String REDIRECT_LECTURERS = "redirect:/lecturers";
     private LecturerService lecturerService;
+    private CourseService courseService;
 
     @Autowired
-    public LecturersController(LecturerService lecturerService) {
+    public LecturersController(LecturerService lecturerService, CourseService courseService) {
         this.lecturerService = lecturerService;
+        this.courseService = courseService;
     }
 
     @GetMapping()
@@ -46,6 +49,8 @@ public class LecturersController {
         model.addAttribute("lecturerPage", lecturerPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", lecturerPage.getTotalPages());
+        
+        model.addAttribute("courses", courseService.getAll());
         
         model.addAttribute("lecturer", new Lecturer());
       

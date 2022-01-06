@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.GroupService;
 
 @Controller
@@ -28,10 +29,12 @@ import com.ivanart555.university.services.GroupService;
 public class GroupsController {
     private static final String REDIRECT_GROUPS = "redirect:/groups";
     private GroupService groupService;
+    private CourseService courseService;
 
     @Autowired
-    public GroupsController(GroupService groupService) {
+    public GroupsController(GroupService groupService, CourseService courseService) {
         this.groupService = groupService;
+        this.courseService = courseService;
     }
 
     @GetMapping()
@@ -47,6 +50,7 @@ public class GroupsController {
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", groupPage.getTotalPages());
 
+        model.addAttribute("allCourses", courseService.getAll());
         model.addAttribute("group", new Group());
 
         int totalPages = groupPage.getTotalPages();

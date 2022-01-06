@@ -18,16 +18,24 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import com.ivanart555.university.entities.Course;
+import com.ivanart555.university.entities.converters.CourseStringConverter;
+import com.ivanart555.university.entities.converters.StringCourseConverter;
+
 @Configuration
 @Profile("prod")
 @ComponentScan("com.ivanart555.university")
 @EnableWebMvc
 public class SpringMvcConfig implements WebMvcConfigurer {
     private final ApplicationContext applicationContext;
+    private StringCourseConverter stringCourseConverter;
+    private CourseStringConverter courseStringConverter;
 
     @Autowired
-    public SpringMvcConfig(ApplicationContext applicationContext) {
+    public SpringMvcConfig(ApplicationContext applicationContext, StringCourseConverter stringCourseConverter, CourseStringConverter courseStringConverter) {
         this.applicationContext = applicationContext;
+        this.stringCourseConverter = stringCourseConverter;
+        this.courseStringConverter = courseStringConverter;
     }
 
     @Bean
@@ -70,5 +78,7 @@ public class SpringMvcConfig implements WebMvcConfigurer {
         DateTimeFormatterRegistrar registrar = new DateTimeFormatterRegistrar();
         registrar.setUseIsoFormat(true);
         registrar.registerFormatters(registry);
+        registry.addConverter(String.class, Course.class, stringCourseConverter);
+        registry.addConverter(Course.class, String.class, courseStringConverter);
     }
 }

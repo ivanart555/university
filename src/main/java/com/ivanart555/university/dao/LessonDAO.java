@@ -12,12 +12,7 @@ public interface LessonDAO extends GenericDAO<Lesson, Integer> {
     List<Lesson> getByDateTimeIntervalAndGroupId(Integer groupId, LocalDateTime lessonStart, LocalDateTime lessonEnd)
             throws DAOException;
 
-    List<Lesson> getByDateTimeIntervalAndStudentId(Integer studentId, LocalDateTime lessonStart,
-            LocalDateTime lessonEnd) throws DAOException;
-
     List<Lesson> getByDateTimeIntervalAndLecturerId(Integer lecturerId, LocalDateTime lessonStart,
             LocalDateTime lessonEnd) throws DAOException;
-
-    void assignLessonToGroup(Integer lessonId, Integer groupId) throws DAOException;
 
 }

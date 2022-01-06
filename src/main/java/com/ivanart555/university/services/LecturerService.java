@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.ServiceException;
@@ -15,9 +16,7 @@ public interface LecturerService extends GenericService<Lecturer, Integer> {
 
     List<Lecturer> getAllActive() throws ServiceException;
 
-    void addLecturerToCourse(Lecturer lecturer, Integer courseId) throws ServiceException;
-
-    void addLecturerToGroup(Lecturer lecturer, Integer groupId) throws ServiceException;
+    void addLecturerToCourse(Lecturer lecturer, Course course) throws ServiceException;
 
     List<Lesson> getDaySchedule(Lecturer lecturer, LocalDate day) throws ServiceException;
 
