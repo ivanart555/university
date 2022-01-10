@@ -111,7 +111,7 @@ public class LecturerServiceImpl implements LecturerService {
         List<Lesson> lessons = new ArrayList<>();
 
         try {
-            lessons = lessonRepository.getByDateTimeIntervalAndLecturerId(lecturer.getId(), startDateTime, endDateTime);
+            lessons = lessonRepository.findAllByLecturerIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(lecturer.getId(), endDateTime, startDateTime);
         } catch (EntityNotFoundException e) {
             LOGGER.info("Schedule for Lecturer with id {} not found", lecturer.getId());
         }

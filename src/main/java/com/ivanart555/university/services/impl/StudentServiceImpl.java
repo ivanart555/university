@@ -32,7 +32,8 @@ public class StudentServiceImpl implements StudentService {
     private LessonRepository lessonRepository;
 
     @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, GroupRepository groupRepository, LessonRepository lessonRepository,
+    public StudentServiceImpl(StudentRepository studentRepository, GroupRepository groupRepository,
+            LessonRepository lessonRepository,
             Environment env) {
         this.studentRepository = studentRepository;
         this.groupRepository = groupRepository;
@@ -114,7 +115,9 @@ public class StudentServiceImpl implements StudentService {
         LocalDateTime endDateTime = day.atTime(23, 59, 59);
         List<Lesson> lessons = null;
         try {
-            lessons = lessonRepository.getByDateTimeIntervalAndGroupId(student.getGroup().getId(), startDateTime, endDateTime);
+            lessons = lessonRepository
+                    .findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(
+                            student.getGroup().getId(), endDateTime, startDateTime);
         } catch (EntityNotFoundException e) {
             throw new ServiceException("Failed to get Student's day schedule.", e);
         }

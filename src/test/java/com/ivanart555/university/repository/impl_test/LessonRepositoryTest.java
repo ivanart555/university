@@ -28,7 +28,7 @@ import com.ivanart555.university.repository.LessonRepository;
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-class LessonRepositoryImplTest {
+class LessonRepositoryTest {
     private LessonRepository lessonRepository;
     private CourseRepository courseRepository;
     private ClassroomRepository classroomRepository;
@@ -36,7 +36,8 @@ class LessonRepositoryImplTest {
     private GroupRepository groupRepository;
 
     @Autowired
-    public LessonRepositoryImplTest(LessonRepository lessonRepository, CourseRepository courseRepository, ClassroomRepository classroomRepository,
+    public LessonRepositoryTest(LessonRepository lessonRepository, CourseRepository courseRepository,
+            ClassroomRepository classroomRepository,
             LecturerRepository lecturerRepository, GroupRepository groupRepository) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
@@ -74,7 +75,7 @@ class LessonRepositoryImplTest {
     }
 
     @Test
-    void shouldReturnLessons_whenGivenDateTimeIntervalAndGroupId() {
+    void shouldReturnLesson_whenGivenDateTimeIntervalAndGroupId() {
         Course course = new Course("math", "");
         courseRepository.save(course);
 
@@ -105,8 +106,10 @@ class LessonRepositoryImplTest {
 
         int groupId = 2;
 
-        List<Lesson> actualLessons = lessonRepository.getByDateTimeIntervalAndGroupId(groupId,
-                LocalDateTime.of(2021, 5, 18, 10, 00), LocalDateTime.of(2021, 5, 18, 13, 00));
+        List<Lesson> actualLessons = lessonRepository
+                .findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(groupId,
+                        LocalDateTime.of(2021, 5, 18, 13, 00),
+                        LocalDateTime.of(2021, 5, 18, 10, 00));
 
         assertEquals(expectedLessons, actualLessons);
     }
@@ -143,8 +146,9 @@ class LessonRepositoryImplTest {
 
         int lecturerId = 2;
 
-        List<Lesson> actualLessons = lessonRepository.getByDateTimeIntervalAndLecturerId(lecturerId,
-                LocalDateTime.of(2021, 5, 18, 10, 00), LocalDateTime.of(2021, 5, 18, 13, 00));
+        List<Lesson> actualLessons = lessonRepository
+                .findAllByLecturerIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(lecturerId,
+                        LocalDateTime.of(2021, 5, 18, 13, 00), LocalDateTime.of(2021, 5, 18, 10, 00));
 
         assertEquals(expectedLessons, actualLessons);
     }

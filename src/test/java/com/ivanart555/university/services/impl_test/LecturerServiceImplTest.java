@@ -109,7 +109,7 @@ class LecturerServiceImplTest {
     void shouldInvokeGetByDateTimeIntervalAndLecturerIdMethod_whenCalledGetDaySchedule()
             throws ServiceException {
         lecturerServiceImpl.getDaySchedule(lecturer, LocalDate.now());
-        verify(lessonRepository).getByDateTimeIntervalAndLecturerId(anyInt(), any(LocalDateTime.class),
+        verify(lessonRepository).findAllByLecturerIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(anyInt(), any(LocalDateTime.class),
                 any(LocalDateTime.class));
     }
 }

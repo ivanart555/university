@@ -40,7 +40,8 @@ public class LessonServiceImpl implements LessonService {
     private GroupRepository groupRepository;
 
     @Autowired
-    public LessonServiceImpl(LessonRepository lessonRepository, CourseRepository courseRepository, ClassroomRepository classroomRepository,
+    public LessonServiceImpl(LessonRepository lessonRepository, CourseRepository courseRepository,
+            ClassroomRepository classroomRepository,
             LecturerRepository lecturerRepository, GroupRepository groupRepository) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
@@ -129,7 +130,8 @@ public class LessonServiceImpl implements LessonService {
     private boolean timeIsFree(Integer groupId, LocalDateTime lessonStart, LocalDateTime lessonEnd) {
         List<Lesson> lessons = new ArrayList<>();
         try {
-            lessons = lessonRepository.getByDateTimeIntervalAndGroupId(groupId, lessonStart, lessonEnd);
+            lessons = lessonRepository.findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(groupId,
+                    lessonEnd, lessonStart);
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Lessons were not found by date/time interval({},{}) and Group id:{}.", lessonStart,
                     lessonEnd, groupId);

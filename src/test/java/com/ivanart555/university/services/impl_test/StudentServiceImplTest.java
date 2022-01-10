@@ -112,7 +112,7 @@ class StudentServiceImplTest {
         Student student = new Student("Alex", "Black");
         student.setGroup(new Group(1, "AF-01"));
         studentServiceImpl.getDaySchedule(student, LocalDate.now());
-        verify(lessonRepository).getByDateTimeIntervalAndGroupId(anyInt(), any(LocalDateTime.class),
+        verify(lessonRepository).findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(anyInt(), any(LocalDateTime.class),
                 any(LocalDateTime.class));
     }
 }

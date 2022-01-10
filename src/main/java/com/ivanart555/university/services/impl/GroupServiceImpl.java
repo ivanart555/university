@@ -79,7 +79,8 @@ public class GroupServiceImpl implements GroupService {
         List<Lesson> lessons = new ArrayList<>();
 
         try {
-            lessons = lessonRepository.getByDateTimeIntervalAndGroupId(group.getId(), startDateTime, endDateTime);
+            lessons = lessonRepository.findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(
+                    group.getId(), endDateTime, startDateTime);
         } catch (EntityNotFoundException e) {
             LOGGER.info("Schedule for Group with id {} not found", group.getId());
         }
