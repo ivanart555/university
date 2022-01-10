@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,13 +46,15 @@ public class GroupsController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 
-        Page<Group> groupPage = groupService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
-
+        Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
+        Page<Group> groupPage = groupService.findAll(sortedById);
+        
+        
         model.addAttribute("groupPage", groupPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", groupPage.getTotalPages());
 
-        model.addAttribute("allCourses", courseService.getAll());
+        model.addAttribute("allCourses", courseService.findAll());
         model.addAttribute("group", new Group());
 
         int totalPages = groupPage.getTotalPages();
@@ -66,14 +70,14 @@ public class GroupsController {
 
     @PostMapping()
     public String create(@ModelAttribute("group") Group group) throws ServiceException {
-        groupService.create(group);
+        groupService.save(group);
         return REDIRECT_GROUPS;
     }
 
     @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("group") Group group, @PathVariable("id") int id)
             throws ServiceException {
-        groupService.update(group);
+        groupService.save(group);
         return REDIRECT_GROUPS;
     }
 

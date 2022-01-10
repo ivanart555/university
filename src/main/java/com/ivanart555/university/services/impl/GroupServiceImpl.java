@@ -3,60 +3,57 @@ package com.ivanart555.university.services.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.ivanart555.university.dao.GroupDAO;
-import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.exception.DAOException;
-import com.ivanart555.university.exception.EntityNotFoundException;
+import com.ivanart555.university.repository.GroupRepository;
+import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.services.GroupService;
 
 @Component
 public class GroupServiceImpl implements GroupService {
     private static final Logger LOGGER = LoggerFactory.getLogger(GroupServiceImpl.class);
-    private static final String SOMETHING_WRONG_WITH_DAO = "Something got wrong with DAO.";
-    private GroupDAO groupDAO;
-    private LessonDAO lessonDAO;
+    private GroupRepository groupRepository;
+    private LessonRepository lessonRepository;
 
     @Autowired
-    public GroupServiceImpl(GroupDAO groupDAO) {
-        this.groupDAO = groupDAO;
+    public GroupServiceImpl(GroupRepository groupRepository) {
+        this.groupRepository = groupRepository;
     }
 
     @Override
-    public List<Group> getAll() throws ServiceException {
-        List<Group> groups = groupDAO.getAll();
-        if (groups.isEmpty()) {
-            LOGGER.warn("There are no Groups in database");
-        }
+    public List<Group> findAll() throws ServiceException {
+        List<Group> groups = groupRepository.findAll();
         LOGGER.info("All Groups received successfully.");
-
         return groups;
     }
 
     @Override
-    public Group getById(Integer id) throws ServiceException {
+    public Page<Group> findAll(Pageable pageable) throws ServiceException {
+        Page<Group> groups = groupRepository.findAll(pageable);
+        LOGGER.info("All Groups received successfully.");
+        return groups;
+    }
+
+    @Override
+    public Group findById(Integer id) throws ServiceException {
         Group group = null;
         try {
-            group = groupDAO.getById(id);
-        } catch (EntityNotFoundException e) {
+            group = groupRepository.findById(id).orElseThrow(() -> new ServiceException(
+                    String.format("Group with id %d not found!", id)));
+        } catch (ServiceException e) {
             LOGGER.warn("Group with id {} not found!", id);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Group by id.", e);
         }
         LOGGER.info("Group with id {} received successfully.", id);
 
@@ -65,28 +62,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        groupDAO.delete(id);
+        groupRepository.deleteById(id);
         LOGGER.info("Group with id {} deleted successfully.", id);
     }
 
     @Override
-    public void update(Group group) throws ServiceException {
-        try {
-            groupDAO.update(group);
-        } catch (DAOException e) {
-            throw new ServiceException("Unable to update Group.", e);
-        }
-        LOGGER.info("Group with id {} updated successfully.", group.getId());
-    }
-
-    @Override
-    public void create(Group group) throws ServiceException {
-        try {
-            groupDAO.create(group);
-        } catch (DAOException e) {
-            throw new ServiceException("Unable to create Group", e);
-        }
-        LOGGER.info("Group with id {} created successfully.", group.getId());
+    public void save(Group group) throws ServiceException {
+        groupRepository.save(group);
+        LOGGER.info("Group with id {} saved successfully.", group.getId());
     }
 
     @Override
@@ -96,36 +79,12 @@ public class GroupServiceImpl implements GroupService {
         List<Lesson> lessons = new ArrayList<>();
 
         try {
-            lessons = lessonDAO.getByDateTimeIntervalAndGroupId(group.getId(), startDateTime, endDateTime);
+            lessons = lessonRepository.getByDateTimeIntervalAndGroupId(group.getId(), startDateTime, endDateTime);
         } catch (EntityNotFoundException e) {
             LOGGER.info("Schedule for Group with id {} not found", group.getId());
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Schedule for Group.", e);
         }
-        LOGGER.info("Schedule for Lecturer with id {} received successfully.", group.getId());
+        LOGGER.info("Schedule for Group with id {} received successfully.", group.getId());
 
         return lessons;
-    }
-
-    @Override
-    public Page<Group> findPaginated(Pageable pageable) throws ServiceException {
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-
-        List<Group> allGroups = getAll();
-        int groupsSize = allGroups.size();
-
-        List<Group> list;
-
-        if (groupsSize < startItem) {
-            list = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, groupsSize);
-            list = allGroups.subList(startItem, toIndex);
-        }
-
-        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), groupsSize);
     }
 }

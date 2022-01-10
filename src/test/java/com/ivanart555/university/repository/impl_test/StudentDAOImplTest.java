@@ -1,4 +1,4 @@
-package com.ivanart555.university.dao.impl_test;
+package com.ivanart555.university.repository.impl_test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -13,39 +13,39 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.dao.GroupDAO;
-import com.ivanart555.university.dao.StudentDAO;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Student;
-import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.repository.GroupRepository;
+import com.ivanart555.university.repository.StudentRepository;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class StudentDAOImplTest {
-    private StudentDAO studentDAO;
-    private GroupDAO groupDAO;
+class StudentRepositoryImplTest {
+    private StudentRepository studentRepository;
+    private GroupRepository groupRepository;
 
     @Autowired
-    private StudentDAOImplTest(StudentDAO studentDAO, GroupDAO groupDAO, Environment env, JdbcTemplate jdbcTemplate) {
-        this.studentDAO = studentDAO;
-        this.groupDAO = groupDAO;
+    private StudentRepositoryImplTest(StudentRepository studentRepository, GroupRepository groupRepository, Environment env,
+            JdbcTemplate jdbcTemplate) {
+        this.studentRepository = studentRepository;
+        this.groupRepository = groupRepository;
     }
 
     @Test
-    void shouldReturnAllStudentsFromDatabase_whenCalledGetAll() throws DAOException {
+    void shouldReturnAllStudentsFromDatabase_whenCalledGetAll() {
         List<Student> expectedStudents = new ArrayList<>();
         expectedStudents.add(new Student("Peter", "Jackson"));
         expectedStudents.add(new Student("Alex", "Smith"));
         expectedStudents.add(new Student("Ann", "White"));
 
         for (Student Student : expectedStudents) {
-            studentDAO.create(Student);
+            studentRepository.save(Student);
         }
-        assertEquals(expectedStudents, studentDAO.getAll());
+        assertEquals(expectedStudents, studentRepository.findAll());
     }
 
     @Test
-    void shouldReturnAllActiveStudentsFromDatabase_whenCalledGetAllActive() throws DAOException {
+    void shouldReturnAllActiveStudentsFromDatabase_whenCalledGetAllActive() {
         List<Student> expectedStudents = new ArrayList<>();
         expectedStudents.add(new Student("Peter", "Jackson"));
         expectedStudents.add(new Student("Alex", "Smith"));
@@ -54,32 +54,32 @@ class StudentDAOImplTest {
         notActiveStudent.setActive(false);
 
         for (Student Student : expectedStudents) {
-            studentDAO.create(Student);
+            studentRepository.save(Student);
         }
-        studentDAO.create(notActiveStudent);
+        studentRepository.save(notActiveStudent);
 
-        assertEquals(expectedStudents, studentDAO.getAllActive());
+        assertEquals(expectedStudents, studentRepository.getAllActive());
     }
 
     @Test
-    void shouldReturnStudentsFromDatabase_whenGivenGroupId() throws DAOException {
+    void shouldReturnStudentsFromDatabase_whenGivenGroupId() {
         List<Student> expectedStudents = new ArrayList<>();
         Group group1 = new Group("AF-01");
         Group group2 = new Group("AF-02");
-        groupDAO.create(group1);
-        groupDAO.create(group2);
+        groupRepository.save(group1);
+        groupRepository.save(group2);
 
         expectedStudents.add(new Student("Peter", "Jackson", group1));
         expectedStudents.add(new Student("Alex", "Smith", group1));
         expectedStudents.add(new Student("Ann", "White", group2));
 
         for (Student Student : expectedStudents) {
-            studentDAO.create(Student);
+            studentRepository.save(Student);
         }
 
         expectedStudents.remove(2);
 
-        List<Student> actualStudents = studentDAO.getStudentsByGroupId(1);
+        List<Student> actualStudents = studentRepository.findByGroupId(1);
         assertEquals(expectedStudents, actualStudents);
     }
 }

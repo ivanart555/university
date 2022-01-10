@@ -9,6 +9,6 @@ import com.ivanart555.university.services.generic.GenericService;
 
 public interface CourseService extends GenericService<Course, Integer> {
 
-    Page<Course> findPaginated(Pageable pageable) throws ServiceException;
-
+    Page<Course> findAll(Pageable pageable) throws ServiceException;
+    
 }

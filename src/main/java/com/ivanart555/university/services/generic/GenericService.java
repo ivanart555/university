@@ -7,14 +7,11 @@ import com.ivanart555.university.exception.ServiceException;
 
 public interface GenericService<T, K extends Serializable> {
 
-    List<T> getAll() throws ServiceException;
+    List<T> findAll() throws ServiceException;
 
-    T getById(K id) throws ServiceException;
-
+    T findById(K id) throws ServiceException;
+    
+    void save(T t);
+    
     void delete(K id) throws ServiceException;
-
-    void update(T t) throws ServiceException;
-
-    void create(T t) throws ServiceException;
-
 }

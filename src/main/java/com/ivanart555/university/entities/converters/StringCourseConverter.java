@@ -25,7 +25,7 @@ public class StringCourseConverter implements Converter<String, Course> {
         Course course = new Course();
 
         try {
-            course = courseService.getById(Integer.parseInt(id));
+            course = courseService.findById(Integer.parseInt(id));
         } catch (NumberFormatException e) {
             LOGGER.error("Failed to convert id of the Course to Integer!");
         } catch (ServiceException e) {

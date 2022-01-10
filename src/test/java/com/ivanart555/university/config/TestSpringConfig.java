@@ -10,7 +10,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -35,10 +34,9 @@ public class TestSpringConfig {
         dataSource.setUrl("jdbc:h2:mem:university;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS UNIVERSITY");
         dataSource.setUsername("h2");
         dataSource.setPassword("1234");
-        
+
         return dataSource;
     }
-
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
@@ -57,7 +55,7 @@ public class TestSpringConfig {
         ps.put("hibernate.hbm2ddl.auto", "create-drop");
         ps.put("hibernate.default_schema", "university");
         em.setJpaProperties(ps);
-        
+
         em.afterPropertiesSet();
 
         return em;
@@ -73,10 +71,5 @@ public class TestSpringConfig {
     @Bean
     public JdbcTemplate jdbcTemplate() throws SQLException {
         return new JdbcTemplate(dataSource());
-    }
-
-    @Bean
-    public PersistenceExceptionTranslationPostProcessor exceptionTranslation(){
-        return new PersistenceExceptionTranslationPostProcessor();
     }
 }

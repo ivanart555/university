@@ -20,6 +20,6 @@ public interface StudentService extends GenericService<Student, Integer> {
 
     List<Lesson> getDaySchedule(Student student, LocalDate day) throws ServiceException;
 
-    Page<Student> findPaginated(Pageable pageable) throws ServiceException;
-    
+    Page<Student> findAll(Pageable pageable) throws ServiceException;
+
 }

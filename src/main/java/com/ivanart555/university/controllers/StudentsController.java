@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,13 +46,14 @@ public class StudentsController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 
-        Page<Student> studentPage = studentService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
+        Page<Student> studentPage = studentService.findAll(sortedById);
 
         model.addAttribute("studentPage", studentPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", studentPage.getTotalPages());
 
-        model.addAttribute("groups", groupService.getAll());
+        model.addAttribute("groups", groupService.findAll());
 
         model.addAttribute("student", new Student());
 
@@ -67,14 +70,14 @@ public class StudentsController {
 
     @PostMapping
     public String create(@ModelAttribute("student") Student student) throws ServiceException {
-        studentService.create(student);
+        studentService.save(student);
         return REDIRECT_STUDENTS;
     }
 
     @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("student") Student student, @PathVariable("id") int id)
             throws ServiceException {
-        studentService.update(student);
+        studentService.save(student);
         return REDIRECT_STUDENTS;
     }
 

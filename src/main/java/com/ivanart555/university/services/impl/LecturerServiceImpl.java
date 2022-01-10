@@ -3,78 +3,69 @@ package com.ivanart555.university.services.impl;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.ivanart555.university.dao.CourseDAO;
-import com.ivanart555.university.dao.LecturerDAO;
-import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
-import com.ivanart555.university.exception.DAOException;
-import com.ivanart555.university.exception.EntityNotFoundException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.CourseRepository;
+import com.ivanart555.university.repository.LecturerRepository;
+import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.services.LecturerService;
 
 @Component
 public class LecturerServiceImpl implements LecturerService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LecturerServiceImpl.class);
-    private static final String SOMETHING_WRONG_WITH_DAO = "Something got wrong with DAO.";
-    private LecturerDAO lecturerDAO;
-    private CourseDAO courseDAO;
-    private LessonDAO lessonDAO;
+    private LecturerRepository lecturerRepository;
+    private CourseRepository courseRepository;
+    private LessonRepository lessonRepository;
 
     @Autowired
-    public LecturerServiceImpl(LecturerDAO lecturerDAO, CourseDAO courseDAO, LessonDAO lessonDAO) {
-        this.lecturerDAO = lecturerDAO;
-        this.courseDAO = courseDAO;
-        this.lessonDAO = lessonDAO;
+    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseRepository courseRepository, LessonRepository lessonRepository) {
+        this.lecturerRepository = lecturerRepository;
+        this.courseRepository = courseRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     @Override
-    public List<Lecturer> getAll() throws ServiceException {
-        List<Lecturer> lecturers = lecturerDAO.getAll();
-        if (lecturers.isEmpty()) {
-            LOGGER.info("There are no Lecturers in database");
-            return lecturers;
-        }
+    public List<Lecturer> findAll() throws ServiceException {
+        List<Lecturer> lecturers = lecturerRepository.findAll();
         LOGGER.info("All Lecturers received successfully.");
+        return lecturers;
+    }
 
+    @Override
+    public Page<Lecturer> findAll(Pageable pageable) throws ServiceException {
+        Page<Lecturer> lecturers = lecturerRepository.findAll(pageable);
+        LOGGER.info("All Lecturers received successfully.");
         return lecturers;
     }
 
     @Override
     public List<Lecturer> getAllActive() throws ServiceException {
-        List<Lecturer> lecturers = lecturerDAO.getAllActive();
-        if (lecturers.isEmpty()) {
-            LOGGER.info("There are no active Lecturers in database");
-            return lecturers;
-        }
+        List<Lecturer> lecturers = lecturerRepository.getAllActive();
         LOGGER.info("All active Lecturers received successfully.");
-
         return lecturers;
     }
 
     @Override
-    public Lecturer getById(Integer id) throws ServiceException {
+    public Lecturer findById(Integer id) throws ServiceException {
         Lecturer lecturer = null;
         try {
-            lecturer = lecturerDAO.getById(id);
+            lecturer = lecturerRepository.findById(id).orElseThrow(() -> new ServiceException(
+                    String.format("Lecturer with id %d not found!", id)));
         } catch (EntityNotFoundException e) {
             LOGGER.warn("Lecturer with id {} not found!", id);
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Lecturer by id.", e);
         }
         LOGGER.info("Lecturer with id {} received successfully.", id);
 
@@ -83,51 +74,30 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public void delete(Integer id) throws ServiceException {
-        lecturerDAO.delete(id);
+        lecturerRepository.deleteById(id);
         LOGGER.info("Lecturer with id {} deleted successfully.", id);
     }
 
     @Override
-    public void update(Lecturer lecturer) throws ServiceException {
+    public void save(Lecturer lecturer) throws ServiceException {
         setNullCourseWhenNullId(lecturer);
 
         if (lecturer.getCourse() != null) {
             addLecturerToCourse(lecturer, lecturer.getCourse());
         }
-
-        try {
-            lecturerDAO.update(lecturer);
-        } catch (DAOException e) {
-            throw new ServiceException("Unable to update Lecturer.", e);
-        }
-        LOGGER.info("Lecturer with id {} updated successfully.", lecturer.getId());
-    }
-
-    @Override
-    public void create(Lecturer lecturer) throws ServiceException {
-        setNullCourseWhenNullId(lecturer);
-
-        try {
-            lecturerDAO.create(lecturer);
-        } catch (DAOException e) {
-            throw new ServiceException("Unable to create Lecturer.", e);
-        }
-        LOGGER.info("Lecturer with id {} created successfully.", lecturer.getId());
+        lecturerRepository.save(lecturer);
+        LOGGER.info("Lecturer with id {} saved successfully.", lecturer.getId());
     }
 
     @Override
     public void addLecturerToCourse(Lecturer lecturer, Course course) throws ServiceException {
-
         checkIfLecturerIsNotActive(lecturer);
 
         try {
-            course = courseDAO.getById(course.getId());
+            course = courseRepository.getById(course.getId());
         } catch (EntityNotFoundException e) {
             throw new ServiceException(
                     "Failed to assign Lecturer to Course. There is no Course with such id:" + course.getId());
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Course by id.", e);
         }
 
         lecturer.setCourse(course);
@@ -141,12 +111,9 @@ public class LecturerServiceImpl implements LecturerService {
         List<Lesson> lessons = new ArrayList<>();
 
         try {
-            lessons = lessonDAO.getByDateTimeIntervalAndLecturerId(lecturer.getId(), startDateTime, endDateTime);
+            lessons = lessonRepository.getByDateTimeIntervalAndLecturerId(lecturer.getId(), startDateTime, endDateTime);
         } catch (EntityNotFoundException e) {
             LOGGER.info("Schedule for Lecturer with id {} not found", lecturer.getId());
-        } catch (DAOException e) {
-            LOGGER.error(SOMETHING_WRONG_WITH_DAO);
-            throw new ServiceException("Unable to get Schedule for Lecturer.", e);
         }
         LOGGER.info("Schedule for Lecturer with id {} received successfully.", lecturer.getId());
 
@@ -159,30 +126,8 @@ public class LecturerServiceImpl implements LecturerService {
         }
     }
 
-    @Override
-    public Page<Lecturer> findPaginated(Pageable pageable) throws ServiceException {
-        int pageSize = pageable.getPageSize();
-        int currentPage = pageable.getPageNumber();
-        int startItem = currentPage * pageSize;
-
-        List<Lecturer> allLecturers = getAll();
-        int lecturersSize = allLecturers.size();
-
-        List<Lecturer> list;
-
-        if (lecturersSize < startItem) {
-            list = Collections.emptyList();
-        } else {
-            int toIndex = Math.min(startItem + pageSize, lecturersSize);
-            list = allLecturers.subList(startItem, toIndex);
-        }
-
-        return new PageImpl<>(list, PageRequest.of(currentPage, pageSize), lecturersSize);
-    }
-
     private void setNullCourseWhenNullId(Lecturer lecturer) {
         Course course = lecturer.getCourse();
-
         if (course != null && course.getId() == null) {
             lecturer.setCourse(null);
         }

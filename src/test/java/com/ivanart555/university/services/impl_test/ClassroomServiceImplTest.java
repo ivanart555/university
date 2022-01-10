@@ -1,11 +1,13 @@
 package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,16 +16,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Pageable;
 
-import com.ivanart555.university.dao.ClassroomDAO;
 import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.ClassroomRepository;
 import com.ivanart555.university.services.impl.ClassroomServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class ClassroomServiceImplTest {
     @Mock
-    private ClassroomDAO classroomDAO;
+    private ClassroomRepository classroomRepository;
 
     @Mock
     private Classroom classroom;
@@ -38,35 +39,29 @@ class ClassroomServiceImplTest {
     void shouldInvokeGetAllMethod_whenCalledGetAll() throws ServiceException {
         List<Classroom> classrooms = new ArrayList<>();
         classrooms.add(classroom);
-        when(classroomDAO.getAll()).thenReturn(classrooms);
+        when(classroomRepository.findAll()).thenReturn(classrooms);
 
-        classroomServiceImpl.getAll();
-        verify(classroomDAO).getAll();
+        classroomServiceImpl.findAll();
+        verify(classroomRepository).findAll();
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
-        when(classroomDAO.getById(anyInt())).thenReturn(classroom);
+    void shouldInvokeFindByIdMethod_whenCalledFindById() throws ServiceException {
+        when(classroomRepository.findById(1)).thenReturn(Optional.of(new Classroom()));
 
-        classroomServiceImpl.getById(anyInt());
-        verify(classroomDAO).getById(anyInt());
+        classroomServiceImpl.findById(1);
+        verify(classroomRepository, only()).findById(anyInt());
     }
 
     @Test
     void shouldInvokeDeleteMethod_whenCalledDelete() throws ServiceException {
         classroomServiceImpl.delete(anyInt());
-        verify(classroomDAO).delete(anyInt());
+        verify(classroomRepository).deleteById(anyInt());
     }
 
     @Test
-    void shouldInvokeUpdateMethod_whenCalledUpdate() throws ServiceException, DAOException {
-        classroomServiceImpl.update(classroom);
-        verify(classroomDAO).update(classroom);
-    }
-
-    @Test
-    void shouldInvokeCreateMethod_whenCalledCreate() throws ServiceException, DAOException {
-        classroomServiceImpl.create(classroom);
-        verify(classroomDAO).create(classroom);
+    void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        classroomServiceImpl.save(classroom);
+        verify(classroomRepository).save(classroom);
     }
 }

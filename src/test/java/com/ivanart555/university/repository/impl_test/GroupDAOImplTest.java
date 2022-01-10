@@ -1,4 +1,4 @@
-package com.ivanart555.university.dao.impl_test;
+package com.ivanart555.university.repository.impl_test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.ArrayList;
@@ -14,31 +14,30 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.exception.DAOException;
+import com.ivanart555.university.repository.GroupRepository;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-class GroupDAOImplTest {
-    private GroupDAO groupDAO;
+class GroupRepositoryImplTest {
+    private GroupRepository groupRepository;
 
     @Autowired
-    private GroupDAOImplTest(GroupDAO groupDAO, Environment env, JdbcTemplate jdbcTemplate) {
-        this.groupDAO = groupDAO;
+    private GroupRepositoryImplTest(GroupRepository groupRepository, Environment env, JdbcTemplate jdbcTemplate) {
+        this.groupRepository = groupRepository;
     }
 
     @Test
-    void shouldReturnAllGroupsFromDatabase_whenCalledGetAll() throws DAOException {
+    void shouldReturnAllGroupsFromDatabase_whenCalledGetAll() {
         List<Group> expectedGroups = new ArrayList<>();
         expectedGroups.add(new Group("AB-01"));
         expectedGroups.add(new Group("BA-12"));
         expectedGroups.add(new Group("AC-06"));
 
         for (Group Group : expectedGroups) {
-            groupDAO.create(Group);
+            groupRepository.save(Group);
         }
-        assertEquals(expectedGroups, groupDAO.getAll());
+        assertEquals(expectedGroups, groupRepository.findAll());
     }
 }

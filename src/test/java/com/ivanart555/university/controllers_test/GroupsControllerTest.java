@@ -58,7 +58,7 @@ class GroupsControllerTest {
 
     @Test
     void shouldReturnViewGroupsIndex_whenCalledGroupsGET() throws Exception {
-        when(groupService.findPaginated(any())).thenReturn(anyPage);
+        when(groupService.findAll(any())).thenReturn(anyPage);
         mockMvc.perform(get("/groups"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("groupPage"))
