@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,16 +46,17 @@ public class LecturersController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 
-        Page<Lecturer> lecturerPage = lecturerService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
+        Page<Lecturer> lecturerPage = lecturerService.findAll(sortedById);
 
         model.addAttribute("lecturerPage", lecturerPage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", lecturerPage.getTotalPages());
-        
-        model.addAttribute("courses", courseService.getAll());
-        
+
+        model.addAttribute("courses", courseService.findAll());
+
         model.addAttribute("lecturer", new Lecturer());
-      
+
         int totalPages = lecturerPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -61,21 +64,20 @@ public class LecturersController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        
+
         return "lecturers/index";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("lecturer") Lecturer lecturer) throws ServiceException {
-
-        lecturerService.create(lecturer);
+        lecturerService.save(lecturer);
         return REDIRECT_LECTURERS;
     }
 
     @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("lecturer") Lecturer lecturer, @PathVariable("id") int id)
             throws ServiceException {
-        lecturerService.update(lecturer);
+        lecturerService.save(lecturer);
         return REDIRECT_LECTURERS;
     }
 
@@ -84,5 +86,4 @@ public class LecturersController {
         lecturerService.delete(id);
         return REDIRECT_LECTURERS;
     }
-    
 }

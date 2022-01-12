@@ -16,9 +16,7 @@ public interface LessonService extends GenericService<Lesson, Integer> {
             Integer groupId)
             throws ServiceException;
 
-    Page<LessonDto> findPaginated(Pageable pageable) throws ServiceException;
+    Page<LessonDto> findAll(Pageable pageable) throws ServiceException;
 
-    void create(LessonDto lessonDto) throws ServiceException;
-    
-    void update(LessonDto lessonDto) throws ServiceException;
+    void save(LessonDto lessonDto) throws ServiceException;
 }

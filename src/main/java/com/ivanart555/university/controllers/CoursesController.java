@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,14 +43,15 @@ public class CoursesController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 
-        Page<Course> coursePage = courseService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
+        Page<Course> coursePage = courseService.findAll(sortedById);
 
         model.addAttribute("coursePage", coursePage);
         model.addAttribute("currentPage", currentPage);
         model.addAttribute("totalPages", coursePage.getTotalPages());
 
         model.addAttribute("course", new Course());
-        
+
         int totalPages = coursePage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
@@ -56,20 +59,20 @@ public class CoursesController {
                     .collect(Collectors.toList());
             model.addAttribute("pageNumbers", pageNumbers);
         }
-        
+
         return "courses/index";
     }
 
     @PostMapping()
     public String create(@ModelAttribute("course") Course course) throws ServiceException {
-        courseService.create(course);
+        courseService.save(course);
         return REDIRECT_COURSES;
     }
 
     @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("course") Course course, @PathVariable("id") int id)
             throws ServiceException {
-        courseService.update(course);
+        courseService.save(course);
         return REDIRECT_COURSES;
     }
 

@@ -58,7 +58,7 @@ class StudentsControllerTest {
 
     @Test
     void shouldReturnViewStudentsIndex_whenCalledStudentsGET() throws Exception {
-        when(studentService.findPaginated(any())).thenReturn(anyPage);
+        when(studentService.findAll(any())).thenReturn(anyPage);
         mockMvc.perform(get("/students"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("studentPage"))

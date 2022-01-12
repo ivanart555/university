@@ -8,6 +8,8 @@ import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -55,14 +57,15 @@ public class LessonsController {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 
-        Page<LessonDto> lessonPage = lessonService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+        Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
+        Page<LessonDto> lessonPage = lessonService.findAll(sortedById);
 
         model.addAttribute("lessonDto", new LessonDto());
 
-        model.addAttribute("courses", courseService.getAll());
+        model.addAttribute("courses", courseService.findAll());
         model.addAttribute("lecturers", lecturerService.getAllActive());
-        model.addAttribute("classrooms", classroomService.getAll());
-        model.addAttribute("groups", groupService.getAll());
+        model.addAttribute("classrooms", classroomService.findAll());
+        model.addAttribute("groups", groupService.findAll());
 
         model.addAttribute("lessonPage", lessonPage);
         model.addAttribute("currentPage", currentPage);
@@ -80,14 +83,14 @@ public class LessonsController {
 
     @PostMapping()
     public String create(@ModelAttribute("lessonDto") LessonDto lessonDto) throws ServiceException {
-        lessonService.create(lessonDto);
+        lessonService.save(lessonDto);
         return REDIRECT_LESSONS;
     }
 
     @PatchMapping("/edit/{id}")
     public String update(@ModelAttribute("lessonDto") LessonDto lessonDto, @PathVariable("id") int id)
             throws ServiceException {
-        lessonService.update(lessonDto);
+        lessonService.save(lessonDto);
         return REDIRECT_LESSONS;
     }
 

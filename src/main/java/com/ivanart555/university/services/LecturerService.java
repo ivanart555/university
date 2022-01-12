@@ -20,5 +20,5 @@ public interface LecturerService extends GenericService<Lecturer, Integer> {
 
     List<Lesson> getDaySchedule(Lecturer lecturer, LocalDate day) throws ServiceException;
 
-    Page<Lecturer> findPaginated(Pageable pageable) throws ServiceException;
+    Page<Lecturer> findAll(Pageable pageable) throws ServiceException;
 }

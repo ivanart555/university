@@ -1,11 +1,13 @@
 package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,16 +15,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ivanart555.university.dao.GroupDAO;
 import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.GroupRepository;
 import com.ivanart555.university.services.impl.GroupServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceImplTest {
     @Mock
-    private GroupDAO groupDAO;
+    private GroupRepository groupRepository;
     @Mock
     private Group group;
 
@@ -33,35 +34,29 @@ class GroupServiceImplTest {
     void shouldInvokeGetAllMethod_whenCalledGetAll() throws ServiceException {
         List<Group> groups = new ArrayList<>();
         groups.add(group);
-        when(groupDAO.getAll()).thenReturn(groups);
+        when(groupRepository.findAll()).thenReturn(groups);
 
-        groupServiceImpl.getAll();
-        verify(groupDAO).getAll();
+        groupServiceImpl.findAll();
+        verify(groupRepository).findAll();
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
-        when(groupDAO.getById(anyInt())).thenReturn(group);
+    void shouldInvokeFindByIdMethod_whenCalledFindById() throws ServiceException {
+        when(groupRepository.findById(1)).thenReturn(Optional.of(new Group()));
 
-        groupServiceImpl.getById(anyInt());
-        verify(groupDAO).getById(anyInt());
+        groupServiceImpl.findById(1);
+        verify(groupRepository, only()).findById(anyInt());
     }
 
     @Test
     void shouldInvokeDeleteMethod_whenCalledDelete() throws ServiceException {
         groupServiceImpl.delete(anyInt());
-        verify(groupDAO).delete(anyInt());
+        verify(groupRepository).deleteById(anyInt());
     }
 
     @Test
-    void shouldInvokeUpdateMethod_whenCalledUpdate() throws ServiceException, DAOException {
-        groupServiceImpl.update(group);
-        verify(groupDAO).update(group);
-    }
-
-    @Test
-    void shouldInvokeCreateMethod_whenCalledCreate() throws ServiceException, DAOException {
-        groupServiceImpl.create(group);
-        verify(groupDAO).create(group);
+    void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        groupServiceImpl.save(group);
+        verify(groupRepository).save(group);
     }
 }

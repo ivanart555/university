@@ -2,12 +2,14 @@ package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,34 +19,33 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.dao.ClassroomDAO;
-import com.ivanart555.university.dao.CourseDAO;
-import com.ivanart555.university.dao.GroupDAO;
-import com.ivanart555.university.dao.LecturerDAO;
-import com.ivanart555.university.dao.LessonDAO;
 import com.ivanart555.university.dto.LessonDto;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
-import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.ClassroomRepository;
+import com.ivanart555.university.repository.CourseRepository;
+import com.ivanart555.university.repository.GroupRepository;
+import com.ivanart555.university.repository.LecturerRepository;
+import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.services.impl.LessonServiceImpl;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
 class LessonServiceImplTest {
     @Mock
-    private LessonDAO lessonDAO;
+    private LessonRepository lessonRepository;
     @Mock
-    private CourseDAO courseDAO;
+    private CourseRepository courseRepository;
     @Mock
-    private ClassroomDAO classroomDAO;
+    private ClassroomRepository classroomRepository;
     @Mock
-    private LecturerDAO lecturerDAO;
+    private LecturerRepository lecturerRepository;
     @Mock
-    private GroupDAO groupDAO;
+    private GroupRepository groupRepository;
     @Mock
     private Lesson lesson;
     @Mock
@@ -65,67 +66,54 @@ class LessonServiceImplTest {
     void shouldInvokeGetAllMethod_whenCalledGetAll() throws ServiceException {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(lesson);
-        when(lessonDAO.getAll()).thenReturn(lessons);
+        when(lessonRepository.findAll()).thenReturn(lessons);
 
-        lessonServiceImpl.getAll();
-        verify(lessonDAO).getAll();
+        lessonServiceImpl.findAll();
+        verify(lessonRepository).findAll();
     }
-    
+
     @Test
     void shouldInvokeGetAllMethod_whenCalledGetAllDto() throws ServiceException {
         List<Lesson> lessons = new ArrayList<>();
         lessons.add(lesson);
-        when(lessonDAO.getAll()).thenReturn(lessons);
+        when(lessonRepository.findAll()).thenReturn(lessons);
 
         lessonServiceImpl.getAllDto();
-        verify(lessonDAO).getAll();
+        verify(lessonRepository).findAll();
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
-        when(lessonDAO.getById(anyInt())).thenReturn(lesson);
+    void shouldInvokeFindByIdMethod_whenCalledFindById() throws ServiceException {
+        when(lessonRepository.findById(1)).thenReturn(Optional.of(new Lesson()));
 
-        lessonServiceImpl.getById(anyInt());
-        verify(lessonDAO).getById(anyInt());
+        lessonServiceImpl.findById(1);
+        verify(lessonRepository, only()).findById(anyInt());
     }
 
     @Test
     void shouldInvokeDeleteMethod_whenCalledDelete() throws ServiceException {
         lessonServiceImpl.delete(anyInt());
-        verify(lessonDAO).delete(anyInt());
+        verify(lessonRepository).deleteById(anyInt());
     }
 
     @Test
-    void shouldInvokeUpdateMethod_whenCalledUpdate() throws ServiceException, DAOException {
-        lessonServiceImpl.update(lesson);
-        verify(lessonDAO).update(lesson);
+    void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        lessonServiceImpl.save(lesson);
+        verify(lessonRepository).save(lesson);
     }
 
     @Test
-    void shouldInvokeCreateMethod_whenCalledCreate() throws ServiceException, DAOException {
-        lessonServiceImpl.create(lesson);
-        verify(lessonDAO).create(lesson);
-    }
-    
-    @Test
-    void shouldInvokeCreateMethods_whenCalledCreateWithLessonDto() throws ServiceException, DAOException {
-        Lesson lesson = new Lesson(null , null);
-        lessonServiceImpl.create(lessonDto);
-        verify(lessonDAO).create(lesson);
-    }
-    
-    @Test
-    void shouldInvokeUpdateMethod_whenCalledUpdateWithLessonDto() throws ServiceException, DAOException {
-        Lesson lesson = new Lesson(null , null);
-        lessonServiceImpl.update(lessonDto);
-        verify(lessonDAO).update(lesson);
+    void shouldInvokeSaveMethod_whenCalledSaveWithLessonDto() throws ServiceException {
+        Lesson lesson = new Lesson(null, null);
+        lessonServiceImpl.save(lessonDto);
+        verify(lessonRepository).save(lesson);
     }
 
     @Test
-    void shouldInvokeUpdateMethod_whenCalledAssignLessonToDateTimeForGroup() throws ServiceException, DAOException {
+    void shouldInvokeSaveMethod_whenCalledAssignLessonToDateTimeForGroup() throws ServiceException {
         lessonServiceImpl.assignLessonToDateTimeForGroup(lesson, any(LocalDateTime.class), any(LocalDateTime.class),
                 anyInt());
 
-        verify(lessonDAO).update(lesson);
+        verify(lessonRepository).save(lesson);
     }
 }

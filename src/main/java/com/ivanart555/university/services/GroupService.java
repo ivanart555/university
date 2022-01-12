@@ -13,8 +13,8 @@ import com.ivanart555.university.services.generic.GenericService;
 
 public interface GroupService extends GenericService<Group, Integer> {
 
-    Page<Group> findPaginated(Pageable pageable) throws ServiceException;
-    
+    Page<Group> findAll(Pageable pageable) throws ServiceException;
+
     List<Lesson> getDaySchedule(Group group, LocalDate day) throws ServiceException;
 
 }

@@ -1,11 +1,13 @@
 package com.ivanart555.university.services.impl_test;
 
 import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.only;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,16 +15,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ivanart555.university.dao.CourseDAO;
 import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.exception.DAOException;
 import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.CourseRepository;
 import com.ivanart555.university.services.impl.CourseServiceImpl;
 
 @ExtendWith(MockitoExtension.class)
 class CourseServiceImplTest {
     @Mock
-    private CourseDAO courseDAO;
+    private CourseRepository courseRepository;
     @Mock
     private Course course;
 
@@ -33,35 +34,29 @@ class CourseServiceImplTest {
     void shouldInvokeGetAllMethod_whenCalledGetAll() throws ServiceException {
         List<Course> courses = new ArrayList<>();
         courses.add(course);
-        when(courseDAO.getAll()).thenReturn(courses);
+        when(courseRepository.findAll()).thenReturn(courses);
 
-        courseServiceImpl.getAll();
-        verify(courseDAO).getAll();
+        courseServiceImpl.findAll();
+        verify(courseRepository).findAll();
     }
 
     @Test
-    void shouldInvokeGetByIdMethod_whenCalledGetById() throws ServiceException, DAOException {
-        when(courseDAO.getById(anyInt())).thenReturn(course);
+    void shouldInvokeFindByIdMethod_whenCalledFindById() throws ServiceException {
+        when(courseRepository.findById(1)).thenReturn(Optional.of(new Course()));
 
-        courseServiceImpl.getById(anyInt());
-        verify(courseDAO).getById(anyInt());
+        courseServiceImpl.findById(1);
+        verify(courseRepository, only()).findById(anyInt());
     }
 
     @Test
     void shouldInvokeDeleteMethod_whenCalledDelete() throws ServiceException {
         courseServiceImpl.delete(anyInt());
-        verify(courseDAO).delete(anyInt());
+        verify(courseRepository).deleteById(anyInt());
     }
 
     @Test
-    void shouldInvokeUpdateMethod_whenCalledUpdate() throws ServiceException, DAOException {
-        courseServiceImpl.update(course);
-        verify(courseDAO).update(course);
-    }
-
-    @Test
-    void shouldInvokeCreateMethod_whenCalledCreate() throws ServiceException, DAOException {
-        courseServiceImpl.create(course);
-        verify(courseDAO).create(course);
+    void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        courseServiceImpl.save(course);
+        verify(courseRepository).save(course);
     }
 }
