@@ -15,6 +15,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "groups", schema = "university")
@@ -25,12 +27,14 @@ public class Group {
     private Integer id;
 
     @Column(name = "group_name", unique = true)
+    @NotBlank(message = "Name can't be empty")
+    @Size(min = 5, max = 5, message = "Name of Group should be 5 characters long.")
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Student> students = new HashSet<>();
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(schema = "university", name = "Group_Course", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<Course> courses;
 
