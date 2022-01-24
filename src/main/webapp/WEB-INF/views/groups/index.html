@@ -7,6 +7,9 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
 
 </head>
 
@@ -124,10 +127,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:method="POST" th:action="@{/groups}" th:object="${group}">
+                        <form id="addForm" th:method="POST" th:action="@{/groups}" th:object="${group}">
                             <div class="mb-3">
+
                                 <label for="name" class="form-label">Number:</label>
-                                <input type="text" th:field="*{name}" class="form-control" id="name">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" th:field="*{name}" id="name">
+                                </div>
+
                             </div>
 
                             <label for="coursesListAdd">Courses:</label>
@@ -171,6 +178,39 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+		    $()
+			    .ready(
+				    function() {
+					$("form")
+						.validate(
+							{
+							    rules : {
+								name : {
+								    required : true,
+								    pattern : "[A-Z][A-Z]-[0-9][0-9]",
+								}
+							    },
+							    messages : {
+								name : {
+								    required : "Please enter name of new Group",
+								    pattern : "Group name must have two letters(uppercase) and two numbers like: AB-09",
+								},
+
+							    },
+
+							    submitHandler : function(
+								    form) {
+								form.submit();
+							    }
+
+							})
+
+				    })
+		</script>
+
+
 
 </body>
 </html>
