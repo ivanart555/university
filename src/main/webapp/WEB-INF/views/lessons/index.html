@@ -7,7 +7,15 @@
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
     integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
+<style type="text/css">
+.error {
+	color: #F00;
+	background-color: #FFF;
+}
+</style>
 </head>
 
 <body>
@@ -63,29 +71,32 @@
                                     </div>
                                     <div class="modal-body">
                                         <form th:method="PATCH" th:action="@{/lessons/edit/{id}(id=${lessonDto.id})}"
-                                            th:object="${lessonDto}">
+                                            th:object="${lessonDto}" th:attr="id=${lessonDto.id}">
                                             <div class="mb-3">
-
+                                                <input type="hidden" id="custId" name="custId" value="3487">
                                                 <label for="lessonStart" class="form-label">Start time:</label>
-                                                <input type="datetime-local" class="form-control" id="lessonStart"
-                                                    name="lessonStart" th:value="*{lessonStart}" />
+                                                <input type="datetime-local" class="form-control"
+                                                    th:attr="id='lessonStart'+${lessonDto.id}" name="lessonStart"
+                                                    th:value="*{lessonStart}" />
+                                                <br>
                                                 <label for="lessonEnd" class="form-label">End time:</label>
-                                                <input type="datetime-local" class="form-control" id="lessonEnd"
-                                                    name="lessonEnd" th:value="*{lessonEnd}" />
-
+                                                <input type="datetime-local" class="form-control"
+                                                    th:attr="id='lessonEnd'+${lessonDto.id}" name="lessonEnd"
+                                                    th:value="*{lessonEnd}" />
+                                                <br>
                                                 <label for="courseId" class="form-label">Course: </label>
                                                 <select class="form-select" id="courseId" th:field="*{courseId}">
-                                                    <option th:if="*{courseId} == null" value=0 selected>Select
+                                                    <option th:if="*{courseId} == null" value="" selected>Select
                                                         course for Lesson</option>
                                                     <option th:unless="*{courseId} == null" th:value="*{courseId}"
                                                         th:utext="*{courseName}" selected></option>
                                                     <option th:each="course : ${courses}" th:value="${course.getId()}"
                                                         th:utext="${course.getName()}" />
                                                 </select>
-
+                                                <br>
                                                 <label for="lecturerId" class="form-label">Lecturer: </label>
                                                 <select class="form-select" id="lecturerId" th:field="*{lecturerId}">
-                                                    <option th:if="*{lecturerId} == null" value=0 selected>Select
+                                                    <option th:if="*{lecturerId} == null" value="" selected>Select
                                                         lecturer</option>
                                                     <option th:unless="*{lecturerId} == null" th:value="*{lecturerId}"
                                                         th:utext="*{lecturerFirstName} +' '+ *{lecturerLastName}"
@@ -94,10 +105,10 @@
                                                         th:value="${lecturer.getId()}"
                                                         th:utext="${lecturer.getFirstName()} +' '+ ${lecturer.getLastName()}" />
                                                 </select>
-
+                                                <br>
                                                 <label for="roomId" class="form-label">Classroom: </label>
                                                 <select class="form-select" id="roomId" th:field="*{roomId}">
-                                                    <option th:if="*{roomId} == null" value=0 selected>Select
+                                                    <option th:if="*{roomId} == null" value="" selected>Select
                                                         classroom</option>
                                                     <option th:unless="*{roomId} == null" th:value="*{roomId}"
                                                         th:utext="*{roomName}" selected></option>
@@ -105,10 +116,10 @@
                                                         th:value="${classroom.getId()}"
                                                         th:utext="${classroom.getName()}" />
                                                 </select>
-
+                                                <br>
                                                 <label for="groupId" class="form-label">Group: </label>
                                                 <select class="form-select" id="groupId" th:field="*{groupId}">
-                                                    <option th:if="*{groupId} == null" value=0 selected>Select
+                                                    <option th:if="*{groupId} == null" value="" selected>Select
                                                         group</option>
                                                     <option th:unless="*{groupId} == null" th:value="*{groupId}"
                                                         th:utext="*{groupName}" selected></option>
@@ -171,39 +182,40 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form th:method="POST" th:action="@{/lessons}" th:object="${lessonDto}">
+                        <form th:method="POST" th:action="@{/lessons}" th:object="${lessonDto}" id="">
                             <div class="mb-3">
                                 <label for="lessonStart" class="form-label">Start time:</label>
                                 <input type="datetime-local" class="form-control" id="lessonStart" name="lessonStart"
                                     th:value="*{lessonStart}" />
+                                <br>
                                 <label for="lessonEnd" class="form-label">End time:</label>
                                 <input type="datetime-local" class="form-control" id="lessonEnd" name="lessonEnd"
                                     th:value="*{lessonEnd}" />
-
+                                <br>
                                 <label for="courseId" class="form-label">Course:</label>
                                 <select class="form-select" id="courseId" th:field="*{courseId}">
-                                    <option value=0 selected>Select course</option>
+                                    <option value="" selected>Select course</option>
                                     <option th:each="course : ${courses}" th:value="${course.id}"
                                         th:utext="${course.name}" />
                                 </select>
-
+                                <br>
                                 <label for="lecturerId" class="form-label">Lecturer:</label>
                                 <select class="form-select" id="lecturerId" th:field="*{lecturerId}">
-                                    <option value=0 selected>Select lecturer</option>
+                                    <option value="" selected>Select lecturer</option>
                                     <option th:each="lecturer : ${lecturers}" th:value="${lecturer.id}"
                                         th:utext="${lecturer.firstName} +' '+ ${lecturer.lastName}" />
                                 </select>
-
+                                <br>
                                 <label for="roomId" class="form-label">Classroom:</label>
                                 <select class="form-select" id="roomId" th:field="*{roomId}">
-                                    <option value=0 selected>Select classroom</option>
+                                    <option value="" selected>Select classroom</option>
                                     <option th:each="classroom : ${classrooms}" th:value="${classroom.id}"
                                         th:utext="${classroom.name}" />
                                 </select>
-
+                                <br>
                                 <label for="groupId" class="form-label">Group: </label>
                                 <select class="form-select" id="groupId" th:field="*{groupId}">
-                                    <option value=0 selected>Select group</option>
+                                    <option value="" selected>Select group</option>
                                     <option th:each="group : ${groups}" th:value="${group.getId()}"
                                         th:utext="${group.getName()}" />
                                 </select>
@@ -243,5 +255,116 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+		    $(function() {
+
+			$.validator.addMethod('dateBefore', function(value,
+				element, params) {
+			    // if end date is valid, validate it as well
+			    var end = $(params + element.form.id);
+			    if (!end.data('validation.running')) {
+				$(element).data('validation.running', true);
+
+				setTimeout($.proxy(
+
+				function() {
+				    this.element(end);
+				}, this), 0);
+
+				setTimeout(function() {
+				    $(element)
+					    .data('validation.running', false);
+				}, 0);
+			    }
+			    return this.optional(element)
+				    || this.optional(end[0])
+				    || new Date(value) < new Date(end.val());
+
+			}, 'Must be before corresponding end date');
+
+			$.validator.addMethod('dateAfter', function(value,
+				element, params) {
+			    // if start date is valid, validate it as well
+			    var start = $(params + element.form.id);
+			    if (!start.data('validation.running')) {
+				$(element).data('validation.running', true);
+				setTimeout($.proxy(
+
+				function() {
+				    this.element(start);
+				}, this), 0);
+				setTimeout(function() {
+				    $(element)
+					    .data('validation.running', false);
+				}, 0);
+			    }
+			    return this.optional(element)
+				    || this.optional(start[0])
+				    || new Date(value) > new Date($(start)
+					    .val());
+
+			}, 'Must be after corresponding start date');
+
+		    });
+		</script>
+
+    <script type="text/javascript">
+		    $('form')
+			    .each(
+				    function() {
+					$(this)
+						.validate(
+							{
+							    rules : {
+								lessonStart : {
+								    dateBefore : '#lessonEnd',
+								    required : true
+								},
+								lessonEnd : {
+								    dateAfter : '#lessonStart',
+								    required : true
+								},
+								courseId : {
+								    required : true
+								},
+								lecturerId : {
+								    required : true
+								},
+								roomId : {
+								    required : true
+								},
+								groupId : {
+								    required : true
+								},
+							    },
+							    messages : {
+								lessonStart : {
+								    required : "Please choose lesson's start date and time",
+								},
+								lessonEnd : {
+								    required : "Please choose lesson's end date and time",
+								},
+								courseId : {
+								    required : "Please choose course for lesson",
+								},
+								lecturerId : {
+								    required : "Please choose lecturer for lesson",
+								},
+								roomId : {
+								    required : "Please choose classroom for lesson",
+								},
+								groupId : {
+								    required : "Please choose group for lesson",
+								},
+								submitHandler : function(
+									form) {
+								    form
+									    .submit();
+								}
+							    },
+							});
+				    });
+		</script>
 </body>
 </html>
