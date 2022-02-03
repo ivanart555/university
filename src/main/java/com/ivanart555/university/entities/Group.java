@@ -15,8 +15,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "groups", schema = "university")
@@ -27,8 +26,7 @@ public class Group {
     private Integer id;
 
     @Column(name = "group_name", unique = true)
-    @NotBlank(message = "Name can't be empty")
-    @Size(min = 5, max = 5, message = "Name of Group should be 5 characters long.")
+    @Pattern(regexp = "[A-Z][A-Z]-[0-9][0-9]", message = "Group name must have two letters(uppercase) and two numbers like: AB-09")
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")

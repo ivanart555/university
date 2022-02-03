@@ -2,16 +2,25 @@ package com.ivanart555.university.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotNull;
+
+import com.ivanart555.university.annotations.LessonDatesTimes;
+
+@LessonDatesTimes(lessonStart = "lessonStart", lessonEnd = "lessonEnd")
 public class LessonDto {
 
     private int id;
+    @NotNull
     private Integer courseId;
     private String courseName;
+    @NotNull
     private Integer roomId;
     private String roomName;
+    @NotNull
     private Integer lecturerId;
     private String lecturerFirstName;
     private String lecturerLastName;
+    @NotNull
     private Integer groupId;
     private String groupName;
     private LocalDateTime lessonStart;

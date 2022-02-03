@@ -14,16 +14,10 @@
 
     <nav aria-label="Navigation bar" th:replace="layouts :: navbar"></nav>
 
-    <p class="fs-3" th:text="'Validation of' + ' ' + ${errors.get(0).objectName} + ' ' + 'failed'"></p>
+    <p class="fs-3">Validation of object failed</p>
 
-    <div th:each="error : ${errors}">
-
-        <div class="alert alert-danger" role="alert"
-            th:text="'You entered' + ' ' + ${error.rejectedValue} + ' as ' + ${error.field} + '. ' + ${error.defaultMessage}"></div>
-
-    </div>
-
-
+    <div class="alert alert-danger" role="alert" th:text="${title}"></div>
+    <div class="alert alert-danger" role="alert" th:text="${message}"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>

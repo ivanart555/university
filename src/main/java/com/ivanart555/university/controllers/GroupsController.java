@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import javax.validation.Valid;
-
+import javax.validation.ValidationException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.exception.ValidationException;
+
 import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.GroupService;
 
@@ -75,8 +75,9 @@ public class GroupsController {
     @PostMapping()
     public String create(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult)
             throws ServiceException {
+
         if (bindingResult.hasErrors())
-            throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage(), bindingResult.getAllErrors());
+            throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
         groupService.save(group);
         return REDIRECT_GROUPS;
@@ -86,8 +87,10 @@ public class GroupsController {
     public String update(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult,
             @PathVariable("id") int id)
             throws ServiceException {
+
         if (bindingResult.hasErrors())
-            return REDIRECT_GROUPS;
+            throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+
         groupService.save(group);
         return REDIRECT_GROUPS;
     }

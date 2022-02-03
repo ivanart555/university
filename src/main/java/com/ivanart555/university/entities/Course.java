@@ -12,6 +12,7 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "courses", schema = "university")
@@ -22,6 +23,7 @@ public class Course {
     private Integer id;
 
     @Column(name = "course_name", unique = true)
+    @Pattern(regexp = "[a-z]+", message = "Course name must be lowercase")
     private String name;
 
     @Column(name = "course_description")

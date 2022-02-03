@@ -69,7 +69,7 @@ class GroupsControllerTest {
     }
     
     @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsPOST() throws Exception {
+    void shouldRedirectToGroups_whenCalledGroupsPOST() throws Exception {
         mockMvc.perform(post("/groups"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("group"))
@@ -77,7 +77,7 @@ class GroupsControllerTest {
     }
 
     @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsEditIdPATCH() throws Exception {
+    void shouldRedirectToGroups_whenCalledGroupsEditIdPATCH() throws Exception {
         mockMvc.perform(patch("/groups/edit/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("group"))
@@ -85,7 +85,7 @@ class GroupsControllerTest {
     }
 
     @Test
-    void shouldRedirectToClassrooms_whenCalledClassroomsDeleteIdDELETE() throws Exception {
+    void shouldRedirectToGroups_whenCalledGroupsDeleteIdDELETE() throws Exception {
         mockMvc.perform(delete("/groups/delete/1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/groups"));

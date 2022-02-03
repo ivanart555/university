@@ -8,6 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "lecturers", schema = "university")
@@ -18,9 +19,11 @@ public class Lecturer {
     private Integer id;
 
     @Column(name = "lecturer_name")
+    @Pattern(regexp = "[A-Z][a-z]+", message = "First name must be capitalized")
     private String firstName;
 
     @Column(name = "lecturer_lastname")
+    @Pattern(regexp = "[A-Z][a-z]+", message = "Last name must be capitalized")
     private String lastName;
 
     @Column(name = "active")
