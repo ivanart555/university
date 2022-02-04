@@ -1,5 +1,4 @@
 $(function () {
-
     $.validator.addMethod('dateBefore', function (value,
                                                   element, params) {
         // if end date is valid, validate it as well
@@ -47,58 +46,55 @@ $(function () {
 
 });
 
-$('form')
-    .each(
-        function () {
-            $(this)
-                .validate(
-                    {
-                        rules: {
-                            lessonStart: {
-                                dateBefore: '#lessonEnd',
-                                required: true
-                            },
-                            lessonEnd: {
-                                dateAfter: '#lessonStart',
-                                required: true
-                            },
-                            courseId: {
-                                required: true
-                            },
-                            lecturerId: {
-                                required: true
-                            },
-                            roomId: {
-                                required: true
-                            },
-                            groupId: {
-                                required: true
-                            },
-                        },
-                        messages: {
-                            lessonStart: {
-                                required: "Please choose lesson's start date and time",
-                            },
-                            lessonEnd: {
-                                required: "Please choose lesson's end date and time",
-                            },
-                            courseId: {
-                                required: "Please choose course for lesson",
-                            },
-                            lecturerId: {
-                                required: "Please choose lecturer for lesson",
-                            },
-                            roomId: {
-                                required: "Please choose classroom for lesson",
-                            },
-                            groupId: {
-                                required: "Please choose group for lesson",
-                            },
-                            submitHandler: function (
-                                form) {
-                                form
-                                    .submit();
-                            }
-                        },
-                    });
+$('form').each(function () {
+    $(this).validate(
+        {
+            rules: {
+                lessonStart: {
+                    dateBefore: '#lessonEnd',
+                    required: true
+                },
+                lessonEnd: {
+                    dateAfter: '#lessonStart',
+                    required: true
+                },
+                courseId: {
+                    required: true
+                },
+                lecturerId: {
+                    required: true
+                },
+                roomId: {
+                    required: true
+                },
+                groupId: {
+                    required: true
+                },
+            },
+            messages: {
+                lessonStart: {
+                    required: "Please choose lesson's start date and time",
+                },
+                lessonEnd: {
+                    required: "Please choose lesson's end date and time",
+                },
+                courseId: {
+                    required: "Please choose course for lesson",
+                },
+                lecturerId: {
+                    required: "Please choose lecturer for lesson",
+                },
+                roomId: {
+                    required: "Please choose classroom for lesson",
+                },
+                groupId: {
+                    required: "Please choose group for lesson",
+                },
+                submitHandler: function (
+                    form) {
+                    form
+                        .submit();
+                }
+            },
         });
+});
