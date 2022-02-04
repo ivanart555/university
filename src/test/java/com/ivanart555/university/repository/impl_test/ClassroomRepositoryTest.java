@@ -32,8 +32,8 @@ class ClassroomRepositoryImplTest {
     void shouldReturnAllClassroomsFromDatabase_whenCalledGetAll() {
         List<Classroom> expectedClassrooms = new ArrayList<>();
         expectedClassrooms.add(new Classroom("100"));
-        expectedClassrooms.add(new Classroom("100A"));
-        expectedClassrooms.add(new Classroom("100B"));
+        expectedClassrooms.add(new Classroom("101"));
+        expectedClassrooms.add(new Classroom("102"));
 
         for (Classroom classroom : expectedClassrooms) {
             classroomRepository.save(classroom);
