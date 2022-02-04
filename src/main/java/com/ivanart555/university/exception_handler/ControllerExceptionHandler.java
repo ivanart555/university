@@ -1,11 +1,11 @@
 package com.ivanart555.university.exception_handler;
 
-import javax.validation.ValidationException;
+import com.ivanart555.university.exception.ServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ivanart555.university.exception.ServiceException;
+import javax.validation.ValidationException;
 
 @ControllerAdvice(basePackages = "com.ivanart555.university.controllers")
 public class ControllerExceptionHandler {

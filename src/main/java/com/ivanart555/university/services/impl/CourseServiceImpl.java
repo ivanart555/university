@@ -1,7 +1,9 @@
 package com.ivanart555.university.services.impl;
 
-import java.util.List;
-
+import com.ivanart555.university.entities.Course;
+import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.CourseRepository;
+import com.ivanart555.university.services.CourseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.repository.CourseRepository;
-import com.ivanart555.university.services.CourseService;
+import java.util.List;
 
 @Component
 public class CourseServiceImpl implements CourseService {

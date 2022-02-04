@@ -1,10 +1,9 @@
 package com.ivanart555.university.dto;
 
-import java.time.LocalDateTime;
+import com.ivanart555.university.annotations.LessonDatesTimes;
 
 import javax.validation.constraints.NotNull;
-
-import com.ivanart555.university.annotations.LessonDatesTimes;
+import java.time.LocalDateTime;
 
 @LessonDatesTimes(lessonStart = "lessonStart", lessonEnd = "lessonEnd")
 public class LessonDto {

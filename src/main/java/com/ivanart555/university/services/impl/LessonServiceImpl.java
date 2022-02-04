@@ -1,12 +1,10 @@
 package com.ivanart555.university.services.impl;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
+import com.ivanart555.university.dto.LessonDto;
+import com.ivanart555.university.entities.*;
+import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.*;
+import com.ivanart555.university.services.LessonService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,19 +14,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.ivanart555.university.dto.LessonDto;
-import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.entities.Lecturer;
-import com.ivanart555.university.entities.Lesson;
-import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.repository.ClassroomRepository;
-import com.ivanart555.university.repository.CourseRepository;
-import com.ivanart555.university.repository.GroupRepository;
-import com.ivanart555.university.repository.LecturerRepository;
-import com.ivanart555.university.repository.LessonRepository;
-import com.ivanart555.university.services.LessonService;
+import javax.persistence.EntityNotFoundException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class LessonServiceImpl implements LessonService {
@@ -41,8 +31,8 @@ public class LessonServiceImpl implements LessonService {
 
     @Autowired
     public LessonServiceImpl(LessonRepository lessonRepository, CourseRepository courseRepository,
-            ClassroomRepository classroomRepository,
-            LecturerRepository lecturerRepository, GroupRepository groupRepository) {
+                             ClassroomRepository classroomRepository,
+                             LecturerRepository lecturerRepository, GroupRepository groupRepository) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
         this.classroomRepository = classroomRepository;
@@ -113,7 +103,7 @@ public class LessonServiceImpl implements LessonService {
 
     @Override
     public void assignLessonToDateTimeForGroup(Lesson lesson, LocalDateTime lessonStart, LocalDateTime lessonEnd,
-            Integer groupId) throws ServiceException {
+                                               Integer groupId) throws ServiceException {
 
         if (!timeIsFree(groupId, lessonStart, lessonEnd)) {
             throw new ServiceException("Failed to assign Lesson to date and time. Date and time are occupied.");

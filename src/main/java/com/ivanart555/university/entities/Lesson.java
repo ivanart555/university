@@ -1,16 +1,7 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "lessons", schema = "university")
@@ -45,13 +36,13 @@ public class Lesson {
     }
 
     public Lesson(LocalDateTime lessonStart,
-            LocalDateTime lessonEnd) {
+                  LocalDateTime lessonEnd) {
         this.lessonStart = lessonStart;
         this.lessonEnd = lessonEnd;
     }
 
     public Lesson(Course course, Classroom classroom, Lecturer lecturer, Group group, LocalDateTime lessonStart,
-            LocalDateTime lessonEnd) {
+                  LocalDateTime lessonEnd) {
         this.course = course;
         this.classroom = classroom;
         this.lecturer = lecturer;

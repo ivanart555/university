@@ -1,16 +1,15 @@
 package com.ivanart555.university.services;
 
-import java.time.LocalDate;
-import java.util.List;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.generic.GenericService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDate;
+import java.util.List;
 
 public interface LecturerService extends GenericService<Lecturer, Integer> {
 

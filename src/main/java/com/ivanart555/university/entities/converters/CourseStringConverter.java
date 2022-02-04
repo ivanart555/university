@@ -1,9 +1,8 @@
 package com.ivanart555.university.entities.converters;
 
+import com.ivanart555.university.entities.Course;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
-
-import com.ivanart555.university.entities.Course;
 
 @Component
 public class CourseStringConverter implements Converter<Course, String> {

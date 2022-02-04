@@ -1,12 +1,11 @@
 package com.ivanart555.university.repository;
 
-import java.util.List;
-
+import com.ivanart555.university.entities.Lecturer;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.ivanart555.university.entities.Lecturer;
+import java.util.List;
 
 @Transactional
 public interface LecturerRepository extends JpaRepository<Lecturer, Integer> {

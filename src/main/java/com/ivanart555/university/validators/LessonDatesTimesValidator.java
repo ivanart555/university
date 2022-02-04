@@ -1,16 +1,14 @@
 package com.ivanart555.university.validators;
 
-import java.time.Duration;
-import java.time.LocalDateTime;
-
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
+import com.ivanart555.university.annotations.LessonDatesTimes;
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 
-import com.ivanart555.university.annotations.LessonDatesTimes;
+import javax.validation.ConstraintValidator;
+import javax.validation.ConstraintValidatorContext;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class LessonDatesTimesValidator implements ConstraintValidator<LessonDatesTimes, Object> {
 

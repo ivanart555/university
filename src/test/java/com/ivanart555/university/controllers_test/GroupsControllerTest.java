@@ -1,16 +1,10 @@
 package com.ivanart555.university.controllers_test;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
-
+import com.ivanart555.university.config.TestSpringConfig;
+import com.ivanart555.university.controllers.GroupsController;
+import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.services.GroupService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,11 +16,11 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.controllers.GroupsController;
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.services.CourseService;
-import com.ivanart555.university.services.GroupService;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringJUnitWebConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
@@ -36,7 +30,7 @@ class GroupsControllerTest {
 
     @Mock
     private GroupService groupService;
-    
+
     @Mock
     private CourseService courseService;
 
@@ -67,7 +61,7 @@ class GroupsControllerTest {
                 .andExpect(model().attributeExists("group"))
                 .andExpect(view().name("groups/index"));
     }
-    
+
     @Test
     void shouldRedirectToGroups_whenCalledGroupsPOST() throws Exception {
         mockMvc.perform(post("/groups"))

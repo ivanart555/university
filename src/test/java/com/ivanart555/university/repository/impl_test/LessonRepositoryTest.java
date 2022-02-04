@@ -1,29 +1,19 @@
 package com.ivanart555.university.repository.impl_test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
+import com.ivanart555.university.config.TestSpringConfig;
+import com.ivanart555.university.entities.*;
+import com.ivanart555.university.repository.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.entities.Lecturer;
-import com.ivanart555.university.entities.Lesson;
-import com.ivanart555.university.repository.ClassroomRepository;
-import com.ivanart555.university.repository.CourseRepository;
-import com.ivanart555.university.repository.GroupRepository;
-import com.ivanart555.university.repository.LecturerRepository;
-import com.ivanart555.university.repository.LessonRepository;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -37,8 +27,8 @@ class LessonRepositoryTest {
 
     @Autowired
     public LessonRepositoryTest(LessonRepository lessonRepository, CourseRepository courseRepository,
-            ClassroomRepository classroomRepository,
-            LecturerRepository lecturerRepository, GroupRepository groupRepository) {
+                                ClassroomRepository classroomRepository,
+                                LecturerRepository lecturerRepository, GroupRepository groupRepository) {
         this.lessonRepository = lessonRepository;
         this.courseRepository = courseRepository;
         this.classroomRepository = classroomRepository;
