@@ -14,8 +14,8 @@ import com.ivanart555.university.annotations.LessonDatesTimes;
 
 public class LessonDatesTimesValidator implements ConstraintValidator<LessonDatesTimes, Object> {
 
-//    @Autowired
-//    private Environment env;
+    @Autowired
+    private Environment env;
 
     private String lessonStart;
     private String lessonEnd;
@@ -28,9 +28,7 @@ public class LessonDatesTimesValidator implements ConstraintValidator<LessonDate
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-//        long lessonDurationMinutes = Long.parseLong(env.getProperty("lessonDurationMinutes"));
-
-        long lessonDurationMinutes = 60;
+        long lessonDurationMinutes = Long.parseLong(env.getProperty("lessonDurationMinutes"));
 
         LocalDateTime lessonStartValue = (LocalDateTime) new BeanWrapperImpl(value)
                 .getPropertyValue(lessonStart);
