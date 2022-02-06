@@ -1,9 +1,8 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.api.controller;
 
-import com.ivanart555.university.entities.Lecturer;
+import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.services.CourseService;
-import com.ivanart555.university.services.LecturerService;
+import com.ivanart555.university.services.ClassroomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,16 +21,14 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/lecturers")
-public class LecturersController {
-    private static final String REDIRECT_LECTURERS = "redirect:/lecturers";
-    private LecturerService lecturerService;
-    private CourseService courseService;
+@RequestMapping("/classrooms")
+public class ClassroomsController {
+    private static final String REDIRECT_CLASSROOMS = "redirect:/classrooms";
+    private ClassroomService classroomService;
 
     @Autowired
-    public LecturersController(LecturerService lecturerService, CourseService courseService) {
-        this.lecturerService = lecturerService;
-        this.courseService = courseService;
+    public ClassroomsController(ClassroomService classroomService) {
+        this.classroomService = classroomService;
     }
 
     @GetMapping()
@@ -39,20 +36,18 @@ public class LecturersController {
                         @RequestParam("page") Optional<Integer> page,
                         @RequestParam("size") Optional<Integer> size) throws ServiceException {
         int currentPage = page.orElse(1);
-        int pageSize = size.orElse(15);
+        int pageSize = size.orElse(10);
 
         Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
-        Page<Lecturer> lecturerPage = lecturerService.findAll(sortedById);
+        Page<Classroom> classroomPage = classroomService.findAll(sortedById);
 
-        model.addAttribute("lecturerPage", lecturerPage);
+        model.addAttribute("classroomPage", classroomPage);
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", lecturerPage.getTotalPages());
+        model.addAttribute("totalPages", classroomPage.getTotalPages());
 
-        model.addAttribute("courses", courseService.findAll());
+        model.addAttribute("classroom", new Classroom());
 
-        model.addAttribute("lecturer", new Lecturer());
-
-        int totalPages = lecturerPage.getTotalPages();
+        int totalPages = classroomPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -60,35 +55,35 @@ public class LecturersController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "lecturers/index";
+        return "classrooms/index";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("lecturer") @Valid Lecturer lecturer, BindingResult bindingResult)
+    public String create(@ModelAttribute("classroom") @Valid Classroom classroom, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        lecturerService.save(lecturer);
-        return REDIRECT_LECTURERS;
+        classroomService.save(classroom);
+        return REDIRECT_CLASSROOMS;
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("lecturer") @Valid Lecturer lecturer, BindingResult bindingResult,
+    public String update(@ModelAttribute("classroom") @Valid Classroom classroom, BindingResult bindingResult,
                          @PathVariable("id") int id)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        lecturerService.save(lecturer);
-        return REDIRECT_LECTURERS;
+        classroomService.save(classroom);
+        return REDIRECT_CLASSROOMS;
     }
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        lecturerService.delete(id);
-        return REDIRECT_LECTURERS;
+        classroomService.delete(id);
+        return REDIRECT_CLASSROOMS;
     }
 }

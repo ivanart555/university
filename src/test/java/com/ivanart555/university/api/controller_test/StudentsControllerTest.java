@@ -1,10 +1,10 @@
-package com.ivanart555.university.controllers_test;
+package com.ivanart555.university.api.controller_test;
 
 import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.controllers.GroupsController;
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.api.controller.StudentsController;
+import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.services.GroupService;
+import com.ivanart555.university.services.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,25 +24,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringJUnitWebConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
-class GroupsControllerTest {
+class StudentsControllerTest {
 
     private MockMvc mockMvc;
+
+    @Mock
+    private StudentService studentService;
 
     @Mock
     private GroupService groupService;
 
     @Mock
-    private CourseService courseService;
-
-    @Mock
-    Page<Group> anyPage;
+    Page<Student> anyPage;
 
     @InjectMocks
-    private GroupsController groupsController;
+    private StudentsController studentsController;
 
     @BeforeEach
     public void setup() {
-        mockMvc = MockMvcBuilders.standaloneSetup(groupsController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(studentsController).build();
     }
 
     @Test
@@ -51,37 +51,37 @@ class GroupsControllerTest {
     }
 
     @Test
-    void shouldReturnViewGroupsIndex_whenCalledGroupsGET() throws Exception {
-        when(groupService.findAll(any())).thenReturn(anyPage);
-        mockMvc.perform(get("/groups"))
+    void shouldReturnViewStudentsIndex_whenCalledStudentsGET() throws Exception {
+        when(studentService.findAll(any())).thenReturn(anyPage);
+        mockMvc.perform(get("/students"))
                 .andExpect(status().isOk())
-                .andExpect(model().attributeExists("groupPage"))
+                .andExpect(model().attributeExists("studentPage"))
                 .andExpect(model().attributeExists("currentPage"))
                 .andExpect(model().attributeExists("totalPages"))
-                .andExpect(model().attributeExists("group"))
-                .andExpect(view().name("groups/index"));
+                .andExpect(model().attributeExists("student"))
+                .andExpect(view().name("students/index"));
     }
 
     @Test
-    void shouldRedirectToGroups_whenCalledGroupsPOST() throws Exception {
-        mockMvc.perform(post("/groups"))
+    void shouldRedirectToStudents_whenCalledStudentsPOST() throws Exception {
+        mockMvc.perform(post("/students"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("group"))
-                .andExpect(view().name("redirect:/groups"));
+                .andExpect(model().attributeExists("student"))
+                .andExpect(view().name("redirect:/students"));
     }
 
     @Test
-    void shouldRedirectToGroups_whenCalledGroupsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/groups/edit/1"))
+    void shouldRedirectToStudents_whenCalledStudentsEditIdPATCH() throws Exception {
+        mockMvc.perform(patch("/students/edit/20"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(model().attributeExists("group"))
-                .andExpect(view().name("redirect:/groups"));
+                .andExpect(model().attributeExists("student"))
+                .andExpect(view().name("redirect:/students"));
     }
 
     @Test
-    void shouldRedirectToGroups_whenCalledGroupsDeleteIdDELETE() throws Exception {
-        mockMvc.perform(delete("/groups/delete/1"))
+    void shouldRedirectToStudents_whenCalledStudentsDeleteIdDELETE() throws Exception {
+        mockMvc.perform(delete("/students/delete/20"))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(view().name("redirect:/groups"));
+                .andExpect(view().name("redirect:/students"));
     }
 }

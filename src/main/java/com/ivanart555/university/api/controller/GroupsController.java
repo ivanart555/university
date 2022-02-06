@@ -1,8 +1,9 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.api.controller;
 
-import com.ivanart555.university.dto.LessonDto;
+import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.services.*;
+import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,23 +22,16 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/lessons")
-public class LessonsController {
-    private static final String REDIRECT_LESSONS = "redirect:/lessons";
-    private LessonService lessonService;
-    private CourseService courseService;
-    private LecturerService lecturerService;
-    private ClassroomService classroomService;
+@RequestMapping("/groups")
+public class GroupsController {
+    private static final String REDIRECT_GROUPS = "redirect:/groups";
     private GroupService groupService;
+    private CourseService courseService;
 
     @Autowired
-    public LessonsController(LessonService lessonService, CourseService courseService, LecturerService lecturerService,
-                             ClassroomService classroomService, GroupService groupService) {
-        this.lessonService = lessonService;
-        this.courseService = courseService;
-        this.lecturerService = lecturerService;
-        this.classroomService = classroomService;
+    public GroupsController(GroupService groupService, CourseService courseService) {
         this.groupService = groupService;
+        this.courseService = courseService;
     }
 
     @GetMapping()
@@ -48,19 +42,16 @@ public class LessonsController {
         int pageSize = size.orElse(15);
 
         Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
-        Page<LessonDto> lessonPage = lessonService.findAll(sortedById);
+        Page<Group> groupPage = groupService.findAll(sortedById);
 
-        model.addAttribute("lessonDto", new LessonDto());
-
-        model.addAttribute("courses", courseService.findAll());
-        model.addAttribute("lecturers", lecturerService.getAllActive());
-        model.addAttribute("classrooms", classroomService.findAll());
-        model.addAttribute("groups", groupService.findAll());
-
-        model.addAttribute("lessonPage", lessonPage);
+        model.addAttribute("groupPage", groupPage);
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", lessonPage.getTotalPages());
-        int totalPages = lessonPage.getTotalPages();
+        model.addAttribute("totalPages", groupPage.getTotalPages());
+
+        model.addAttribute("allCourses", courseService.findAll());
+        model.addAttribute("group", new Group());
+
+        int totalPages = groupPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -68,35 +59,36 @@ public class LessonsController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "lessons/index";
+        return "groups/index";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("lessonDto") @Valid LessonDto lessonDto, BindingResult bindingResult)
+    public String create(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        lessonService.save(lessonDto);
-        return REDIRECT_LESSONS;
+        groupService.save(group);
+        return REDIRECT_GROUPS;
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("lessonDto") @Valid LessonDto lessonDto, BindingResult bindingResult,
+    public String update(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult,
                          @PathVariable("id") int id)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        lessonService.save(lessonDto);
-        return REDIRECT_LESSONS;
+        groupService.save(group);
+        return REDIRECT_GROUPS;
     }
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        lessonService.delete(id);
-        return REDIRECT_LESSONS;
+        groupService.delete(id);
+        return REDIRECT_GROUPS;
     }
+
 }

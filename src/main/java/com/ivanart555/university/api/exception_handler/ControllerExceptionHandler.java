@@ -1,4 +1,4 @@
-package com.ivanart555.university.exception_handler;
+package com.ivanart555.university.api.exception_handler;
 
 import com.ivanart555.university.exception.ServiceException;
 import org.springframework.web.bind.annotation.ControllerAdvice;

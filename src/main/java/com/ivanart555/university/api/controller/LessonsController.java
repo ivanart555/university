@@ -1,8 +1,8 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.api.controller;
 
-import com.ivanart555.university.entities.Course;
+import com.ivanart555.university.dto.LessonDto;
 import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,14 +21,23 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/courses")
-public class CoursesController {
-    private static final String REDIRECT_COURSES = "redirect:/courses";
+@RequestMapping("/lessons")
+public class LessonsController {
+    private static final String REDIRECT_LESSONS = "redirect:/lessons";
+    private LessonService lessonService;
     private CourseService courseService;
+    private LecturerService lecturerService;
+    private ClassroomService classroomService;
+    private GroupService groupService;
 
     @Autowired
-    public CoursesController(CourseService courseService) {
+    public LessonsController(LessonService lessonService, CourseService courseService, LecturerService lecturerService,
+                             ClassroomService classroomService, GroupService groupService) {
+        this.lessonService = lessonService;
         this.courseService = courseService;
+        this.lecturerService = lecturerService;
+        this.classroomService = classroomService;
+        this.groupService = groupService;
     }
 
     @GetMapping()
@@ -39,15 +48,19 @@ public class CoursesController {
         int pageSize = size.orElse(15);
 
         Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
-        Page<Course> coursePage = courseService.findAll(sortedById);
+        Page<LessonDto> lessonPage = lessonService.findAll(sortedById);
 
-        model.addAttribute("coursePage", coursePage);
+        model.addAttribute("lessonDto", new LessonDto());
+
+        model.addAttribute("courses", courseService.findAll());
+        model.addAttribute("lecturers", lecturerService.getAllActive());
+        model.addAttribute("classrooms", classroomService.findAll());
+        model.addAttribute("groups", groupService.findAll());
+
+        model.addAttribute("lessonPage", lessonPage);
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", coursePage.getTotalPages());
-
-        model.addAttribute("course", new Course());
-
-        int totalPages = coursePage.getTotalPages();
+        model.addAttribute("totalPages", lessonPage.getTotalPages());
+        int totalPages = lessonPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -55,35 +68,35 @@ public class CoursesController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "courses/index";
+        return "lessons/index";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("course") @Valid Course course, BindingResult bindingResult)
+    public String create(@ModelAttribute("lessonDto") @Valid LessonDto lessonDto, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        courseService.save(course);
-        return REDIRECT_COURSES;
+        lessonService.save(lessonDto);
+        return REDIRECT_LESSONS;
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("course") @Valid Course course, BindingResult bindingResult,
+    public String update(@ModelAttribute("lessonDto") @Valid LessonDto lessonDto, BindingResult bindingResult,
                          @PathVariable("id") int id)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        courseService.save(course);
-        return REDIRECT_COURSES;
+        lessonService.save(lessonDto);
+        return REDIRECT_LESSONS;
     }
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        courseService.delete(id);
-        return REDIRECT_COURSES;
+        lessonService.delete(id);
+        return REDIRECT_LESSONS;
     }
 }
