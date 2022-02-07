@@ -1,14 +1,10 @@
 package com.ivanart555.university.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
-@Table(name = "classrooms", schema="university")
+@Table(name = "classrooms", schema = "university")
 public class Classroom {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,8 +12,9 @@ public class Classroom {
     private Integer id;
 
     @Column(name = "room_name", unique = true)
+    @Pattern(regexp = "[0-9][0-9][0-9]", message = "Classroom name must have three numbers")
     private String name;
-    
+
     public Classroom() {
     }
 

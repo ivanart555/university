@@ -1,179 +1,204 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://thymeleaf.org">
 <head>
-<title>Lecturers</title>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <title>Lecturers</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery-validation@1.19.3/dist/additional-methods.min.js"></script>
+
+    <style type="text/css">
+        .error {
+            color: #F00;
+            background-color: #FFF;
+        }
+    </style>
+
 </head>
 <body>
 
-    <nav aria-label="Navigation bar" th:replace="layouts :: navbar"></nav>
+<nav aria-label="Navigation bar" th:replace="layouts :: navbar"></nav>
 
-    <div class="container my-2">
-        <h1>Lecturers</h1>
-        <table aria-label="List of all lecturers" border="1" class="table table-striped table-responsive-md">
-            <thead>
-                <tr>
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Last name</th>
-                    <th scope="col">Active</th>
-                    <th scope="col">Course</th>
-                    <th scope="col">
-                        <div class="parent position-relative">
-                            <button type="button" class="btn btn-success btn-sm position-absolute top-0 end-0"
-                                data-bs-toggle="modal" data-bs-target="#addModal">Add</button>
-                        </div>
-                        Actions
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="lecturer : ${lecturerPage.content}">
-                    <td th:text="${lecturer.id}"></td>
-                    <td th:text="${lecturer.firstName}"></td>
-                    <td th:text="${lecturer.lastName}"></td>
-                    <td>
-                        <input class="form-check-input" type="checkbox" name="active" disabled
-                            th:checked="${lecturer.active}">
-                    </td>
-                    <td th:text="${lecturer?.course?.name}"></td>
-                    <td>
-                        <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
-                            th:attr="data-bs-target='#modalUpdate'+${lecturer.id}">Edit</button>
-                        <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
-                            th:attr="data-bs-target='#modalDelete'+${lecturer.id}">Delete</button>
-                        <div class="modal fade text-body" th:attr="id='modalUpdate'+${lecturer.id}" tabindex="-1"
-                            aria-labelledby="modalUpdate" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="updateModalLabel">Edit lecturer</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+<div class="container my-2">
+    <h1>Lecturers</h1>
+    <table aria-label="List of all lecturers" border="1" class="table table-striped table-responsive-md">
+        <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Active</th>
+            <th scope="col">Course</th>
+            <th scope="col">
+                <div class="parent position-relative">
+                    <button type="button" class="btn btn-success btn-sm position-absolute top-0 end-0"
+                            data-bs-toggle="modal" data-bs-target="#addModal">Add
+                    </button>
+                </div>
+                Actions
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="lecturer : ${lecturerPage.content}">
+            <td th:text="${lecturer.id}"></td>
+            <td th:text="${lecturer.firstName}"></td>
+            <td th:text="${lecturer.lastName}"></td>
+            <td>
+                <input class="form-check-input" type="checkbox" name="active" disabled
+                       th:checked="${lecturer.active}">
+            </td>
+            <td th:text="${lecturer?.course?.name}"></td>
+            <td>
+                <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#modalUpdate'+${lecturer.id}">Edit
+                </button>
+                <button type="button" class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                        th:attr="data-bs-target='#modalDelete'+${lecturer.id}">Delete
+                </button>
+                <div class="modal fade text-body" th:attr="id='modalUpdate'+${lecturer.id}" tabindex="-1"
+                     aria-labelledby="modalUpdate" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="updateModalLabel">Edit lecturer</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form th:method="PATCH" th:action="@{/lecturers/edit/{id}(id=${lecturer.id})}"
+                                      th:object="${lecturer}">
+                                    <div class="mb-3">
+                                        <label for="firstName" class="form-label">Name:</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName"
+                                               th:value="*{firstName}"/>
+                                        <br>
+                                        <label for="lastName" class="form-label">Last name:</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName"
+                                               th:value="*{lastName}"/>
+                                        <br>
+                                        <label class="form-check-label" for="active"> Active </label>
+                                        <input type="checkbox" name="active" th:checked="*{active}"/>
+                                        <br>
+                                        <label for="courseId" class="form-label">Course:</label>
+                                        <select class="form-select" id="courseId" th:field="*{course.id}">
+                                            <option th:if="*{course} == null" value="" selected>Select
+                                                course for Lecturer
+                                            </option>
+                                            <option th:unless="*{course} == null" th:value="*{course.id}"
+                                                    th:utext="*{course.name}" selected></option>
+                                            <option th:each="course : ${courses}" th:value="${course.id}"
+                                                    th:utext="${course.name}"/>
+                                        </select>
                                     </div>
-                                    <div class="modal-body">
-                                        <form th:method="PATCH" th:action="@{/lecturers/edit/{id}(id=${lecturer.id})}"
-                                            th:object="${lecturer}">
-                                            <div class="mb-3">
-                                                <label for="firstName" class="form-label">Name:</label>
-                                                <input type="text" class="form-control" id="firstName" name="firstName"
-                                                    th:value="*{firstName}" />
-                                                <label for="lastName" class="form-label">Last name:</label>
-                                                <input type="text" class="form-control" id="lastName" name="lastName"
-                                                    th:value="*{lastName}" />
-                                                <label class="form-check-label" for="active"> Active </label>
-                                                <input type="checkbox" name="active" th:checked="*{active}" />
-                                                <br>
-                                                <label for="courseId" class="form-label">Course:</label>
-                                                <select class="form-select" id="courseId" th:field="*{course.id}">
-                                                    <option th:if="*{course} == null" value="" selected>Select
-                                                        course for Lecturer</option>
-                                                    <option th:unless="*{course} == null" th:value="*{course.id}"
-                                                        th:utext="*{course.name}" selected></option>
-                                                    <option th:each="course : ${courses}" th:value="${course.id}"
-                                                        th:utext="${course.name}" />
-                                                </select>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-success">Update lecturer</button>
-                                            </div>
-                                        </form>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-success">Update lecturer</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                        <div class="modal fade text-body" th:attr="id='modalDelete'+${lecturer.id}" tabindex="-1"
-                            aria-labelledby="modalDelete" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                            aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal fade text-body" th:attr="id='modalDelete'+${lecturer.id}" tabindex="-1"
+                     aria-labelledby="modalDelete" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Warning</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal"
+                                      th:action="@{/lecturers/delete/{id}(id=${lecturer.id})}" th:method="DELETE">
+                                    <input id="id" name="id" type="hidden" th:value="${lecturer.id}"/>
+                                    <div class="form-group">
+                                        <div class="text-nowrap bd-highlight">
+                                            <p
+                                                    th:text="'Are you sure you want to delete lecturer:' + ' ' + ${lecturer.firstName} + ' ' + ${lecturer.lastName} + ' ' + '?'"></p>
+                                        </div>
                                     </div>
-                                    <div class="modal-body">
-                                        <form class="form-horizontal"
-                                            th:action="@{/lecturers/delete/{id}(id=${lecturer.id})}" th:method="DELETE">
-                                            <input id="id" name="id" type="hidden" th:value="${lecturer.id}" />
-                                            <div class="form-group">
-                                                <div class="text-nowrap bd-highlight">
-                                                    <p
-                                                        th:text="'Are you sure you want to delete lecturer:' + ' ' + ${lecturer.firstName} + ' ' + ${lecturer.lastName} + ' ' + '?'"></p>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-danger">Delete lecturer</button>
-                                            </div>
-                                        </form>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                                        </button>
+                                        <button type="submit" class="btn btn-danger">Delete lecturer</button>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-        <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="addModalLabel">New lecturer</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form th:method="POST" th:action="@{/lecturers}" th:object="${lecturer}">
-                            <div class="mb-3">
-                                <label for="firstName" class="form-label">Name:</label>
-                                <input type="text" class="form-control" id="firstName" name="firstName"
-                                    th:value="*{firstName}" />
-                                <label for="lastName" class="form-label">Last name:</label>
-                                <input type="text" class="form-control" id="lastName" name="lastName"
-                                    th:value="*{lastName}" />
-                                <label class="form-check-label" for="active"> Active </label>
-                                <input type="checkbox" name="active" checked />
-                                <br>
-                                <label for="groupId" class="form-label">Course:</label>
-                                <select class="form-select" id="courseId" th:field="*{course.id}">
-                                    <option value="" selected>Select course for Lecturer</option>
-                                    <option th:each="course : ${courses}" th:value="${course.id}"
-                                        th:utext="${course.name}" />
-                                </select>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-success">Submit</button>
-                            </div>
-                        </form>
-                    </div>
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addModalLabel">New lecturer</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form th:method="POST" th:action="@{/lecturers}" th:object="${lecturer}">
+                        <div class="mb-3">
+                            <label for="firstName" class="form-label">Name:</label>
+                            <input type="text" class="form-control" id="firstName" name="firstName"
+                                   th:value="*{firstName}"/>
+                            <br>
+                            <label for="lastName" class="form-label">Last name:</label>
+                            <input type="text" class="form-control" id="lastName" name="lastName"
+                                   th:value="*{lastName}"/>
+                            <br>
+                            <label class="form-check-label" for="active"> Active </label>
+                            <input type="checkbox" name="active" checked/>
+                            <br>
+                            <label for="groupId" class="form-label">Course:</label>
+                            <select class="form-select" id="courseId" th:field="*{course.id}">
+                                <option value="" selected>Select course for Lecturer</option>
+                                <option th:each="course : ${courses}" th:value="${course.id}"
+                                        th:utext="${course.name}"/>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
-
-        <nav aria-label="Page navigation" class="paging">
-            <ul class="pagination justify-content-center" th:if="${totalPages > 1}">
-                <li class="page-item" th:classappend="${!lecturerPage.hasPrevious()? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/lecturers(size=${lecturerPage.size}, page=${currentPage - 1})}"
-                        tabindex="-1">Previous</a>
-                </li>
-                <th:block th:each="number : ${pageNumbers}">
-                    <li class="page-item" th:classappend="${number == currentPage? 'active' : ''}">
-                        <a class="page-link" th:href="@{/lecturers(size=${lecturerPage.size}, page=${number})}"
-                            th:text="${number}"></a>
-                    </li>
-                </th:block>
-                <li class="page-item" th:classappend="${!lecturerPage.hasNext()? 'disabled' : ''}">
-                    <a class="page-link" th:href="@{/lecturers(size=${lecturerPage.size}, page=${currentPage + 1})}">Next</a>
-                </li>
-            </ul>
-        </nav>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+
+    <nav aria-label="Page navigation" class="paging">
+        <ul class="pagination justify-content-center" th:if="${totalPages > 1}">
+            <li class="page-item" th:classappend="${!lecturerPage.hasPrevious()? 'disabled' : ''}">
+                <a class="page-link" th:href="@{/lecturers(size=${lecturerPage.size}, page=${currentPage - 1})}"
+                   tabindex="-1">Previous</a>
+            </li>
+            <th:block th:each="number : ${pageNumbers}">
+                <li class="page-item" th:classappend="${number == currentPage? 'active' : ''}">
+                    <a class="page-link" th:href="@{/lecturers(size=${lecturerPage.size}, page=${number})}"
+                       th:text="${number}"></a>
+                </li>
+            </th:block>
+            <li class="page-item" th:classappend="${!lecturerPage.hasNext()? 'disabled' : ''}">
+                <a class="page-link"
+                   th:href="@{/lecturers(size=${lecturerPage.size}, page=${currentPage + 1})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+
+<script src="js/lecturersFormValidation.js"></script>
 </body>
 </html>

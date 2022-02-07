@@ -1,10 +1,9 @@
 package com.ivanart555.university.controllers;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
+import com.ivanart555.university.entities.Lecturer;
+import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -12,19 +11,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
-import com.ivanart555.university.entities.Lecturer;
-import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.services.CourseService;
-import com.ivanart555.university.services.LecturerService;
+import javax.validation.Valid;
+import javax.validation.ValidationException;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Controller
 @RequestMapping("/lecturers")
@@ -41,8 +36,8 @@ public class LecturersController {
 
     @GetMapping()
     public String index(Model model,
-            @RequestParam("page") Optional<Integer> page,
-            @RequestParam("size") Optional<Integer> size) throws ServiceException {
+                        @RequestParam("page") Optional<Integer> page,
+                        @RequestParam("size") Optional<Integer> size) throws ServiceException {
         int currentPage = page.orElse(1);
         int pageSize = size.orElse(15);
 
@@ -69,14 +64,24 @@ public class LecturersController {
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("lecturer") Lecturer lecturer) throws ServiceException {
+    public String create(@ModelAttribute("lecturer") @Valid Lecturer lecturer, BindingResult bindingResult)
+            throws ServiceException {
+
+        if (bindingResult.hasErrors())
+            throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+
         lecturerService.save(lecturer);
         return REDIRECT_LECTURERS;
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("lecturer") Lecturer lecturer, @PathVariable("id") int id)
+    public String update(@ModelAttribute("lecturer") @Valid Lecturer lecturer, BindingResult bindingResult,
+                         @PathVariable("id") int id)
             throws ServiceException {
+
+        if (bindingResult.hasErrors())
+            throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
+
         lecturerService.save(lecturer);
         return REDIRECT_LECTURERS;
     }

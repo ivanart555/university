@@ -1,17 +1,8 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.Set;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "courses", schema = "university")
@@ -22,6 +13,7 @@ public class Course {
     private Integer id;
 
     @Column(name = "course_name", unique = true)
+    @Pattern(regexp = "[a-z]+", message = "Course name must be lowercase")
     private String name;
 
     @Column(name = "course_description")

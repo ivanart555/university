@@ -1,24 +1,21 @@
 package com.ivanart555.university.services.impl_test;
 
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.GroupRepository;
+import com.ivanart555.university.services.impl.GroupServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.repository.GroupRepository;
-import com.ivanart555.university.services.impl.GroupServiceImpl;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class GroupServiceImplTest {

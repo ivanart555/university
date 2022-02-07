@@ -1,9 +1,9 @@
 package com.ivanart555.university.services.impl;
 
-import java.util.List;
-
-import javax.persistence.EntityNotFoundException;
-
+import com.ivanart555.university.entities.Classroom;
+import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.ClassroomRepository;
+import com.ivanart555.university.services.ClassroomService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +11,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.repository.ClassroomRepository;
-import com.ivanart555.university.services.ClassroomService;
+import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @Component
 public class ClassroomServiceImpl implements ClassroomService {

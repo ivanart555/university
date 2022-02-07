@@ -1,20 +1,9 @@
 package com.ivanart555.university.entities;
 
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.util.HashSet;
 import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 @Entity
 @Table(name = "groups", schema = "university")
@@ -25,12 +14,13 @@ public class Group {
     private Integer id;
 
     @Column(name = "group_name", unique = true)
+    @Pattern(regexp = "[A-Z][A-Z]-[0-9][0-9]", message = "Group name must have two letters(uppercase) and two numbers like: AB-09")
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
     private Set<Student> students = new HashSet<>();
 
-    @ManyToMany(fetch=FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(schema = "university", name = "Group_Course", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<Course> courses;
 

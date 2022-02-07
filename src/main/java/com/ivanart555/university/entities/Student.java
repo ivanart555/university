@@ -1,13 +1,7 @@
 package com.ivanart555.university.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "students", schema = "university")
@@ -18,9 +12,11 @@ public class Student {
     private int id;
 
     @Column(name = "student_name")
+    @Pattern(regexp = "[A-Z][a-z]+", message = "First name must be capitalized")
     private String firstName;
 
     @Column(name = "student_lastname")
+    @Pattern(regexp = "[A-Z][a-z]+", message = "Last name must be capitalized")
     private String lastName;
 
     @Column(name = "active")

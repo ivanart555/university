@@ -1,16 +1,11 @@
 package com.ivanart555.university.services.impl_test;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.Mockito.only;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import com.ivanart555.university.config.TestSpringConfig;
+import com.ivanart555.university.dto.LessonDto;
+import com.ivanart555.university.entities.*;
+import com.ivanart555.university.exception.ServiceException;
+import com.ivanart555.university.repository.*;
+import com.ivanart555.university.services.impl.LessonServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,20 +13,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
-import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.dto.LessonDto;
-import com.ivanart555.university.entities.Classroom;
-import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.entities.Lecturer;
-import com.ivanart555.university.entities.Lesson;
-import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.repository.ClassroomRepository;
-import com.ivanart555.university.repository.CourseRepository;
-import com.ivanart555.university.repository.GroupRepository;
-import com.ivanart555.university.repository.LecturerRepository;
-import com.ivanart555.university.repository.LessonRepository;
-import com.ivanart555.university.services.impl.LessonServiceImpl;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.Mockito.*;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
