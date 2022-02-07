@@ -1,9 +1,8 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.api.controller;
 
-import com.ivanart555.university.entities.Student;
+import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.exception.ServiceException;
-import com.ivanart555.university.services.GroupService;
-import com.ivanart555.university.services.StudentService;
+import com.ivanart555.university.services.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,16 +21,14 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/students")
-public class StudentsController {
-    private static final String REDIRECT_STUDENTS = "redirect:/students";
-    private StudentService studentService;
-    private GroupService groupService;
+@RequestMapping("/courses")
+public class CoursesController {
+    private static final String REDIRECT_COURSES = "redirect:/courses";
+    private CourseService courseService;
 
     @Autowired
-    public StudentsController(StudentService studentService, GroupService groupService) {
-        this.studentService = studentService;
-        this.groupService = groupService;
+    public CoursesController(CourseService courseService) {
+        this.courseService = courseService;
     }
 
     @GetMapping()
@@ -42,17 +39,15 @@ public class StudentsController {
         int pageSize = size.orElse(15);
 
         Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
-        Page<Student> studentPage = studentService.findAll(sortedById);
+        Page<Course> coursePage = courseService.findAll(sortedById);
 
-        model.addAttribute("studentPage", studentPage);
+        model.addAttribute("coursePage", coursePage);
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", studentPage.getTotalPages());
+        model.addAttribute("totalPages", coursePage.getTotalPages());
 
-        model.addAttribute("groups", groupService.findAll());
+        model.addAttribute("course", new Course());
 
-        model.addAttribute("student", new Student());
-
-        int totalPages = studentPage.getTotalPages();
+        int totalPages = coursePage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -60,35 +55,35 @@ public class StudentsController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "students/index";
+        return "courses/index";
     }
 
-    @PostMapping
-    public String create(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult)
+    @PostMapping()
+    public String create(@ModelAttribute("course") @Valid Course course, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        studentService.save(student);
-        return REDIRECT_STUDENTS;
+        courseService.save(course);
+        return REDIRECT_COURSES;
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult,
+    public String update(@ModelAttribute("course") @Valid Course course, BindingResult bindingResult,
                          @PathVariable("id") int id)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        studentService.save(student);
-        return REDIRECT_STUDENTS;
+        courseService.save(course);
+        return REDIRECT_COURSES;
     }
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        studentService.delete(id);
-        return REDIRECT_STUDENTS;
+        courseService.delete(id);
+        return REDIRECT_COURSES;
     }
 }

@@ -1,4 +1,4 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.api.controller;
 
 import com.ivanart555.university.exception.ServiceException;
 import org.springframework.stereotype.Controller;

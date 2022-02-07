@@ -1,9 +1,9 @@
-package com.ivanart555.university.controllers;
+package com.ivanart555.university.api.controller;
 
-import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.CourseService;
-import com.ivanart555.university.services.GroupService;
+import com.ivanart555.university.services.LecturerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,15 +22,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 @Controller
-@RequestMapping("/groups")
-public class GroupsController {
-    private static final String REDIRECT_GROUPS = "redirect:/groups";
-    private GroupService groupService;
+@RequestMapping("/lecturers")
+public class LecturersController {
+    private static final String REDIRECT_LECTURERS = "redirect:/lecturers";
+    private LecturerService lecturerService;
     private CourseService courseService;
 
     @Autowired
-    public GroupsController(GroupService groupService, CourseService courseService) {
-        this.groupService = groupService;
+    public LecturersController(LecturerService lecturerService, CourseService courseService) {
+        this.lecturerService = lecturerService;
         this.courseService = courseService;
     }
 
@@ -42,16 +42,17 @@ public class GroupsController {
         int pageSize = size.orElse(15);
 
         Pageable sortedById = PageRequest.of(currentPage - 1, pageSize, Sort.by("id"));
-        Page<Group> groupPage = groupService.findAll(sortedById);
+        Page<Lecturer> lecturerPage = lecturerService.findAll(sortedById);
 
-        model.addAttribute("groupPage", groupPage);
+        model.addAttribute("lecturerPage", lecturerPage);
         model.addAttribute("currentPage", currentPage);
-        model.addAttribute("totalPages", groupPage.getTotalPages());
+        model.addAttribute("totalPages", lecturerPage.getTotalPages());
 
-        model.addAttribute("allCourses", courseService.findAll());
-        model.addAttribute("group", new Group());
+        model.addAttribute("courses", courseService.findAll());
 
-        int totalPages = groupPage.getTotalPages();
+        model.addAttribute("lecturer", new Lecturer());
+
+        int totalPages = lecturerPage.getTotalPages();
         if (totalPages > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
@@ -59,36 +60,35 @@ public class GroupsController {
             model.addAttribute("pageNumbers", pageNumbers);
         }
 
-        return "groups/index";
+        return "lecturers/index";
     }
 
     @PostMapping()
-    public String create(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult)
+    public String create(@ModelAttribute("lecturer") @Valid Lecturer lecturer, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        groupService.save(group);
-        return REDIRECT_GROUPS;
+        lecturerService.save(lecturer);
+        return REDIRECT_LECTURERS;
     }
 
     @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult,
+    public String update(@ModelAttribute("lecturer") @Valid Lecturer lecturer, BindingResult bindingResult,
                          @PathVariable("id") int id)
             throws ServiceException {
 
         if (bindingResult.hasErrors())
             throw new ValidationException(bindingResult.getAllErrors().get(0).getDefaultMessage());
 
-        groupService.save(group);
-        return REDIRECT_GROUPS;
+        lecturerService.save(lecturer);
+        return REDIRECT_LECTURERS;
     }
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        groupService.delete(id);
-        return REDIRECT_GROUPS;
+        lecturerService.delete(id);
+        return REDIRECT_LECTURERS;
     }
-
 }
