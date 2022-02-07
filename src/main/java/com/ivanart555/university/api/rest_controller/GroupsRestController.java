@@ -36,12 +36,14 @@ public class GroupsRestController {
     }
 
     @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable("id") int id, @RequestBody Group group) {
         group.setId(id);
         groupService.save(group);
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public void delete(@PathVariable("id") int id) {
         groupService.delete(id);
     }
