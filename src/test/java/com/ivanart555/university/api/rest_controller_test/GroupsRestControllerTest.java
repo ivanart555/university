@@ -48,7 +48,7 @@ class GroupsRestControllerTest {
     void shouldReturnCorrectJson_whenCalledFindAll() throws Exception {
         when(groupService.findAll()).thenReturn(testData.getTestGroups());
 
-        mockMvc.perform(get("/api/groups"))
+        mockMvc.perform(get("/api/v1/groups"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(jsonGroupsList));
 
@@ -59,7 +59,7 @@ class GroupsRestControllerTest {
     void shouldReturnCorrectJson_whenCalledFindById() throws Exception {
         when(groupService.findById(anyInt())).thenReturn(group);
 
-        mockMvc.perform(get("/api/groups/{id}", 1))
+        mockMvc.perform(get("/api/v1/groups/{id}", 1))
                 .andExpect(status().isOk())
                 .andExpect(content().json(jsonGroup));
 
@@ -68,7 +68,7 @@ class GroupsRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallSave() throws Exception {
-        mockMvc.perform(post("/api/groups")
+        mockMvc.perform(post("/api/v1/groups")
                 .content(jsonGroup)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -81,7 +81,7 @@ class GroupsRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallUpdate() throws Exception {
-        mockMvc.perform(patch("/api/groups/{id}", 1)
+        mockMvc.perform(put("/api/v1/groups/{id}", 1)
                 .content(jsonGroup)
                 .contentType(MediaType.APPLICATION_JSON)
         )
@@ -92,7 +92,7 @@ class GroupsRestControllerTest {
 
     @Test
     void shouldCallDelete_whenCalledDelete() throws Exception {
-        mockMvc.perform(delete("/api/groups/{id}", 1))
+        mockMvc.perform(delete("/api/v1/groups/{id}", 1))
                 .andExpect(status().isOk());
 
         verify(groupService, only()).delete(anyInt());

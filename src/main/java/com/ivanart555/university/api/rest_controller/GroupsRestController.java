@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/groups")
+@RequestMapping("/api/v1/groups")
 public class GroupsRestController {
     private final GroupService groupService;
 
@@ -35,7 +35,7 @@ public class GroupsRestController {
         groupService.save(group);
     }
 
-    @PatchMapping("/{id}")
+    @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable("id") int id, @RequestBody Group group) {
         group.setId(id);
