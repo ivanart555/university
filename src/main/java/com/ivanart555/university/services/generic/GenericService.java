@@ -11,7 +11,7 @@ public interface GenericService<T, K extends Serializable> {
 
     T findById(K id) throws ServiceException;
 
-    void save(T t);
+    int save(T t);
 
     void delete(K id) throws ServiceException;
 }

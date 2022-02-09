@@ -65,9 +65,10 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void save(Group group) throws ServiceException {
-        groupRepository.save(group);
-        LOGGER.info("Group with id {} saved successfully.", group.getId());
+    public int save(Group group) throws ServiceException {
+        Group createdGroup = groupRepository.save(group);
+        LOGGER.info("Group with id {} saved successfully.", createdGroup.getId());
+        return createdGroup.getId();
     }
 
     @Override

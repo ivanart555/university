@@ -75,7 +75,6 @@ class GroupsRestControllerTest {
                 .andExpect(status().isCreated());
 
         Group expectedGroup = group;
-        expectedGroup.setId(0);
         verify(groupService, only()).save(expectedGroup);
     }
 
@@ -93,7 +92,7 @@ class GroupsRestControllerTest {
     @Test
     void shouldCallDelete_whenCalledDelete() throws Exception {
         mockMvc.perform(delete("/api/v1/groups/{id}", 1))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(groupService, only()).delete(anyInt());
     }

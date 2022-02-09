@@ -4,8 +4,11 @@ import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,22 +32,23 @@ public class GroupsRestController {
     }
 
     @PostMapping()
-    @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody Group group) {
-        group.setId(0);
-        groupService.save(group);
+    public ResponseEntity<Object> create(@RequestBody Group group) {
+        int id = groupService.save(group);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
+        return ResponseEntity.created(uri).build();
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public void update(@PathVariable("id") int id, @RequestBody Group group) {
+    public Group update(@PathVariable("id") int id, @RequestBody Group group) {
         group.setId(id);
         groupService.save(group);
+        return group;
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public void delete(@PathVariable("id") int id) {
+    public ResponseEntity<Object> delete(@PathVariable("id") int id) {
         groupService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
