@@ -16,7 +16,7 @@ import java.util.List;
 @Component
 public class CourseServiceImpl implements CourseService {
     private static final Logger LOGGER = LoggerFactory.getLogger(CourseServiceImpl.class);
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
     @Autowired
     public CourseServiceImpl(CourseRepository courseRepository) {
@@ -58,8 +58,9 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void save(Course course) throws ServiceException {
-        courseRepository.save(course);
-        LOGGER.info("Course with id {} saved successfully.", course.getId());
+    public int save(Course course) throws ServiceException {
+        Course createdCourse = courseRepository.save(course);
+        LOGGER.info("Course with id {} saved successfully.", createdCourse.getId());
+        return createdCourse.getId();
     }
 }

@@ -1,5 +1,7 @@
 package com.ivanart555.university.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import java.util.Set;
@@ -19,12 +21,15 @@ public class Course {
     @Column(name = "course_description")
     private String description;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "courses", fetch = FetchType.EAGER)
     private Set<Group> groups;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "course")
     private Lecturer lecturer;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "course")
     private Set<Lesson> lessons;
 
