@@ -87,6 +87,7 @@ class LessonServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        when(lessonRepository.save(lesson)).thenReturn(lesson);
         lessonServiceImpl.save(lesson);
         verify(lessonRepository).save(lesson);
     }
@@ -94,6 +95,7 @@ class LessonServiceImplTest {
     @Test
     void shouldInvokeSaveMethod_whenCalledSaveWithLessonDto() throws ServiceException {
         Lesson lesson = new Lesson(null, null);
+        when(lessonRepository.save(lesson)).thenReturn(lesson);
         lessonServiceImpl.save(lessonDto);
         verify(lessonRepository).save(lesson);
     }

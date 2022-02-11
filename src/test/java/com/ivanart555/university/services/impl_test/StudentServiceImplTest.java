@@ -87,6 +87,7 @@ class StudentServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        when(studentRepository.save(student)).thenReturn(student);
         studentServiceImpl.save(student);
         verify(studentRepository).save(student);
     }

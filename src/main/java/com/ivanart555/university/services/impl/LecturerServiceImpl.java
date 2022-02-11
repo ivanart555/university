@@ -77,14 +77,16 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public void save(Lecturer lecturer) throws ServiceException {
+    public int save(Lecturer lecturer) throws ServiceException {
         setNullCourseWhenNullId(lecturer);
 
         if (lecturer.getCourse() != null) {
             addLecturerToCourse(lecturer, lecturer.getCourse());
         }
-        lecturerRepository.save(lecturer);
+
+        Lecturer createdLecturer = lecturerRepository.save(lecturer);
         LOGGER.info("Lecturer with id {} saved successfully.", lecturer.getId());
+        return createdLecturer.getId();
     }
 
     @Override

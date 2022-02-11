@@ -53,6 +53,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        when(groupRepository.save(group)).thenReturn(group);
         groupServiceImpl.save(group);
         verify(groupRepository).save(group);
     }

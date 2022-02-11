@@ -91,9 +91,10 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void save(Lesson lesson) throws ServiceException {
-        lessonRepository.save(lesson);
-        LOGGER.info("Lesson with id {} updated successfully.", lesson.getId());
+    public int save(Lesson lesson) throws ServiceException {
+        Lesson createdLesson = lessonRepository.save(lesson);
+        LOGGER.info("Lesson with id {} updated successfully.", createdLesson.getId());
+        return createdLesson.getId();
     }
 
     public void save(LessonDto lessonDto) throws ServiceException {

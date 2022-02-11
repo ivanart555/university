@@ -1,5 +1,7 @@
 package com.ivanart555.university.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
@@ -11,17 +13,21 @@ public class Lesson {
     @Column(name = "lesson_id")
     private int id;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Course course;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_room_id")
     private Classroom classroom;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "lecturer_lecturer_id")
     private Lecturer lecturer;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_group_id")
     private Group group;
@@ -37,6 +43,12 @@ public class Lesson {
 
     public Lesson(LocalDateTime lessonStart,
                   LocalDateTime lessonEnd) {
+        this.lessonStart = lessonStart;
+        this.lessonEnd = lessonEnd;
+    }
+
+    public Lesson(int id, LocalDateTime lessonStart, LocalDateTime lessonEnd) {
+        this.id = id;
         this.lessonStart = lessonStart;
         this.lessonEnd = lessonEnd;
     }

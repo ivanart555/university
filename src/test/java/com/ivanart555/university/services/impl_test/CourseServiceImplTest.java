@@ -53,6 +53,7 @@ class CourseServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        when(courseRepository.save(course)).thenReturn(course);
         courseServiceImpl.save(course);
         verify(courseRepository).save(course);
     }

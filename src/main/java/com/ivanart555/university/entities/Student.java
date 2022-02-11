@@ -1,5 +1,7 @@
 package com.ivanart555.university.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
@@ -22,6 +24,7 @@ public class Student {
     @Column(name = "active")
     private boolean active;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
 

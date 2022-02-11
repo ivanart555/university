@@ -60,8 +60,9 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public void save(Classroom classroom) throws ServiceException {
-        classroomRepository.save(classroom);
-        LOGGER.info("Classroom with id {} saved successfully.", classroom.getId());
+    public int save(Classroom classroom) throws ServiceException {
+        Classroom createdClassroom = classroomRepository.save(classroom);
+        LOGGER.info("Classroom with id {} saved successfully.", createdClassroom.getId());
+        return createdClassroom.getId();
     }
 }

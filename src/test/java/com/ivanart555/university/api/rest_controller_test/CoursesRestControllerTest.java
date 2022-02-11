@@ -15,10 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 class CoursesRestControllerTest {
@@ -68,11 +68,14 @@ class CoursesRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallSave() throws Exception {
+        when(courseService.save(course)).thenReturn(course.getId());
+
         mockMvc.perform(post("/api/v1/courses")
                 .content(jsonCourse)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", containsString("/api/v1/courses/" + course.getId())));
 
         Course expectedCourse = course;
         verify(courseService, only()).save(expectedCourse);

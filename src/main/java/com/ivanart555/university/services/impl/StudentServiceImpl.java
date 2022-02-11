@@ -80,15 +80,16 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void save(Student student) throws ServiceException {
+    public int save(Student student) throws ServiceException {
         setNullGroupWhenNullId(student);
 
         if (student.getGroup() != null) {
             addStudentToGroup(student, student.getGroup());
         }
 
-        studentRepository.save(student);
-        LOGGER.info("Student with id {} updated successfully.", student.getId());
+        Student createdStudent = studentRepository.save(student);
+        LOGGER.info("Student with id {} updated successfully.", createdStudent.getId());
+        return createdStudent.getId();
     }
 
     @Override

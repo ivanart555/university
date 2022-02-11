@@ -26,8 +26,9 @@ public class GroupServiceImpl implements GroupService {
     private LessonRepository lessonRepository;
 
     @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository) {
+    public GroupServiceImpl(GroupRepository groupRepository, LessonRepository lessonRepository) {
         this.groupRepository = groupRepository;
+        this.lessonRepository = lessonRepository;
     }
 
     @Override

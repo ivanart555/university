@@ -15,10 +15,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 class GroupsRestControllerTest {
@@ -68,11 +68,14 @@ class GroupsRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallSave() throws Exception {
+        when(groupService.save(group)).thenReturn(group.getId());
+
         mockMvc.perform(post("/api/v1/groups")
                 .content(jsonGroup)
                 .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isCreated());
+                .andExpect(status().isCreated())
+                .andExpect(header().string("Location", containsString("/api/v1/groups/" + group.getId())));
 
         Group expectedGroup = group;
         verify(groupService, only()).save(expectedGroup);

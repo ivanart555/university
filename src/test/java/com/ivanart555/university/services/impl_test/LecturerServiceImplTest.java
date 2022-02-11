@@ -85,6 +85,7 @@ class LecturerServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledSave() throws ServiceException {
+        when(lecturerRepository.save(lecturer)).thenReturn(lecturer);
         lecturerServiceImpl.save(lecturer);
         verify(lecturerRepository).save(lecturer);
     }
