@@ -1,7 +1,7 @@
 package com.ivanart555.university.api.controller_test;
 
-import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.api.controller.CoursesController;
+import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.services.CourseService;
 import org.junit.jupiter.api.BeforeEach;

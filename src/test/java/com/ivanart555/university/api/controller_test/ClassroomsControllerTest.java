@@ -1,7 +1,7 @@
 package com.ivanart555.university.api.controller_test;
 
-import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.api.controller.ClassroomsController;
+import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.services.ClassroomService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringJUnitWebConfig(TestSpringConfig.class)
 @ExtendWith(MockitoExtension.class)
-class ClasroomsControllerTest {
+class ClassroomsControllerTest {
 
     private MockMvc mockMvc;
 

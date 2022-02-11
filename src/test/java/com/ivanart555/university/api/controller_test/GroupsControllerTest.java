@@ -1,7 +1,7 @@
 package com.ivanart555.university.api.controller_test;
 
-import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.api.controller.GroupsController;
+import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.GroupService;

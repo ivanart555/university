@@ -1,7 +1,7 @@
 package com.ivanart555.university.api.controller_test;
 
-import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.api.controller.LecturersController;
+import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.LecturerService;

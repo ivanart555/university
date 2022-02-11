@@ -2,7 +2,6 @@ package com.ivanart555.university.api.rest_controller_test;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ivanart555.university.api.rest_controller.LessonsRestController;
 import com.ivanart555.university.entities.Lesson;
