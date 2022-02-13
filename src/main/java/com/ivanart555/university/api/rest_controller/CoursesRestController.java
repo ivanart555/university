@@ -2,6 +2,7 @@ package com.ivanart555.university.api.rest_controller;
 
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.services.CourseService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,19 @@ public class CoursesRestController {
     }
 
     @GetMapping
+    @ApiOperation("Find all courses")
     public List<Course> findAll() {
         return courseService.findAll();
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Find course by id")
     public Course findById(@PathVariable("id") int id) {
         return courseService.findById(id);
     }
 
     @PostMapping()
+    @ApiOperation("Create new course")
     public ResponseEntity<Object> create(@RequestBody Course course) {
         int id = courseService.save(course);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -39,6 +43,7 @@ public class CoursesRestController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Update already existing course")
     @ResponseStatus(HttpStatus.OK)
     public Course update(@PathVariable("id") int id, @RequestBody Course course) {
         course.setId(id);
@@ -47,6 +52,7 @@ public class CoursesRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation("Delete course by id")
     public ResponseEntity<Object> delete(@PathVariable("id") int id) {
         courseService.delete(id);
         return ResponseEntity.noContent().build();

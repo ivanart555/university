@@ -2,6 +2,7 @@ package com.ivanart555.university.api.rest_controller;
 
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.services.ClassroomService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,19 @@ public class ClassroomsRestController {
     }
 
     @GetMapping
+    @ApiOperation("Find all classrooms")
     public List<Classroom> findAll() {
         return classroomService.findAll();
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Find classroom by id")
     public Classroom findById(@PathVariable("id") int id) {
         return classroomService.findById(id);
     }
 
     @PostMapping()
+    @ApiOperation("Create new classroom")
     public ResponseEntity<Object> create(@RequestBody Classroom classroom) {
         int id = classroomService.save(classroom);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -39,6 +43,7 @@ public class ClassroomsRestController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Update already existing classroom")
     @ResponseStatus(HttpStatus.OK)
     public Classroom update(@PathVariable("id") int id, @RequestBody Classroom classroom) {
         classroom.setId(id);
@@ -47,6 +52,7 @@ public class ClassroomsRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation("Delete classroom by id")
     public ResponseEntity<Object> delete(@PathVariable("id") int id) {
         classroomService.delete(id);
         return ResponseEntity.noContent().build();

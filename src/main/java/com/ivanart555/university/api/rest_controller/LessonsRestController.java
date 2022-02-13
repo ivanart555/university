@@ -2,6 +2,7 @@ package com.ivanart555.university.api.rest_controller;
 
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.services.LessonService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,19 @@ public class LessonsRestController {
     }
 
     @GetMapping
+    @ApiOperation("Find all lessons")
     public List<Lesson> findAll() {
         return lessonService.findAll();
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Find lesson by id")
     public Lesson findById(@PathVariable("id") int id) {
         return lessonService.findById(id);
     }
 
     @PostMapping()
+    @ApiOperation("Create new lesson")
     public ResponseEntity<Object> create(@RequestBody Lesson lesson) {
         int id = lessonService.save(lesson);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -39,6 +43,7 @@ public class LessonsRestController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Update already existing lesson")
     @ResponseStatus(HttpStatus.OK)
     public Lesson update(@PathVariable("id") int id, @RequestBody Lesson lesson) {
         lesson.setId(id);
@@ -47,6 +52,7 @@ public class LessonsRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation("Delete lesson by id")
     public ResponseEntity<Object> delete(@PathVariable("id") int id) {
         lessonService.delete(id);
         return ResponseEntity.noContent().build();

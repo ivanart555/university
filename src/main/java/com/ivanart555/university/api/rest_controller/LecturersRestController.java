@@ -2,6 +2,7 @@ package com.ivanart555.university.api.rest_controller;
 
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.services.LecturerService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,16 +23,19 @@ public class LecturersRestController {
     }
 
     @GetMapping
+    @ApiOperation("Find all lecturers")
     public List<Lecturer> findAll() {
         return lecturerService.findAll();
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Find lecturer by id")
     public Lecturer findById(@PathVariable("id") int id) {
         return lecturerService.findById(id);
     }
 
     @PostMapping()
+    @ApiOperation("Create new lecturer")
     public ResponseEntity<Object> create(@RequestBody Lecturer lecturer) {
         int id = lecturerService.save(lecturer);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(id).toUri();
@@ -39,6 +43,7 @@ public class LecturersRestController {
     }
 
     @PutMapping("/{id}")
+    @ApiOperation("Update already existing lecturer")
     @ResponseStatus(HttpStatus.OK)
     public Lecturer update(@PathVariable("id") int id, @RequestBody Lecturer lecturer) {
         lecturer.setId(id);
@@ -47,6 +52,7 @@ public class LecturersRestController {
     }
 
     @DeleteMapping("/{id}")
+    @ApiOperation("Delete lecturer by id")
     public ResponseEntity<Object> delete(@PathVariable("id") int id) {
         lecturerService.delete(id);
         return ResponseEntity.noContent().build();
