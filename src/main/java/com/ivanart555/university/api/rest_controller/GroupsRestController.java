@@ -3,7 +3,7 @@ package com.ivanart555.university.api.rest_controller;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.services.GroupService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +12,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/groups")
 public class GroupsRestController {
     private final GroupService groupService;
-
-    @Autowired
-    public GroupsRestController(GroupService groupService) {
-        this.groupService = groupService;
-    }
 
     @GetMapping
     @ApiOperation("Find all groups")

@@ -3,7 +3,7 @@ package com.ivanart555.university.api.rest_controller;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.services.StudentService;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,15 +12,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/v1/students")
 public class StudentsRestController {
     private final StudentService studentService;
-
-    @Autowired
-    public StudentsRestController(StudentService studentService) {
-        this.studentService = studentService;
-    }
 
     @GetMapping
     @ApiOperation("Find all students")
