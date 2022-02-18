@@ -11,11 +11,8 @@ import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.repository.StudentRepository;
 import com.ivanart555.university.services.impl.StudentServiceImpl;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDate;
@@ -30,7 +27,6 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.*;
 
 @SpringJUnitConfig(TestSpringConfig.class)
-@ExtendWith(MockitoExtension.class)
 class StudentServiceImplTest {
     @Mock
     private StudentRepository studentRepository;
@@ -48,7 +44,6 @@ class StudentServiceImplTest {
     private Course course;
 
     @InjectMocks
-    @Autowired
     private StudentServiceImpl studentServiceImpl;
 
     @Test
@@ -107,8 +102,8 @@ class StudentServiceImplTest {
     @Test
     void shouldInvokeGetByDateTimeIntervalAndGroupIdMethod_whenCalledGetDaySchedule()
             throws ServiceException {
-        Student student = new Student("Alex", "Black");
-        student.setGroup(new Group(1, "AF-01"));
+        Student student = new Student(1, "Alex", "Black", true, null);
+        student.setGroup(new Group(1, "AF-01", null, null));
         studentServiceImpl.getDaySchedule(student, LocalDate.now());
         verify(lessonRepository).findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(anyInt(), any(LocalDateTime.class),
                 any(LocalDateTime.class));

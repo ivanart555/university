@@ -3,6 +3,7 @@ package com.ivanart555.university.repository.impl_test;
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.repository.CourseRepository;
+import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -11,7 +12,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,8 +20,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
 class CourseRepositoryImplTest {
-    private CourseRepository courseRepository;
+    private final CourseRepository courseRepository;
 
+    @Autowired
+    private TestData testData;
 
     @Autowired
     private CourseRepositoryImplTest(CourseRepository courseRepository, Environment env, JdbcTemplate jdbcTemplate) {
@@ -30,11 +32,7 @@ class CourseRepositoryImplTest {
 
     @Test
     void shouldReturnAllCoursesFromDatabase_whenCalledGetAll() {
-        List<Course> expectedCourses = new ArrayList<>();
-        expectedCourses.add(new Course("english", "English languadge learning."));
-        expectedCourses.add(new Course("astronomy", "Astronomy is the study of the sun, moon, stars, planets."));
-        expectedCourses.add(new Course("marketing", "Advertising, selling, and delivering products to consumers."));
-
+        List<Course> expectedCourses = testData.getTestCourses();
         for (Course Course : expectedCourses) {
             courseRepository.save(Course);
         }

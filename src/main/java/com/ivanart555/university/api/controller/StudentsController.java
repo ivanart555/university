@@ -4,7 +4,7 @@ import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.GroupService;
 import com.ivanart555.university.services.StudentService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +21,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/students")
 public class StudentsController {
     private static final String REDIRECT_STUDENTS = "redirect:/students";
     private StudentService studentService;
     private GroupService groupService;
-
-    @Autowired
-    public StudentsController(StudentService studentService, GroupService groupService) {
-        this.studentService = studentService;
-        this.groupService = groupService;
-    }
 
     @GetMapping()
     public String index(Model model,

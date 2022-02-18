@@ -3,7 +3,7 @@ package com.ivanart555.university.api.controller;
 import com.ivanart555.university.dto.LessonDto;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +20,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/lessons")
 public class LessonsController {
@@ -29,16 +30,6 @@ public class LessonsController {
     private LecturerService lecturerService;
     private ClassroomService classroomService;
     private GroupService groupService;
-
-    @Autowired
-    public LessonsController(LessonService lessonService, CourseService courseService, LecturerService lecturerService,
-                             ClassroomService classroomService, GroupService groupService) {
-        this.lessonService = lessonService;
-        this.courseService = courseService;
-        this.lecturerService = lecturerService;
-        this.classroomService = classroomService;
-        this.groupService = groupService;
-    }
 
     @GetMapping()
     public String index(Model model,

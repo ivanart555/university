@@ -5,9 +5,9 @@ import com.ivanart555.university.entities.*;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.repository.*;
 import com.ivanart555.university.services.LessonService;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@AllArgsConstructor
 @Component
 public class LessonServiceImpl implements LessonService {
     private static final Logger LOGGER = LoggerFactory.getLogger(LessonServiceImpl.class);
@@ -28,17 +29,6 @@ public class LessonServiceImpl implements LessonService {
     private ClassroomRepository classroomRepository;
     private LecturerRepository lecturerRepository;
     private GroupRepository groupRepository;
-
-    @Autowired
-    public LessonServiceImpl(LessonRepository lessonRepository, CourseRepository courseRepository,
-                             ClassroomRepository classroomRepository,
-                             LecturerRepository lecturerRepository, GroupRepository groupRepository) {
-        this.lessonRepository = lessonRepository;
-        this.courseRepository = courseRepository;
-        this.classroomRepository = classroomRepository;
-        this.lecturerRepository = lecturerRepository;
-        this.groupRepository = groupRepository;
-    }
 
     @Override
     public List<Lesson> findAll() throws ServiceException {

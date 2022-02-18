@@ -6,6 +6,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.ivanart555.university.api.rest_controller.LessonsRestController;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.services.LessonService;
+import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -43,7 +44,6 @@ class LessonsRestControllerTest {
         lesson = testData.getTestLessons().get(0);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        //mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         jsonLesson = mapper.writeValueAsString(testData.getTestLessons().get(0));
         jsonLessonsList = mapper.writeValueAsString(testData.getTestLessons());
     }

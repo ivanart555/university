@@ -5,6 +5,7 @@ import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.entities.Student;
 import com.ivanart555.university.repository.GroupRepository;
 import com.ivanart555.university.repository.StudentRepository;
+import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -24,6 +25,9 @@ class StudentRepositoryImplTest {
     private GroupRepository groupRepository;
 
     @Autowired
+    private TestData testData;
+
+    @Autowired
     private StudentRepositoryImplTest(StudentRepository studentRepository, GroupRepository groupRepository, Environment env,
                                       JdbcTemplate jdbcTemplate) {
         this.studentRepository = studentRepository;
@@ -32,10 +36,7 @@ class StudentRepositoryImplTest {
 
     @Test
     void shouldReturnAllStudentsFromDatabase_whenCalledGetAll() {
-        List<Student> expectedStudents = new ArrayList<>();
-        expectedStudents.add(new Student("Peter", "Jackson"));
-        expectedStudents.add(new Student("Alex", "Smith"));
-        expectedStudents.add(new Student("Ann", "White"));
+        List<Student> expectedStudents = testData.getTestStudents();
 
         for (Student Student : expectedStudents) {
             studentRepository.save(Student);
@@ -46,10 +47,10 @@ class StudentRepositoryImplTest {
     @Test
     void shouldReturnAllActiveStudentsFromDatabase_whenCalledGetAllActive() {
         List<Student> expectedStudents = new ArrayList<>();
-        expectedStudents.add(new Student("Peter", "Jackson"));
-        expectedStudents.add(new Student("Alex", "Smith"));
+        expectedStudents.add(testData.getTestStudents().get(0));
+        expectedStudents.add(testData.getTestStudents().get(1));
 
-        Student notActiveStudent = new Student("Ann", "White");
+        Student notActiveStudent = testData.getTestStudents().get(2);
         notActiveStudent.setActive(false);
 
         for (Student Student : expectedStudents) {
@@ -63,14 +64,14 @@ class StudentRepositoryImplTest {
     @Test
     void shouldReturnStudentsFromDatabase_whenGivenGroupId() {
         List<Student> expectedStudents = new ArrayList<>();
-        Group group1 = new Group("AF-01");
-        Group group2 = new Group("AF-02");
+        Group group1 = new Group(1, "AF-01", null, null);
+        Group group2 = new Group(2, "AF-02", null, null);
         groupRepository.save(group1);
         groupRepository.save(group2);
 
-        expectedStudents.add(new Student("Peter", "Jackson", group1));
-        expectedStudents.add(new Student("Alex", "Smith", group1));
-        expectedStudents.add(new Student("Ann", "White", group2));
+        expectedStudents.add(new Student(1, "Peter", "Jackson", true, group1));
+        expectedStudents.add(new Student(2, "Alex", "Smith", true, group1));
+        expectedStudents.add(new Student(3, "Ann", "White", true, group2));
 
         for (Student Student : expectedStudents) {
             studentRepository.save(Student);

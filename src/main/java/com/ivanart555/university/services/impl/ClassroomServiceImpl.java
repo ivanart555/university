@@ -4,9 +4,8 @@ import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.repository.ClassroomRepository;
 import com.ivanart555.university.services.ClassroomService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -14,20 +13,16 @@ import org.springframework.stereotype.Component;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
+@Slf4j
+@AllArgsConstructor
 @Component
 public class ClassroomServiceImpl implements ClassroomService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ClassroomServiceImpl.class);
-    private ClassroomRepository classroomRepository;
-
-    @Autowired
-    public ClassroomServiceImpl(ClassroomRepository classroomRepository) {
-        this.classroomRepository = classroomRepository;
-    }
+    private final ClassroomRepository classroomRepository;
 
     @Override
     public List<Classroom> findAll() throws ServiceException {
         List<Classroom> classrooms = classroomRepository.findAll();
-        LOGGER.info("All Classrooms received successfully.");
+        log.info("All Classrooms received successfully.");
 
         return classrooms;
     }
@@ -35,7 +30,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public Page<Classroom> findAll(Pageable pageable) throws ServiceException {
         Page<Classroom> groups = classroomRepository.findAll(pageable);
-        LOGGER.info("All Groups received successfully.");
+        log.info("All Groups received successfully.");
         return groups;
     }
 
@@ -46,9 +41,9 @@ public class ClassroomServiceImpl implements ClassroomService {
             classroom = classroomRepository.findById(id).orElseThrow(() -> new ServiceException(
                     String.format("Classroom with id %d not found!", id)));
         } catch (EntityNotFoundException e) {
-            LOGGER.warn("Classroom with id {} not found!", id);
+            log.warn("Classroom with id {} not found!", id);
         }
-        LOGGER.info("Classroom with id {} received successfully.", id);
+        log.info("Classroom with id {} received successfully.", id);
 
         return classroom;
     }
@@ -56,13 +51,13 @@ public class ClassroomServiceImpl implements ClassroomService {
     @Override
     public void delete(Integer id) throws ServiceException {
         classroomRepository.deleteById(id);
-        LOGGER.info("Classroom with id {} deleted successfully.", id);
+        log.info("Classroom with id {} deleted successfully.", id);
     }
 
     @Override
     public int save(Classroom classroom) throws ServiceException {
         Classroom createdClassroom = classroomRepository.save(classroom);
-        LOGGER.info("Classroom with id {} saved successfully.", createdClassroom.getId());
+        log.info("Classroom with id {} saved successfully.", createdClassroom.getId());
         return createdClassroom.getId();
     }
 }

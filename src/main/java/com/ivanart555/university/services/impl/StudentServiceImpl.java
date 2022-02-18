@@ -8,10 +8,8 @@ import com.ivanart555.university.repository.GroupRepository;
 import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.repository.StudentRepository;
 import com.ivanart555.university.services.StudentService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -21,42 +19,33 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
+@AllArgsConstructor
 @Component
 public class StudentServiceImpl implements StudentService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(StudentServiceImpl.class);
-    private Environment env;
-    private StudentRepository studentRepository;
-    private GroupRepository groupRepository;
-    private LessonRepository lessonRepository;
-
-    @Autowired
-    public StudentServiceImpl(StudentRepository studentRepository, GroupRepository groupRepository,
-                              LessonRepository lessonRepository,
-                              Environment env) {
-        this.studentRepository = studentRepository;
-        this.groupRepository = groupRepository;
-        this.lessonRepository = lessonRepository;
-        this.env = env;
-    }
+    private static final int GROUP_MAX_SIZE = 30;
+    private final StudentRepository studentRepository;
+    private final GroupRepository groupRepository;
+    private final LessonRepository lessonRepository;
 
     @Override
     public List<Student> findAll() throws ServiceException {
         List<Student> students = studentRepository.findAll();
-        LOGGER.info("All Students were received successfully.");
+        log.info("All Students were received successfully.");
         return students;
     }
 
     @Override
     public Page<Student> findAll(Pageable pageable) throws ServiceException {
         Page<Student> students = studentRepository.findAll(pageable);
-        LOGGER.info("All Students were received successfully.");
+        log.info("All Students were received successfully.");
         return students;
     }
 
     @Override
     public List<Student> getAllActive() throws ServiceException {
         List<Student> students = studentRepository.getAllActive();
-        LOGGER.info("All active Students were received successfully.");
+        log.info("All active Students were received successfully.");
         return students;
     }
 
@@ -67,16 +56,16 @@ public class StudentServiceImpl implements StudentService {
             student = studentRepository.findById(id)
                     .orElseThrow(() -> new ServiceException(String.format("Student with id %d not found!", id)));
         } catch (EntityNotFoundException e) {
-            LOGGER.warn("Student with id {} not found!", id);
+            log.warn("Student with id {} not found!", id);
         }
-        LOGGER.info("Student with id {} received successfully.", id);
+        log.info("Student with id {} received successfully.", id);
         return student;
     }
 
     @Override
     public void delete(Integer id) throws ServiceException {
         studentRepository.deleteById(id);
-        LOGGER.info("Student with id {} deleted successfully.", id);
+        log.info("Student with id {} deleted successfully.", id);
     }
 
     @Override
@@ -88,7 +77,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         Student createdStudent = studentRepository.save(student);
-        LOGGER.info("Student with id {} updated successfully.", createdStudent.getId());
+        log.info("Student with id {} updated successfully.", createdStudent.getId());
         return createdStudent.getId();
     }
 
@@ -105,7 +94,7 @@ public class StudentServiceImpl implements StudentService {
         }
 
         student.setGroup(group);
-        LOGGER.info("Student with id:{} added to Group with id:{} successfully.", student.getId(), group.getId());
+        log.info("Student with id:{} added to Group with id:{} successfully.", student.getId(), group.getId());
     }
 
     @Override
@@ -120,7 +109,7 @@ public class StudentServiceImpl implements StudentService {
         } catch (EntityNotFoundException e) {
             throw new ServiceException("Failed to get Student's day schedule.", e);
         }
-        LOGGER.info("Student's day schedule received successfully.");
+        log.info("Student's day schedule received successfully.");
 
         return lessons;
     }
@@ -136,10 +125,10 @@ public class StudentServiceImpl implements StudentService {
         try {
             expectedGroupSize = studentRepository.findByGroupId(groupId).size() + 1;
         } catch (EntityNotFoundException e) {
-            LOGGER.warn("Students with Group id {} not found!", groupId);
+            log.warn("Students with Group id {} not found!", groupId);
         }
 
-        int groupMaxSize = Integer.parseInt(env.getProperty("groupMaxSize"));
+        int groupMaxSize = GROUP_MAX_SIZE;
 
         if (expectedGroupSize > groupMaxSize) {
             throw new ServiceException(

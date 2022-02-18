@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanart555.university.api.rest_controller.CoursesRestController;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.services.CourseService;
+import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

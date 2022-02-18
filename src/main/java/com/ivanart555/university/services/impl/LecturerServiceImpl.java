@@ -8,9 +8,8 @@ import com.ivanart555.university.repository.CourseRepository;
 import com.ivanart555.university.repository.LecturerRepository;
 import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.services.LecturerService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -21,38 +20,32 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
+@AllArgsConstructor
 @Component
 public class LecturerServiceImpl implements LecturerService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(LecturerServiceImpl.class);
-    private LecturerRepository lecturerRepository;
-    private CourseRepository courseRepository;
-    private LessonRepository lessonRepository;
-
-    @Autowired
-    public LecturerServiceImpl(LecturerRepository lecturerRepository, CourseRepository courseRepository, LessonRepository lessonRepository) {
-        this.lecturerRepository = lecturerRepository;
-        this.courseRepository = courseRepository;
-        this.lessonRepository = lessonRepository;
-    }
+    private final LecturerRepository lecturerRepository;
+    private final CourseRepository courseRepository;
+    private final LessonRepository lessonRepository;
 
     @Override
     public List<Lecturer> findAll() throws ServiceException {
         List<Lecturer> lecturers = lecturerRepository.findAll();
-        LOGGER.info("All Lecturers received successfully.");
+        log.info("All Lecturers received successfully.");
         return lecturers;
     }
 
     @Override
     public Page<Lecturer> findAll(Pageable pageable) throws ServiceException {
         Page<Lecturer> lecturers = lecturerRepository.findAll(pageable);
-        LOGGER.info("All Lecturers received successfully.");
+        log.info("All Lecturers received successfully.");
         return lecturers;
     }
 
     @Override
     public List<Lecturer> getAllActive() throws ServiceException {
         List<Lecturer> lecturers = lecturerRepository.getAllActive();
-        LOGGER.info("All active Lecturers received successfully.");
+        log.info("All active Lecturers received successfully.");
         return lecturers;
     }
 
@@ -63,9 +56,9 @@ public class LecturerServiceImpl implements LecturerService {
             lecturer = lecturerRepository.findById(id).orElseThrow(() -> new ServiceException(
                     String.format("Lecturer with id %d not found!", id)));
         } catch (EntityNotFoundException e) {
-            LOGGER.warn("Lecturer with id {} not found!", id);
+            log.warn("Lecturer with id {} not found!", id);
         }
-        LOGGER.info("Lecturer with id {} received successfully.", id);
+        log.info("Lecturer with id {} received successfully.", id);
 
         return lecturer;
     }
@@ -73,7 +66,7 @@ public class LecturerServiceImpl implements LecturerService {
     @Override
     public void delete(Integer id) throws ServiceException {
         lecturerRepository.deleteById(id);
-        LOGGER.info("Lecturer with id {} deleted successfully.", id);
+        log.info("Lecturer with id {} deleted successfully.", id);
     }
 
     @Override
@@ -85,7 +78,7 @@ public class LecturerServiceImpl implements LecturerService {
         }
 
         Lecturer createdLecturer = lecturerRepository.save(lecturer);
-        LOGGER.info("Lecturer with id {} saved successfully.", lecturer.getId());
+        log.info("Lecturer with id {} saved successfully.", createdLecturer.getId());
         return createdLecturer.getId();
     }
 
@@ -101,7 +94,7 @@ public class LecturerServiceImpl implements LecturerService {
         }
 
         lecturer.setCourse(course);
-        LOGGER.info("Lecturer with id:{} added to Course with id:{} successfully.", lecturer.getId(), course.getId());
+        log.info("Lecturer with id:{} added to Course with id:{} successfully.", lecturer.getId(), course.getId());
     }
 
     @Override
@@ -113,9 +106,9 @@ public class LecturerServiceImpl implements LecturerService {
         try {
             lessons = lessonRepository.findAllByLecturerIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(lecturer.getId(), endDateTime, startDateTime);
         } catch (EntityNotFoundException e) {
-            LOGGER.info("Schedule for Lecturer with id {} not found", lecturer.getId());
+            log.info("Schedule for Lecturer with id {} not found", lecturer.getId());
         }
-        LOGGER.info("Schedule for Lecturer with id {} received successfully.", lecturer.getId());
+        log.info("Schedule for Lecturer with id {} received successfully.", lecturer.getId());
 
         return lessons;
     }

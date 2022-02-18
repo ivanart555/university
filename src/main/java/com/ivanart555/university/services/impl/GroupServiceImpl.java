@@ -6,9 +6,8 @@ import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.repository.GroupRepository;
 import com.ivanart555.university.repository.LessonRepository;
 import com.ivanart555.university.services.GroupService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
@@ -19,29 +18,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
+@AllArgsConstructor
 @Component
 public class GroupServiceImpl implements GroupService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(GroupServiceImpl.class);
-    private GroupRepository groupRepository;
-    private LessonRepository lessonRepository;
-
-    @Autowired
-    public GroupServiceImpl(GroupRepository groupRepository, LessonRepository lessonRepository) {
-        this.groupRepository = groupRepository;
-        this.lessonRepository = lessonRepository;
-    }
+    private final GroupRepository groupRepository;
+    private final LessonRepository lessonRepository;
 
     @Override
     public List<Group> findAll() throws ServiceException {
         List<Group> groups = groupRepository.findAll();
-        LOGGER.info("All Groups received successfully.");
+        log.info("All Groups received successfully.");
         return groups;
     }
 
     @Override
     public Page<Group> findAll(Pageable pageable) throws ServiceException {
         Page<Group> groups = groupRepository.findAll(pageable);
-        LOGGER.info("All Groups received successfully.");
+        log.info("All Groups received successfully.");
         return groups;
     }
 
@@ -52,9 +46,9 @@ public class GroupServiceImpl implements GroupService {
             group = groupRepository.findById(id).orElseThrow(() -> new ServiceException(
                     String.format("Group with id %d not found!", id)));
         } catch (ServiceException e) {
-            LOGGER.warn("Group with id {} not found!", id);
+            log.warn("Group with id {} not found!", id);
         }
-        LOGGER.info("Group with id {} received successfully.", id);
+        log.info("Group with id {} received successfully.", id);
 
         return group;
     }
@@ -62,13 +56,13 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public void delete(Integer id) throws ServiceException {
         groupRepository.deleteById(id);
-        LOGGER.info("Group with id {} deleted successfully.", id);
+        log.info("Group with id {} deleted successfully.", id);
     }
 
     @Override
     public int save(Group group) throws ServiceException {
         Group createdGroup = groupRepository.save(group);
-        LOGGER.info("Group with id {} saved successfully.", createdGroup.getId());
+        log.info("Group with id {} saved successfully.", createdGroup.getId());
         return createdGroup.getId();
     }
 
@@ -82,9 +76,9 @@ public class GroupServiceImpl implements GroupService {
             lessons = lessonRepository.findAllByGroupIdAndLessonStartLessThanEqualAndLessonEndGreaterThanEqual(
                     group.getId(), endDateTime, startDateTime);
         } catch (EntityNotFoundException e) {
-            LOGGER.info("Schedule for Group with id {} not found", group.getId());
+            log.info("Schedule for Group with id {} not found", group.getId());
         }
-        LOGGER.info("Schedule for Group with id {} received successfully.", group.getId());
+        log.info("Schedule for Group with id {} received successfully.", group.getId());
 
         return lessons;
     }

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ivanart555.university.api.rest_controller.GroupsRestController;
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.services.GroupService;
+import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -68,7 +69,7 @@ class GroupsRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallSave() throws Exception {
-        when(groupService.save(group)).thenReturn(group.getId());
+        when(groupService.save(any(Group.class))).thenReturn(group.getId());
 
         mockMvc.perform(post("/api/v1/groups")
                 .content(jsonGroup)
@@ -77,8 +78,7 @@ class GroupsRestControllerTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", containsString("/api/v1/groups/" + group.getId())));
 
-        Group expectedGroup = group;
-        verify(groupService, only()).save(expectedGroup);
+        verify(groupService, only()).save(any(Group.class));
     }
 
     @Test
@@ -89,7 +89,7 @@ class GroupsRestControllerTest {
         )
                 .andExpect(status().isOk());
 
-        verify(groupService, only()).save(group);
+        verify(groupService, only()).save(any(Group.class));
     }
 
     @Test

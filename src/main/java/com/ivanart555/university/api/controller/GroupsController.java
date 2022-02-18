@@ -4,7 +4,7 @@ import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.GroupService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +21,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/groups")
 public class GroupsController {
     private static final String REDIRECT_GROUPS = "redirect:/groups";
     private GroupService groupService;
     private CourseService courseService;
-
-    @Autowired
-    public GroupsController(GroupService groupService, CourseService courseService) {
-        this.groupService = groupService;
-        this.courseService = courseService;
-    }
 
     @GetMapping()
     public String index(Model model,

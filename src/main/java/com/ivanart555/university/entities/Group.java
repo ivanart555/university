@@ -1,6 +1,10 @@
 package com.ivanart555.university.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -8,6 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "groups", schema = "university")
 public class Group {
     @Id
@@ -21,97 +28,13 @@ public class Group {
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "group")
+    @EqualsAndHashCode.Exclude
     private Set<Student> students = new HashSet<>();
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(schema = "university", name = "Group_Course", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "course_id"))
+    @EqualsAndHashCode.Exclude
     private Set<Course> courses;
 
-    public Group() {
-    }
-
-    public Group(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public Group(String name) {
-        this.name = name;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Set<Student> getStudents() {
-        return students;
-    }
-
-    public void setStudents(Set<Student> students) {
-        this.students = students;
-    }
-
-    public void addStudent(Student student) {
-        students.add(student);
-        student.setGroup(this);
-    }
-
-    public void removeStudent(Student student) {
-        students.remove(student);
-        student.setGroup(null);
-    }
-
-    public Set<Course> getCourses() {
-        return courses;
-    }
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-
-    @Override
-    public String toString() {
-        return "Group [id=" + id + ", name=" + name + "]";
-    }
-
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        result = prime * result + ((name == null) ? 0 : name.hashCode());
-        return result;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Group other = (Group) obj;
-        if (id != other.id)
-            return false;
-        if (name == null) {
-            if (other.name != null)
-                return false;
-        } else if (!name.equals(other.name))
-            return false;
-        return true;
-    }
 }

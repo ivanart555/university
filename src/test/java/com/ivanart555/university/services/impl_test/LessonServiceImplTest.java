@@ -94,7 +94,7 @@ class LessonServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledSaveWithLessonDto() throws ServiceException {
-        Lesson lesson = new Lesson(null, null);
+        Lesson lesson = new Lesson();
         when(lessonRepository.save(lesson)).thenReturn(lesson);
         lessonServiceImpl.save(lessonDto);
         verify(lessonRepository).save(lesson);
@@ -102,9 +102,10 @@ class LessonServiceImplTest {
 
     @Test
     void shouldInvokeSaveMethod_whenCalledAssignLessonToDateTimeForGroup() throws ServiceException {
+        Lesson lesson = new Lesson(1, null, null, null, null, null, null);
         lessonServiceImpl.assignLessonToDateTimeForGroup(lesson, any(LocalDateTime.class), any(LocalDateTime.class),
                 anyInt());
 
-        verify(lessonRepository).save(lesson);
+        verify(lessonRepository).save(any(Lesson.class));
     }
 }

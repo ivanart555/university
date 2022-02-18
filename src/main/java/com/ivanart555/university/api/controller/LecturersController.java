@@ -4,7 +4,7 @@ import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.CourseService;
 import com.ivanart555.university.services.LecturerService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,18 +21,13 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/lecturers")
 public class LecturersController {
     private static final String REDIRECT_LECTURERS = "redirect:/lecturers";
     private LecturerService lecturerService;
     private CourseService courseService;
-
-    @Autowired
-    public LecturersController(LecturerService lecturerService, CourseService courseService) {
-        this.lecturerService = lecturerService;
-        this.courseService = courseService;
-    }
 
     @GetMapping()
     public String index(Model model,

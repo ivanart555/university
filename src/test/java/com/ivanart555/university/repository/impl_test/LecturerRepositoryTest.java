@@ -3,6 +3,7 @@ package com.ivanart555.university.repository.impl_test;
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Lecturer;
 import com.ivanart555.university.repository.LecturerRepository;
+import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -23,16 +24,16 @@ class LecturerRepositoryImplTest {
     private LecturerRepository lecturerRepository;
 
     @Autowired
+    private TestData testData;
+
+    @Autowired
     private LecturerRepositoryImplTest(LecturerRepository lecturerRepository, Environment env, JdbcTemplate jdbcTemplate) {
         this.lecturerRepository = lecturerRepository;
     }
 
     @Test
     void shouldReturnAllLecturersFromDatabase_whenCalledGetAll() {
-        List<Lecturer> expectedLecturers = new ArrayList<>();
-        expectedLecturers.add(new Lecturer("Alex", "Smith"));
-        expectedLecturers.add(new Lecturer("Peter", "White"));
-        expectedLecturers.add(new Lecturer("Mary", "Black"));
+        List<Lecturer> expectedLecturers = testData.getTestLecturers();
 
         for (Lecturer lecturer : expectedLecturers) {
             lecturerRepository.save(lecturer);
@@ -43,10 +44,10 @@ class LecturerRepositoryImplTest {
     @Test
     void shouldReturnAllActiveLecturersFromDatabase_whenCalledGetAllActive() {
         List<Lecturer> expectedLecturers = new ArrayList<>();
-        expectedLecturers.add(new Lecturer("Alex", "Smith"));
-        expectedLecturers.add(new Lecturer("Peter", "White"));
+        expectedLecturers.add(testData.getTestLecturers().get(0));
+        expectedLecturers.add(testData.getTestLecturers().get(1));
 
-        Lecturer notActiveLecturer = new Lecturer("Mary", "Black");
+        Lecturer notActiveLecturer = testData.getTestLecturers().get(2);
         notActiveLecturer.setActive(false);
 
         for (Lecturer lecturer : expectedLecturers) {

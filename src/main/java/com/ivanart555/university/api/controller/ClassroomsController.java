@@ -3,7 +3,7 @@ package com.ivanart555.university.api.controller;
 import com.ivanart555.university.entities.Classroom;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.services.ClassroomService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,16 +20,12 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+@AllArgsConstructor
 @Controller
 @RequestMapping("/classrooms")
 public class ClassroomsController {
     private static final String REDIRECT_CLASSROOMS = "redirect:/classrooms";
     private ClassroomService classroomService;
-
-    @Autowired
-    public ClassroomsController(ClassroomService classroomService) {
-        this.classroomService = classroomService;
-    }
 
     @GetMapping()
     public String index(Model model,
