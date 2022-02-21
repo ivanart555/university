@@ -70,7 +70,7 @@ public class Lecturer {
                 return false;
         } else if (!firstName.equals(other.firstName))
             return false;
-        if (id != other.id)
+        if (!id.equals(other.id))
             return false;
         if (lastName == null) {
             return other.lastName == null;

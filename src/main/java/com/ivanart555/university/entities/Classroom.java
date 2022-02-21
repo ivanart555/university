@@ -47,7 +47,7 @@ public class Classroom {
         if (getClass() != obj.getClass())
             return false;
         Classroom other = (Classroom) obj;
-        if (id != other.id)
+        if (!id.equals(other.id))
             return false;
         if (name == null) {
             return other.name == null;

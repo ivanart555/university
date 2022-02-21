@@ -59,7 +59,7 @@ public class Group {
         if (getClass() != obj.getClass())
             return false;
         Group other = (Group) obj;
-        if (id != other.id)
+        if (!id.equals(other.id))
             return false;
         if (name == null) {
             return other.name == null;
