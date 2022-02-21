@@ -83,7 +83,7 @@ public class StudentsController {
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        studentService.delete(id);
+        studentService.deleteById(id);
         return REDIRECT_STUDENTS;
     }
 }

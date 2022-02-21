@@ -64,7 +64,7 @@ public class LecturerServiceImpl implements LecturerService {
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void deleteById(Integer id) throws ServiceException {
         lecturerRepository.deleteById(id);
         log.info("Lecturer with id {} deleted successfully.", id);
     }

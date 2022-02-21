@@ -1,8 +1,8 @@
-package com.ivanart555.university.repository.impl_test;
+package com.ivanart555.university.repository.impl;
 
 import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.repository.CourseRepository;
+import com.ivanart555.university.entities.Classroom;
+import com.ivanart555.university.repository.ClassroomRepository;
 import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +19,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-class CourseRepositoryImplTest {
-    private final CourseRepository courseRepository;
+class ClassroomRepositoryImplTest {
+    private ClassroomRepository classroomRepository;
 
     @Autowired
     private TestData testData;
 
     @Autowired
-    private CourseRepositoryImplTest(CourseRepository courseRepository, Environment env, JdbcTemplate jdbcTemplate) {
-        this.courseRepository = courseRepository;
+    private ClassroomRepositoryImplTest(ClassroomRepository classroomRepository, Environment env, JdbcTemplate jdbcTemplate) {
+        this.classroomRepository = classroomRepository;
     }
 
     @Test
-    void shouldReturnAllCoursesFromDatabase_whenCalledGetAll() {
-        List<Course> expectedCourses = testData.getTestCourses();
-        for (Course Course : expectedCourses) {
-            courseRepository.save(Course);
+    void shouldReturnAllClassroomsFromDatabase_whenCalledGetAll() {
+        List<Classroom> expectedClassrooms = testData.getTestClassrooms();
+
+        for (Classroom classroom : expectedClassrooms) {
+            classroomRepository.save(classroom);
         }
-        assertEquals(expectedCourses, courseRepository.findAll());
+        assertEquals(expectedClassrooms, classroomRepository.findAll());
     }
+
 }

@@ -1,9 +1,8 @@
-package com.ivanart555.university.services.impl_test;
+package com.ivanart555.university.services.impl;
 
 import com.ivanart555.university.entities.Group;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.repository.GroupRepository;
-import com.ivanart555.university.services.impl.GroupServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -47,7 +46,7 @@ class GroupServiceImplTest {
 
     @Test
     void shouldInvokeDeleteMethod_whenCalledDelete() throws ServiceException {
-        groupServiceImpl.delete(anyInt());
+        groupServiceImpl.deleteById(anyInt());
         verify(groupRepository).deleteById(anyInt());
     }
 

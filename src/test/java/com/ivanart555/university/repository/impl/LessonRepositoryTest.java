@@ -1,4 +1,4 @@
-package com.ivanart555.university.repository.impl_test;
+package com.ivanart555.university.repository.impl;
 
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.*;

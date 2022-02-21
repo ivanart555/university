@@ -75,7 +75,7 @@ public class LessonServiceImpl implements LessonService {
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void deleteById(Integer id) throws ServiceException {
         lessonRepository.deleteById(id);
         LOGGER.info("Lesson with id {} deleted successfully.", id);
     }

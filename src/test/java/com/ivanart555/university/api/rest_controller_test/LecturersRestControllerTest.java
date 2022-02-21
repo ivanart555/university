@@ -99,6 +99,6 @@ class LecturersRestControllerTest {
         mockMvc.perform(delete("/api/v1/lecturers/{id}", 1))
                 .andExpect(status().isNoContent());
 
-        verify(lecturerService, only()).delete(anyInt());
+        verify(lecturerService, only()).deleteById(anyInt());
     }
 }

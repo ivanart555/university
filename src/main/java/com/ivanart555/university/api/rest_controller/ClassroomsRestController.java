@@ -50,7 +50,7 @@ public class ClassroomsRestController {
     @DeleteMapping("/{id}")
     @ApiOperation("Delete classroom by id")
     public ResponseEntity<Object> delete(@PathVariable("id") int id) {
-        classroomService.delete(id);
+        classroomService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

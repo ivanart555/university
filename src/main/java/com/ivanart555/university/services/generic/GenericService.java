@@ -13,5 +13,5 @@ public interface GenericService<T, K extends Serializable> {
 
     int save(T t);
 
-    void delete(K id) throws ServiceException;
+    void deleteById(K id) throws ServiceException;
 }

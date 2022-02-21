@@ -63,7 +63,7 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void deleteById(Integer id) throws ServiceException {
         studentRepository.deleteById(id);
         log.info("Student with id {} deleted successfully.", id);
     }

@@ -54,7 +54,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void deleteById(Integer id) throws ServiceException {
         groupRepository.deleteById(id);
         log.info("Group with id {} deleted successfully.", id);
     }

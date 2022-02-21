@@ -47,7 +47,7 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void deleteById(Integer id) throws ServiceException {
         courseRepository.deleteById(id);
         log.info("Course with id {} deleted successfully.", id);
     }

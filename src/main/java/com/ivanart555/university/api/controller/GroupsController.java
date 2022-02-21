@@ -82,7 +82,7 @@ public class GroupsController {
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") int id) throws ServiceException {
-        groupService.delete(id);
+        groupService.deleteById(id);
         return REDIRECT_GROUPS;
     }
 

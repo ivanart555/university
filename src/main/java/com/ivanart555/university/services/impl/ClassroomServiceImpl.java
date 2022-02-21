@@ -49,7 +49,7 @@ public class ClassroomServiceImpl implements ClassroomService {
     }
 
     @Override
-    public void delete(Integer id) throws ServiceException {
+    public void deleteById(Integer id) throws ServiceException {
         classroomRepository.deleteById(id);
         log.info("Classroom with id {} deleted successfully.", id);
     }

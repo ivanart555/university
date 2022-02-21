@@ -1,4 +1,4 @@
-package com.ivanart555.university.services.impl_test;
+package com.ivanart555.university.services.impl;
 
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.entities.Group;
@@ -8,7 +8,6 @@ import com.ivanart555.university.repository.CourseRepository;
 import com.ivanart555.university.repository.GroupRepository;
 import com.ivanart555.university.repository.LecturerRepository;
 import com.ivanart555.university.repository.LessonRepository;
-import com.ivanart555.university.services.impl.LecturerServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

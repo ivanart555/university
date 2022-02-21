@@ -1,11 +1,10 @@
-package com.ivanart555.university.services.impl_test;
+package com.ivanart555.university.services.impl;
 
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.dto.LessonDto;
 import com.ivanart555.university.entities.*;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.repository.*;
-import com.ivanart555.university.services.impl.LessonServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -81,7 +80,7 @@ class LessonServiceImplTest {
 
     @Test
     void shouldInvokeDeleteMethod_whenCalledDelete() throws ServiceException {
-        lessonServiceImpl.delete(anyInt());
+        lessonServiceImpl.deleteById(anyInt());
         verify(lessonRepository).deleteById(anyInt());
     }
 

@@ -50,7 +50,7 @@ public class GroupsRestController {
     @DeleteMapping("/{id}")
     @ApiOperation("Delete group by id")
     public ResponseEntity<Object> delete(@PathVariable("id") int id) {
-        groupService.delete(id);
+        groupService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 }

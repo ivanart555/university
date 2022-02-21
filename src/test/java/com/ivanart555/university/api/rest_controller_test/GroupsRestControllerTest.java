@@ -97,6 +97,6 @@ class GroupsRestControllerTest {
         mockMvc.perform(delete("/api/v1/groups/{id}", 1))
                 .andExpect(status().isNoContent());
 
-        verify(groupService, only()).delete(anyInt());
+        verify(groupService, only()).deleteById(anyInt());
     }
 }
