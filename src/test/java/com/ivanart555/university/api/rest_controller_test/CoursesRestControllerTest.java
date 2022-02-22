@@ -84,7 +84,7 @@ class CoursesRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallUpdate() throws Exception {
-        mockMvc.perform(put("/api/v1/courses/{id}", 1)
+        mockMvc.perform(put("/api/v1/courses", 1)
                 .content(jsonCourse)
                 .contentType(MediaType.APPLICATION_JSON)
         )

@@ -38,11 +38,10 @@ public class LecturersRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @ApiOperation("Update already existing lecturer")
     @ResponseStatus(HttpStatus.OK)
-    public Lecturer update(@PathVariable("id") int id, @RequestBody Lecturer lecturer) {
-        lecturer.setId(id);
+    public Lecturer update(@RequestBody Lecturer lecturer) {
         lecturerService.save(lecturer);
         return lecturer;
     }

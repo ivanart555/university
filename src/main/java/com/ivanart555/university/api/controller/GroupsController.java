@@ -68,9 +68,8 @@ public class GroupsController {
         return REDIRECT_GROUPS;
     }
 
-    @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult,
-                         @PathVariable("id") int id)
+    @PatchMapping("/edit")
+    public String update(@ModelAttribute("group") @Valid Group group, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())

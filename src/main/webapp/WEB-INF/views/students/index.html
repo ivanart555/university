@@ -74,9 +74,10 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form th:method="PATCH" th:action="@{/students/edit/{id}(id=${student.id})}"
+                                <form th:method="PATCH" th:action="@{/students/edit}"
                                       th:object="${student}">
                                     <div class="mb-3">
+                                        <input type="hidden" class="form-control" id="id" name="id" th:value="*{id}">
                                         <label for="firstName" class="form-label">Name:</label>
                                         <input type="text" class="form-control" id="firstName" name="firstName"
                                                th:value="*{firstName}"/>

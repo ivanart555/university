@@ -38,11 +38,10 @@ public class ClassroomsRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @ApiOperation("Update already existing classroom")
     @ResponseStatus(HttpStatus.OK)
-    public Classroom update(@PathVariable("id") int id, @RequestBody Classroom classroom) {
-        classroom.setId(id);
+    public Classroom update(@RequestBody Classroom classroom) {
         classroomService.save(classroom);
         return classroom;
     }

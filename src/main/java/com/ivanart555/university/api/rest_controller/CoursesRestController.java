@@ -38,11 +38,10 @@ public class CoursesRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @ApiOperation("Update already existing course")
     @ResponseStatus(HttpStatus.OK)
-    public Course update(@PathVariable("id") int id, @RequestBody Course course) {
-        course.setId(id);
+    public Course update(@RequestBody Course course) {
         courseService.save(course);
         return course;
     }

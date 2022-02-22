@@ -71,7 +71,7 @@ class LecturersControllerTest {
 
     @Test
     void shouldRedirectToLecturers_whenCalledLecturersEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/lecturers/edit/1"))
+        mockMvc.perform(patch("/lecturers/edit"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("lecturer"))
                 .andExpect(view().name("redirect:/lecturers"));

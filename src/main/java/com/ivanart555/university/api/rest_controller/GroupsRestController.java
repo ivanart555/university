@@ -38,11 +38,10 @@ public class GroupsRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @ApiOperation("Update already existing group")
     @ResponseStatus(HttpStatus.OK)
-    public Group update(@PathVariable("id") int id, @RequestBody Group group) {
-        group.setId(id);
+    public Group update(@RequestBody Group group) {
         groupService.save(group);
         return group;
     }

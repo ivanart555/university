@@ -38,11 +38,10 @@ public class LessonsRestController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}")
+    @PutMapping()
     @ApiOperation("Update already existing lesson")
     @ResponseStatus(HttpStatus.OK)
-    public Lesson update(@PathVariable("id") int id, @RequestBody Lesson lesson) {
-        lesson.setId(id);
+    public Lesson update(@RequestBody Lesson lesson) {
         lessonService.save(lesson);
         return lesson;
     }

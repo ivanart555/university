@@ -69,9 +69,8 @@ public class StudentsController {
         return REDIRECT_STUDENTS;
     }
 
-    @PatchMapping("/edit/{id}")
-    public String update(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult,
-                         @PathVariable("id") int id)
+    @PatchMapping("/edit")
+    public String update(@ModelAttribute("student") @Valid Student student, BindingResult bindingResult)
             throws ServiceException {
 
         if (bindingResult.hasErrors())

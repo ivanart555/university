@@ -73,10 +73,10 @@
                                         aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form th:method="PATCH" th:action="@{/lessons/edit/{id}(id=${lessonDto.id})}"
+                                <form th:method="PATCH" th:action="@{/lessons/edit}"
                                       th:object="${lessonDto}" th:attr="id=${lessonDto.id}">
                                     <div class="mb-3">
-                                        <input type="hidden" id="custId" name="custId" value="3487">
+                                        <input type="hidden" class="form-control" id="id" name="id" th:value="*{id}">
                                         <label for="lessonStart" class="form-label">Start time:</label>
                                         <input type="datetime-local" class="form-control"
                                                th:attr="id='lessonStart'+${lessonDto.id}" name="lessonStart"

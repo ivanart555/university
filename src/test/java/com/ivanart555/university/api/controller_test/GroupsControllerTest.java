@@ -12,6 +12,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -52,7 +54,7 @@ class GroupsControllerTest {
 
     @Test
     void shouldReturnViewGroupsIndex_whenCalledGroupsGET() throws Exception {
-        when(groupService.findAll(any())).thenReturn(anyPage);
+        when(groupService.findAll(any(PageRequest.class))).thenReturn(anyPage);
         mockMvc.perform(get("/groups"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("groupPage"))
@@ -72,7 +74,7 @@ class GroupsControllerTest {
 
     @Test
     void shouldRedirectToGroups_whenCalledGroupsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/groups/edit/1"))
+        mockMvc.perform(patch("/groups/edit"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("group"))
                 .andExpect(view().name("redirect:/groups"));

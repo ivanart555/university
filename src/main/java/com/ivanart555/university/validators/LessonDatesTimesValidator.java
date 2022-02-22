@@ -11,6 +11,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class LessonDatesTimesValidator implements ConstraintValidator<LessonDatesTimes, Object> {
+    private static final Long LESSON_DURATION_MINUTES = 60L;
 
     @Autowired
     private Environment env;
@@ -26,8 +27,6 @@ public class LessonDatesTimesValidator implements ConstraintValidator<LessonDate
 
     @Override
     public boolean isValid(Object value, ConstraintValidatorContext context) {
-        long lessonDurationMinutes = Long.parseLong(env.getProperty("lessonDurationMinutes"));
-
         LocalDateTime lessonStartValue = (LocalDateTime) new BeanWrapperImpl(value)
                 .getPropertyValue(lessonStart);
         LocalDateTime lessonEndValue = (LocalDateTime) new BeanWrapperImpl(value)
@@ -40,6 +39,6 @@ public class LessonDatesTimesValidator implements ConstraintValidator<LessonDate
         int compareValue = lessonEndValue.compareTo(lessonStartValue);
         Duration duration = Duration.between(lessonStartValue, lessonEndValue);
 
-        return (compareValue > 0 && duration.toMinutes() == lessonDurationMinutes);
+        return (compareValue > 0 && duration.toMinutes() == LESSON_DURATION_MINUTES);
     }
 }

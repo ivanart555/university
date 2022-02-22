@@ -83,7 +83,7 @@ class GroupsRestControllerTest {
 
     @Test
     void shouldParseJSONToObjectAndCallUpdate() throws Exception {
-        mockMvc.perform(put("/api/v1/groups/{id}", 1)
+        mockMvc.perform(put("/api/v1/groups", 1)
                 .content(jsonGroup)
                 .contentType(MediaType.APPLICATION_JSON)
         )

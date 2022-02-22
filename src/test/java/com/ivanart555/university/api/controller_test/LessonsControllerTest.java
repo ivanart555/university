@@ -80,7 +80,7 @@ class LessonsControllerTest {
 
     @Test
     void shouldRedirectToLessons_whenCalledLessonsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/lessons/edit/20"))
+        mockMvc.perform(patch("/lessons/edit"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("lessonDto"))
                 .andExpect(view().name("redirect:/lessons"));
