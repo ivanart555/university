@@ -15,6 +15,8 @@ import org.springframework.test.context.junit.jupiter.web.SpringJUnitWebConfig;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import java.time.LocalDateTime;
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -72,7 +74,8 @@ class LessonsControllerTest {
 
     @Test
     void shouldRedirectToLessons_whenCalledLessonsPOST() throws Exception {
-        mockMvc.perform(post("/lessons"))
+        LessonDto lessonDto = new LessonDto(1, 1, "math", 1, "100", 1, "Alex", "Black", 1, "FW-54", LocalDateTime.now(), LocalDateTime.now().plusMinutes(60));
+        mockMvc.perform(post("/lessons").flashAttr("lessonDto", lessonDto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("lessonDto"))
                 .andExpect(view().name("redirect:/lessons"));
@@ -80,7 +83,8 @@ class LessonsControllerTest {
 
     @Test
     void shouldRedirectToLessons_whenCalledLessonsEditIdPATCH() throws Exception {
-        mockMvc.perform(patch("/lessons/edit"))
+        LessonDto lessonDto = new LessonDto(1, 1, "math", 1, "100", 1, "Alex", "Black", 1, "FW-54", LocalDateTime.now(), LocalDateTime.now().plusMinutes(60));
+        mockMvc.perform(patch("/lessons/edit").flashAttr("lessonDto", lessonDto))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(model().attributeExists("lessonDto"))
                 .andExpect(view().name("redirect:/lessons"));
