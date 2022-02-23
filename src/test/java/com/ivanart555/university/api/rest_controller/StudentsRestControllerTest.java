@@ -1,10 +1,9 @@
-package com.ivanart555.university.api.rest_controller_test;
+package com.ivanart555.university.api.rest_controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ivanart555.university.api.rest_controller.GroupsRestController;
-import com.ivanart555.university.entities.Group;
-import com.ivanart555.university.services.GroupService;
+import com.ivanart555.university.entities.Student;
+import com.ivanart555.university.services.StudentService;
 import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,81 +21,82 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
-class GroupsRestControllerTest {
+class StudentsRestControllerTest {
     private MockMvc mockMvc;
-    private String jsonGroup;
-    private String jsonGroupsList;
-    private Group group;
+    private String jsonStudent;
+    private String jsonStudentsList;
+    private Student student;
 
     @Autowired
     private TestData testData;
 
     @Mock
-    private GroupService groupService;
+    private StudentService studentService;
 
     @InjectMocks
-    private GroupsRestController groupsRestController;
+    private StudentsRestController studentsRestController;
 
     @BeforeEach
     public void setup() throws JsonProcessingException {
-        mockMvc = MockMvcBuilders.standaloneSetup(groupsRestController).build();
-        group = testData.getTestGroups().get(0);
-        jsonGroup = new ObjectMapper().writeValueAsString(testData.getTestGroups().get(0));
-        jsonGroupsList = new ObjectMapper().writeValueAsString(testData.getTestGroups());
+        mockMvc = MockMvcBuilders.standaloneSetup(studentsRestController).build();
+        student = testData.getTestStudents().get(0);
+        jsonStudent = new ObjectMapper().writeValueAsString(testData.getTestStudents().get(0));
+        jsonStudentsList = new ObjectMapper().writeValueAsString(testData.getTestStudents());
     }
 
     @Test
     void shouldReturnCorrectJson_whenCalledFindAll() throws Exception {
-        when(groupService.findAll()).thenReturn(testData.getTestGroups());
+        when(studentService.findAll()).thenReturn(testData.getTestStudents());
 
-        mockMvc.perform(get("/api/v1/groups"))
+        mockMvc.perform(get("/api/v1/students"))
                 .andExpect(status().isOk())
-                .andExpect(content().json(jsonGroupsList));
+                .andExpect(content().json(jsonStudentsList));
 
-        verify(groupService, only()).findAll();
+        verify(studentService, only()).findAll();
     }
 
     @Test
     void shouldReturnCorrectJson_whenCalledFindById() throws Exception {
-        when(groupService.findById(anyInt())).thenReturn(group);
+        when(studentService.findById(anyInt())).thenReturn(student);
 
-        mockMvc.perform(get("/api/v1/groups/{id}", 1))
+        mockMvc.perform(get("/api/v1/students/{id}", 1))
                 .andExpect(status().isOk())
-                .andExpect(content().json(jsonGroup));
+                .andExpect(content().json(jsonStudent));
 
-        verify(groupService, only()).findById(anyInt());
+        verify(studentService, only()).findById(anyInt());
     }
 
     @Test
     void shouldParseJSONToObjectAndCallSave() throws Exception {
-        when(groupService.save(any(Group.class))).thenReturn(group.getId());
+        when(studentService.save(student)).thenReturn(student.getId());
 
-        mockMvc.perform(post("/api/v1/groups")
-                .content(jsonGroup)
+        mockMvc.perform(post("/api/v1/students")
+                .content(jsonStudent)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", containsString("/api/v1/groups/" + group.getId())));
+                .andExpect(header().string("Location", containsString("/api/v1/students/" + student.getId())));
 
-        verify(groupService, only()).save(any(Group.class));
+        Student expectedStudent = student;
+        verify(studentService, only()).save(expectedStudent);
     }
 
     @Test
     void shouldParseJSONToObjectAndCallUpdate() throws Exception {
-        mockMvc.perform(put("/api/v1/groups", 1)
-                .content(jsonGroup)
+        mockMvc.perform(put("/api/v1/students", 1)
+                .content(jsonStudent)
                 .contentType(MediaType.APPLICATION_JSON)
         )
                 .andExpect(status().isOk());
 
-        verify(groupService, only()).save(any(Group.class));
+        verify(studentService, only()).save(student);
     }
 
     @Test
     void shouldCallDelete_whenCalledDelete() throws Exception {
-        mockMvc.perform(delete("/api/v1/groups/{id}", 1))
+        mockMvc.perform(delete("/api/v1/students/{id}", 1))
                 .andExpect(status().isNoContent());
 
-        verify(groupService, only()).deleteById(anyInt());
+        verify(studentService, only()).deleteById(anyInt());
     }
 }

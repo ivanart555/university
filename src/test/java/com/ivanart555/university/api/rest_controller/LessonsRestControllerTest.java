@@ -1,9 +1,8 @@
-package com.ivanart555.university.api.rest_controller_test;
+package com.ivanart555.university.api.rest_controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.ivanart555.university.api.rest_controller.LessonsRestController;
 import com.ivanart555.university.entities.Lesson;
 import com.ivanart555.university.services.LessonService;
 import com.ivanart555.university.test_data.TestData;

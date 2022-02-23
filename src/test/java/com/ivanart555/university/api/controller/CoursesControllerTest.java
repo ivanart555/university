@@ -1,6 +1,5 @@
-package com.ivanart555.university.api.controller_test;
+package com.ivanart555.university.api.controller;
 
-import com.ivanart555.university.api.controller.CoursesController;
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Course;
 import com.ivanart555.university.services.CourseService;

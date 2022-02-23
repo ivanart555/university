@@ -1,4 +1,4 @@
-package com.ivanart555.university.repository.impl;
+package com.ivanart555.university.repository;
 
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Lecturer;
@@ -20,14 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-class LecturerRepositoryImplTest {
+class LecturerRepositoryTest {
     private LecturerRepository lecturerRepository;
 
     @Autowired
     private TestData testData;
 
     @Autowired
-    private LecturerRepositoryImplTest(LecturerRepository lecturerRepository, Environment env, JdbcTemplate jdbcTemplate) {
+    private LecturerRepositoryTest(LecturerRepository lecturerRepository, Environment env, JdbcTemplate jdbcTemplate) {
         this.lecturerRepository = lecturerRepository;
     }
 

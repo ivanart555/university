@@ -1,8 +1,8 @@
-package com.ivanart555.university.repository.impl;
+package com.ivanart555.university.repository;
 
 import com.ivanart555.university.config.TestSpringConfig;
-import com.ivanart555.university.entities.Course;
-import com.ivanart555.university.repository.CourseRepository;
+import com.ivanart555.university.entities.Group;
+import com.ivanart555.university.repository.GroupRepository;
 import com.ivanart555.university.test_data.TestData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,23 +19,24 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-class CourseRepositoryImplTest {
-    private final CourseRepository courseRepository;
+class GroupRepositoryTest {
+    private final GroupRepository groupRepository;
 
     @Autowired
     private TestData testData;
 
     @Autowired
-    private CourseRepositoryImplTest(CourseRepository courseRepository, Environment env, JdbcTemplate jdbcTemplate) {
-        this.courseRepository = courseRepository;
+    private GroupRepositoryTest(GroupRepository groupRepository, Environment env, JdbcTemplate jdbcTemplate) {
+        this.groupRepository = groupRepository;
     }
 
     @Test
-    void shouldReturnAllCoursesFromDatabase_whenCalledGetAll() {
-        List<Course> expectedCourses = testData.getTestCourses();
-        for (Course Course : expectedCourses) {
-            courseRepository.save(Course);
+    void shouldReturnAllGroupsFromDatabase_whenCalledGetAll() {
+        List<Group> expectedGroups = testData.getTestGroups();
+
+        for (Group Group : expectedGroups) {
+            groupRepository.save(Group);
         }
-        assertEquals(expectedCourses, courseRepository.findAll());
+        assertEquals(expectedGroups, groupRepository.findAll());
     }
 }

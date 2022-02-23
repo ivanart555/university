@@ -1,4 +1,4 @@
-package com.ivanart555.university.repository.impl;
+package com.ivanart555.university.repository;
 
 import com.ivanart555.university.config.TestSpringConfig;
 import com.ivanart555.university.entities.Group;
@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringJUnitConfig(TestSpringConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
-class StudentRepositoryImplTest {
+class StudentRepositoryTest {
     private StudentRepository studentRepository;
     private GroupRepository groupRepository;
 
@@ -28,8 +28,8 @@ class StudentRepositoryImplTest {
     private TestData testData;
 
     @Autowired
-    private StudentRepositoryImplTest(StudentRepository studentRepository, GroupRepository groupRepository, Environment env,
-                                      JdbcTemplate jdbcTemplate) {
+    private StudentRepositoryTest(StudentRepository studentRepository, GroupRepository groupRepository, Environment env,
+                                  JdbcTemplate jdbcTemplate) {
         this.studentRepository = studentRepository;
         this.groupRepository = groupRepository;
     }
