@@ -8,17 +8,17 @@ import com.ivanart555.university.services.LessonService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.http.server.DelegatingServerHttpResponse;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Component
@@ -45,6 +45,12 @@ public class LessonServiceImpl implements LessonService {
 
         List<LessonDto> allLessons = getAllDto();
         int lessonsSize = allLessons.size();
+
+        if (pageable.getSort().getOrderFor("id").getDirection().isAscending()) {
+            allLessons.sort(Comparator.comparing(LessonDto::getId));
+        } else if (pageable.getSort().getOrderFor("id").getDirection().isDescending())
+            allLessons.sort(Comparator.comparing(LessonDto::getId).reversed());
+
         List<LessonDto> list;
 
         if (lessonsSize < startItem) {

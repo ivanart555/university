@@ -22,8 +22,8 @@ import java.util.List;
 @AllArgsConstructor
 @Component
 public class GroupServiceImpl implements GroupService {
-    private final GroupRepository groupRepository;
-    private final LessonRepository lessonRepository;
+    private GroupRepository groupRepository;
+    private LessonRepository lessonRepository;
 
     @Override
     public List<Group> findAll() throws ServiceException {

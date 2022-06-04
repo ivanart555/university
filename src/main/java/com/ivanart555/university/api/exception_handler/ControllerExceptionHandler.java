@@ -7,7 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ValidationException;
 
-@ControllerAdvice(basePackages = "com.ivanart555.university.controllers")
+@ControllerAdvice(basePackages = "com.ivanart555.university.api.controller")
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(ValidationException.class)
