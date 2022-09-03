@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -89,4 +90,5 @@ public class LessonsController {
         lessonService.deleteById(id);
         return REDIRECT_LESSONS;
     }
+
 }

@@ -5,6 +5,7 @@ import com.ivanart555.university.entities.*;
 import com.ivanart555.university.exception.ServiceException;
 import com.ivanart555.university.repository.*;
 import com.ivanart555.university.services.LessonService;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
